@@ -1,0 +1,55 @@
+<div class="card">
+  <h1>Resultados</h1>
+
+  <div class="form-group">
+    <label>Selecionar data</label>
+    <select [(ngModel)]="dataSelecionada" (change)="onDataChange()" class="form-control">
+      <option value="">Selecione uma data...</option>
+      <option *ngFor="let data of datasDisponiveis" [value]="data">{{ data | date:'dd/MM/yyyy' }}</option>
+    </select>
+  </div>
+
+  <table class="table table-striped" *ngIf="aparelhosDia.length > 0">
+    <thead>
+    <tr>
+      <th>Ambiente</th>
+      <th>Aparelho</th>
+      <th>Estado</th>
+      <th>Bandeira</th>
+      <th class="text-right">Consumo Dia (kWh)</th>
+      <th class="text-right">Consumo Mês (kWh)</th>
+      <th class="text-right">Custo Dia (R$)</th>
+      <th class="text-right">Custo Mês (R$)</th>
+      <th class="text-right">Custo Social (R$)</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let ap of aparelhosDia">
+      <td>{{ ap.ambiente.nome }}</td>
+      <td>{{ ap.nome }}</td>
+      <td>{{ ap.estado.nome }}</td>
+      <td>{{ ap.bandeira.cor }}</td>
+      <td class="text-right">{{ ap.consumo_diario_kwh | number:'1.2-2' }}</td>
+      <td class="text-right">{{ (ap.consumo_diario_kwh * 30) | number:'1.2-2' }}</td>
+      <td class="text-right">{{ ap.custo_diario | number:'1.2-2' }}</td>
+      <td class="text-right">{{ (ap.custo_diario * 30) | number:'1.2-2' }}</td>
+      <td class="text-right">{{ (ap.custo_social_diario * 30) | number:'1.2-2' }}</td>
+    </tr>
+    <tr class="font-weight-bold">
+      <td colspan="4" class="text-right">TOTAL:</td>
+      <td class="text-right">{{ consumoTotalDia | number:'1.2-2' }}</td>
+      <td class="text-right">{{ (consumoTotalDia * 30) | number:'1.2-2' }}</td>
+      <td class="text-right">{{ custoTotalNormal | number:'1.2-2' }}</td>
+      <td class="text-right">{{ (custoTotalNormal * 30) | number:'1.2-2' }}</td>
+      <td class="text-right">{{ custoTotalSocial | number:'1.2-2' }}</td>
+    </tr>
+    </tbody>
+  </table>
+
+  <div class="result-footer mt-4">
+    <div class="btn-group">
+      <button class="btn btn-secondary" (click)="voltar()">Voltar</button>
+      <button class="btn btn-info ml-2" (click)="irParaGrafico()">Gráfico</button>
+    </div>
+  </div>
+</div>

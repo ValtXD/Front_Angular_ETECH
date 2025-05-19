@@ -1,0 +1,39 @@
+<div class="container">
+  <h2>Histórico de Registros do Contador</h2>
+
+  <table *ngIf="registros.length > 0" border="1" cellpadding="5" cellspacing="0">
+    <thead>
+    <tr>
+      <th>Data</th>
+      <th>Estado</th>
+      <th>Bandeira</th>
+      <th>Tarifa Social</th>
+      <th>Consumo (kWh)</th>
+      <th>Total (R$)</th>
+      <th>Ações</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let r of registros">
+      <td>{{ r.data_registro | date:'dd/MM/yyyy' }}</td>
+      <td>{{ r.estado }}</td>
+      <td>{{ r.bandeira }}</td>
+      <td>{{ r.tarifa_social ? 'Sim' : 'Não' }}</td>
+      <td>{{ r.consumo_kwh | number:'1.2-2' }}</td>
+      <td>{{ r.total_pagar | number:'1.2-2' }}</td>
+      <td>
+        <button (click)="excluir(r.id)">Excluir</button>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+
+  <div *ngIf="registros.length === 0">
+    Nenhum registro encontrado.
+  </div>
+
+  <div style="margin-top: 20px;">
+    <button (click)="voltarCalcular()">Voltar para Cálculo</button>
+    <button (click)="irGrafico()">Ver Gráfico</button>
+  </div>
+</div>

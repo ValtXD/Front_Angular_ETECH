@@ -62,7 +62,8 @@
               "buildTarget": "energy-manager-frontend:build:production"
             },
             "development": {
-              "buildTarget": "energy-manager-frontend:build:development"
+              "buildTarget": "energy-manager-frontend:build:development",
+              "proxyConfig": "src/proxy.conf.json"
             }
           },
           "defaultConfiguration": "development"
@@ -92,5 +93,8 @@
         }
       }
     }
+  },
+  "cli": {
+    "analytics": "6bd6ad1e-72c8-418b-b676-66aa44536b8b"
   }
 }
