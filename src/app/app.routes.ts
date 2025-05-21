@@ -6,10 +6,11 @@ import { HomeComponent } from './pages/home/home.component';
 import { CalcularComponent } from './calcular/calcular.component';
 import { ResultadosComponent } from './resultados/resultados.component';
 import { MonitoramentoComponent } from './monitoramento/monitoramento.component';
-
-import { CalcularContadorComponent } from './calcular-contador/calcular-contador.component';
-import { ResultadosContadorComponent } from './resultados-contador/resultados-contador.component';
-import { GraficoContadorComponent } from './grafico-contador/grafico-contador.component';
+import {ConsumoMensalListarComponent} from './consumo-mensal-listar/consumo-mensal-listar.component';
+import {GraficoContadorComponent} from './grafico-contador/grafico-contador.component';
+import {ConsumoMensalCalcularComponent} from './consumo-mensal-calcular/consumo-mensal-calcular.component';
+import {UploadImagemComponent} from './upload-imagem/upload-imagem.component';
+import {ListaLeiturasComponent} from './lista-leituras/lista-leituras.component';
 
 export const routes: Routes = [
   {
@@ -24,9 +25,14 @@ export const routes: Routes = [
       { path: 'monitoramento', component: MonitoramentoComponent },
 
       // Rotas do contador de energia
-      { path: 'calcular-contador', component: CalcularContadorComponent },
-      { path: 'resultados-contador', component: ResultadosContadorComponent },
+      { path: 'consumo-mensal-calcular', component: ConsumoMensalCalcularComponent },
+      { path: 'consumo-mensal-listar', component: ConsumoMensalListarComponent },
       { path: 'grafico-contador', component: GraficoContadorComponent },
+
+      //Rotas de OCR
+      { path: '', redirectTo: 'upload', pathMatch: 'full' },
+      { path: 'upload', component: UploadImagemComponent },
+      { path: 'leituras', component: ListaLeiturasComponent },
     ]
   },
   { path: '**', redirectTo: '' }

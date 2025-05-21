@@ -1,0 +1,79 @@
+<div class="card p-3">
+
+  <h2>Registrar Consumo/Contador Mensal</h2>
+
+  <form [formGroup]="form" (ngSubmit)="onSubmit()" class="mb-4">
+
+    <div class="form-group mb-3">
+      <label for="data">Data (Mês/Ano)</label>
+      <input id="data" type="month" formControlName="data" class="form-control" />
+    </div><br>
+
+    <div class="form-group mb-3">
+      <label for="estado">Estado</label>
+      <select id="estado" formControlName="estado" class="form-control">
+        <option value="" disabled>Selecione o estado</option>
+        <option *ngFor="let estado of estados" [value]="estado.id">{{ estado.nome }}</option>
+      </select>
+    </div><br>
+
+    <div class="form-group mb-3">
+      <label for="bandeira">Bandeira Tarifária</label>
+      <select id="bandeira" formControlName="bandeira" class="form-control">
+        <option value="" disabled>Selecione a bandeira</option>
+        <option *ngFor="let bandeira of bandeiras" [value]="bandeira.id">{{ bandeira.cor }}</option>
+      </select>
+    </div><br>
+
+    <div class="form-check mb-3">
+      <input type="checkbox" id="tarifaSocial" formControlName="tarifa_social" class="form-check-input" />
+      <label for="tarifaSocial" class="form-check-label">Tarifa Social</label>
+    </div><br>
+
+    <div class="form-group mb-3">
+      <label for="leituraInicial">Leitura Inicial (kWh)</label>
+      <input id="leituraInicial" type="number" formControlName="leitura_inicial" min="0" class="form-control" />
+    </div><br>
+
+    <div class="form-group mb-4">
+      <label for="leituraFinal">Leitura Final (kWh)</label>
+      <input id="leituraFinal" type="number" formControlName="leitura_final" min="0" class="form-control" />
+    </div><br>
+
+    <button type="submit" class="btn btn-primary" [disabled]="form.invalid">Adicionar Registro</button>
+    <button type="button" class="btn btn-secondary ms-2" (click)="irParaResultados()">Ver Resultados</button>
+  </form>
+
+  <h3>Registros Cadastrados</h3>
+  <table class="table table-bordered" *ngIf="registros.length > 0">
+    <thead>
+    <tr>
+      <th>Data</th>
+      <th>Estado</th>
+      <th>Bandeira</th>
+      <th>Tarifa Social</th>
+      <th>Leitura Inicial</th>
+      <th>Leitura Final</th>
+      <th>Ações</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let r of registros">
+      <td>{{ r.ano }}-{{ r.mes < 10 ? ('0' + r.mes) : r.mes }}</td>
+      <td>{{ getEstadoNome(r.estado) }}</td>
+      <td>{{ getBandeiraCor(r.bandeira) }}</td>
+      <td>{{ r.tarifa_social ? 'Sim' : 'Não' }}</td>
+      <td>{{ r.leitura_inicial }}</td>
+      <td>{{ r.leitura_final }}</td>
+      <td>
+        <button class="btn btn-sm btn-danger" (click)="removerRegistro(r.id)">Remover</button>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+
+  <div *ngIf="registros.length === 0" class="alert alert-info mt-3">
+    Nenhum registro cadastrado ainda.
+  </div>
+
+</div>

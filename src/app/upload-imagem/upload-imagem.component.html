@@ -1,0 +1,57 @@
+<h2>Upload de Imagem do Contador</h2>
+
+<input
+  type="file"
+  accept="image/*"
+  capture="environment"
+  (change)="onFileSelected($event)"
+/>
+
+<div *ngIf="textoOCR">
+  <h3>Texto extraído do OCR:</h3>
+  <pre>{{ textoOCR }}</pre>
+</div>
+
+<p *ngIf="valorExtraido !== null">Valor extraído: <strong>{{ valorExtraido }}</strong> kWh</p>
+
+<p *ngIf="valorCorrigido !== null">
+  <label>Corrija o valor se necessário:</label>
+  <input type="number" [(ngModel)]="valorCorrigido" />
+</p>
+
+<form (ngSubmit)="salvarLeitura()" #form="ngForm">
+  <label for="estado">Estado:</label>
+  <select id="estado" [(ngModel)]="estadoSelecionadoId" name="estado" required>
+    <option [value]="undefined" disabled selected>Selecione um estado</option>
+    <option *ngFor="let estado of estados" [value]="estado.id">{{ estado.nome }}</option>
+  </select>
+
+  <label for="bandeira">Bandeira:</label>
+  <select id="bandeira" [(ngModel)]="bandeiraSelecionadaId" name="bandeira" required>
+    <option [value]="undefined" disabled selected>Selecione uma bandeira</option>
+    <option *ngFor="let bandeira of bandeiras" [value]="bandeira.id">
+      {{ bandeira.cor }} - {{ bandeira.descricao }}
+    </option>
+  </select>
+
+  <label>
+    <input type="checkbox" [(ngModel)]="tarifaSocial" name="tarifaSocial" />
+    Tarifa Social
+  </label>
+
+  <button
+    type="submit"
+    [disabled]="
+      !valorCorrigido ||
+      !estadoSelecionadoId ||
+      !bandeiraSelecionadaId ||
+      !imagemSelecionada
+    "
+  >
+    Salvar Leitura
+  </button>
+</form>
+
+<div *ngIf="mensagem" style="color: red; margin-top: 10px;">
+  {{ mensagem }}
+</div>

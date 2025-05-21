@@ -1,4 +1,13 @@
-<div class="container">
-  <h2>Gráfico de Consumo Mensal</h2>
-  <canvas id="graficoContador"></canvas>
+<div class="card p-3">
+  <h1 style="text-align: center;">Monitoramento de Consumo/Contador Mensal</h1>
+
+  <div class="grafico-container">
+    <canvas id="graficoConsumo"></canvas>
+  </div>
+
+  <div class="botoes-acoes" style="text-align: left; margin-top: 20px;">
+    <button class="btn btn-secondary me-2" (click)="voltar()">Voltar</button>
+    <button class="btn btn-info" (click)="dica()">Dica</button>
+  </div>
 </div>
+

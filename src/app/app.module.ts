@@ -14,10 +14,17 @@ import { AppComponent } from './app.component';
 import { CalcularComponent } from './calcular/calcular.component';
 import { ResultadosComponent } from './resultados/resultados.component';
 import { MonitoramentoComponent } from './monitoramento/monitoramento.component';
+import {ConsumoMensalListarComponent} from './consumo-mensal-listar/consumo-mensal-listar.component';
+import {GraficoContadorComponent} from './grafico-contador/grafico-contador.component';
+import {ConsumoMensalCalcularComponent} from './consumo-mensal-calcular/consumo-mensal-calcular.component';
+import {UploadImagemComponent} from './upload-imagem/upload-imagem.component';
+import {ListaLeiturasComponent} from './lista-leituras/lista-leituras.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+
+
   ],
   imports: [
     BrowserModule,
@@ -29,6 +36,11 @@ import { MonitoramentoComponent } from './monitoramento/monitoramento.component'
     ResultadosComponent,
     CommonModule,
     MonitoramentoComponent,
+    ConsumoMensalCalcularComponent,
+    ConsumoMensalListarComponent,
+    GraficoContadorComponent,
+    UploadImagemComponent,
+    ListaLeiturasComponent,
     // Certifique-se de ter adicionado o ChartsModule aqui
   ],
   providers: [provideCharts(withDefaultRegisterables())],

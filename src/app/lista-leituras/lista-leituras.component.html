@@ -1,0 +1,43 @@
+<h2>Leituras Registradas com Consumo e Custo</h2>
+
+<table border="1" cellspacing="0" cellpadding="5">
+  <thead>
+  <tr>
+    <th>Data</th>
+    <th>Valor Extraído (kWh)</th>
+    <th>Valor Corrigido (kWh)</th>
+    <th>Consumo desde leitura anterior (kWh)</th>
+    <th>Custo Estimado (R$)</th>
+    <th>Estado</th>
+    <th>Tarifa (R$/kWh)</th>
+    <th>Bandeira</th>
+    <th>Tarifa Social</th>
+    <th>Imagem</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let leitura of leituras">
+    <td>{{ leitura.data_registro | date: 'dd/MM/yyyy HH:mm' }}</td>
+    <td>{{ leitura.valor_extraido }}</td>
+    <td>{{ leitura.valor_corrigido }}</td>
+    <td>
+      {{ leitura.consumo_entre_leituras !== null ? leitura.consumo_entre_leituras : 'N/A' }}
+    </td>
+    <td>
+      {{ leitura.custo_total !== null ? (leitura.custo_total | currency: 'BRL') : 'N/A' }}
+    </td>
+    <td>{{ leitura.estado.nome }}</td>
+    <td>{{ leitura.estado.tarifa_valor_kwh | currency: 'BRL' }}</td>
+    <td>{{ leitura.bandeira.cor }} - {{ leitura.bandeira.descricao }}</td>
+    <td>{{ leitura.tarifa_social ? 'Sim' : 'Não' }}</td>
+    <td>
+      <img
+        *ngIf="leitura.imagem_url"
+        [src]="leitura.imagem_url"
+        alt="Foto leitura"
+        width="120"
+      />
+    </td>
+  </tr>
+  </tbody>
+</table>

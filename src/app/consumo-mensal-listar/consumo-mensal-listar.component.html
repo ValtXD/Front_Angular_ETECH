@@ -1,0 +1,56 @@
+<div class="card p-3">
+  <h1>Resultados do Contador</h1>
+
+  <div class="mb-3 d-flex gap-3 align-items-center">
+    <label for="anoFiltro" class="form-label mb-0">Ano:</label>
+    <select id="anoFiltro" [(ngModel)]="anoSelecionado" (change)="onFiltroAlterado()" class="form-select" style="width: auto;">
+      <option [ngValue]="null">Todos</option>
+      <option *ngFor="let ano of anosDisponiveis" [value]="ano">{{ ano }}</option>
+    </select>
+
+    <label for="mesFiltro" class="form-label mb-0"> Mês:</label>
+    <select id="mesFiltro" [(ngModel)]="mesSelecionado" (change)="onFiltroAlterado()" class="form-select" style="width: auto;">
+      <option [ngValue]="null">Todos</option>
+      <option *ngFor="let mes of mesesDisponiveis" [value]="mes">{{ mes }}</option>
+    </select>
+  </div>
+
+  <table class="table table-striped" *ngIf="registros.length > 0">
+    <thead>
+    <tr>
+      <th>Ano</th>
+      <th>Mês</th>
+      <th>Estado</th>
+      <th>Bandeira</th>
+      <th class="text-right">Consumo (kWh)</th>
+      <th class="text-right">Consumo Anual (kWh)</th>
+      <th class="text-right">Total Pago (R$)</th>
+      <th class="text-right">Total Pago Anual (R$)</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let r of registros">
+      <td>{{ r.ano }}</td>
+      <td>{{ r.mes }}</td>
+      <td>{{ r.estado_nome }}</td>
+      <td>{{ r.bandeira_cor }}</td>
+      <td class="text-right">{{ r.consumo_kwh | number:'1.2-2' }}</td>
+      <td class="text-right">{{ calcularConsumoAnual(r) | number:'1.2-2' }}</td>
+      <td class="text-right">{{ r.total_pagar | number:'1.2-2' }}</td>
+      <td class="text-right">{{ (r.total_pagar * 12) | number:'1.2-2' }}</td>
+    </tr>
+    <tr class="font-weight-bold">
+      <td colspan="4" class="text-right">TOTAL:</td>
+      <td class="text-right">{{ consumoTotal | number:'1.2-2' }}</td>
+      <td class="text-right">{{ consumoAnualTotal | number:'1.2-2' }}</td>
+      <td class="text-right">{{ custoTotal | number:'1.2-2' }}</td>
+      <td class="text-right">{{ custoAnualTotal | number:'1.2-2' }}</td>
+    </tr>
+    </tbody>
+  </table>
+
+  <div class="mt-3 d-flex gap-2">
+    <button class="btn btn-primary" (click)="novo()">Novo Registro</button>
+    <button class="btn btn-info" (click)="irParaGrafico()">Gráfico</button>
+  </div>
+</div>

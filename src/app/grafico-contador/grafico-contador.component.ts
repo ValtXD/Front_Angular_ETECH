@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Chart, registerables } from 'chart.js';
+import { ContadorService } from '../services/contador.service';
+import { Chart, registerables, TooltipItem } from 'chart.js';
+import {Router} from '@angular/router';
 
 Chart.register(...registerables);
 
@@ -11,63 +12,112 @@ Chart.register(...registerables);
   styleUrls: ['./grafico-contador.component.css']
 })
 export class GraficoContadorComponent implements OnInit {
-  constructor(private http: HttpClient) {}
+  chart: Chart | undefined;
 
-  ngOnInit() {
-    this.http.get<any>('http://localhost:8000/api/monitoramento-contador/').subscribe(data => {
-      const ctx = document.getElementById('graficoContador') as HTMLCanvasElement;
-      new Chart(ctx, {
-        type: 'line',
-        data: {
-          labels: data.estados,
-          datasets: [
-            {
-              label: 'Consumo (kWh)',
-              data: data.consumos,
-              borderColor: 'blue',
-              backgroundColor: 'rgba(0, 0, 255, 0.1)',
-              tension: 0.3,
-              yAxisID: 'y'
-            },
-            {
-              label: 'Total Pago (R$)',
-              data: data.totais,
-              borderColor: 'green',
-              backgroundColor: 'rgba(0, 128, 0, 0.1)',
-              tension: 0.3,
-              yAxisID: 'y1'
-            }
-          ]
-        },
-        options: {
-          responsive: true,
-          interaction: {
-            mode: 'index',
-            intersect: false
+  constructor(private contadorService: ContadorService, private router: Router) {}
+
+  ngOnInit(): void {
+    this.contadorService.obterDadosGrafico().subscribe(data => {
+      this.criarGrafico(data.labels, data.consumos, data.custos);
+    });
+  }
+
+  criarGrafico(labels: string[], consumos: number[], custos: number[]): void {
+    const ctx = (document.getElementById('graficoConsumo') as HTMLCanvasElement).getContext('2d');
+    if (!ctx) return;
+
+    this.chart = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels,
+        datasets: [
+          {
+            label: 'Consumo (kWh)',
+            data: consumos,
+            borderColor: 'blue',
+            backgroundColor: 'rgba(0,0,255,0.1)',
+            fill: true,
+            tension: 0.3,
+            yAxisID: 'y1'
           },
-          scales: {
-            y: {
-              type: 'linear',
-              position: 'left',
-              title: {
-                display: true,
-                text: 'Consumo (kWh)'
-              }
-            },
-            y1: {
-              type: 'linear',
-              position: 'right',
-              title: {
-                display: true,
-                text: 'Total (R$)'
+          {
+            label: 'Custo (R$)',
+            data: custos,
+            borderColor: 'green',
+            backgroundColor: 'rgba(0,255,0,0.1)',
+            fill: true,
+            tension: 0.3,
+            yAxisID: 'y2'
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false, // deixa o CSS controlar o tamanho
+        interaction: {
+          mode: 'index',
+          intersect: false,
+        },
+        plugins: {
+          tooltip: {
+            enabled: true,
+            callbacks: {
+              label: (context: TooltipItem<'line'>) => {
+                const label = context.dataset.label || '';
+                const value = context.parsed.y !== null ? context.parsed.y : '';
+                return `${label}: ${value}`;
               },
-              grid: {
-                drawOnChartArea: false
+              footer: (tooltipItems) => {
+                if (tooltipItems.length > 1) {
+                  const idx = tooltipItems[0].dataIndex;
+                  return `Data: ${labels[idx]}`;
+                }
+                return '';
               }
+            }
+          },
+          legend: {
+            display: true
+          }
+        },
+        scales: {
+          y1: {
+            type: 'linear',
+            position: 'left',
+            beginAtZero: true,
+            title: {
+              display: true,
+              text: 'Consumo (kWh)'
+            }
+          },
+          y2: {
+            type: 'linear',
+            position: 'right',
+            beginAtZero: true,
+            grid: {
+              drawOnChartArea: false,
+            },
+            title: {
+              display: true,
+              text: 'Custo (R$)'
+            }
+          },
+          x: {
+            title: {
+              display: true,
+              text: 'Mês/Ano'
             }
           }
         }
-      });
+      }
     });
+  }
+
+  voltar() {
+    this.router.navigate(['/consumo-mensal-listar']);
+  }
+
+  dica() {
+    alert('Aqui vai aparecer a dica que você quer mostrar ao usuário.');
   }
 }

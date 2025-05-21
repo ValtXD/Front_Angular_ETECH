@@ -1,0 +1,13 @@
+.grafico-container {
+  width: 100%;
+  max-width: 900px;
+  height: 450px;
+  margin: 0 auto;
+}
+
+.botoes-acoes {
+  max-width: 900px;
+  margin-left: auto;
+  margin-right: auto;
+  /* text-align: left já aplicado inline no HTML, pode passar para aqui se preferir */
+}
