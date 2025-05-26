@@ -38,6 +38,9 @@ export const routes: Routes = [
 
       //Rotas de QrCode OCR Celular
       { path: 'leitura-qr', component: LeituraQrComponent },
+
+      //Rotas Login_Cadastro_Django
+
     ]
   },
   { path: '**', redirectTo: '' }

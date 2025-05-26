@@ -1,0 +1,239 @@
+app.module.ts (SEM CADASTRO/LOGIN)
+
+import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { HttpClientModule } from '@angular/common/http';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { AppRoutingModule } from './app-routing.module';
+import { CommonModule } from '@angular/common';
+
+// Importando os módulos do ng2-charts
+//import { NgChartsModule } from 'ng2-charts';
+import {provideCharts, withDefaultRegisterables} from 'ng2-charts';
+
+// Componentes
+import { AppComponent } from './app.component';
+import { CalcularComponent } from './calcular/calcular.component';
+import { ResultadosComponent } from './resultados/resultados.component';
+import { MonitoramentoComponent } from './monitoramento/monitoramento.component';
+import {ConsumoMensalListarComponent} from './consumo-mensal-listar/consumo-mensal-listar.component';
+import {GraficoContadorComponent} from './grafico-contador/grafico-contador.component';
+import {ConsumoMensalCalcularComponent} from './consumo-mensal-calcular/consumo-mensal-calcular.component';
+import {UploadImagemComponent} from './upload-imagem/upload-imagem.component';
+import {ListaLeiturasComponent} from './lista-leituras/lista-leituras.component';
+import {ZXingScannerModule} from '@zxing/ngx-scanner';
+import {NgxQRCodeModule} from '@techiediaries/ngx-qrcode';
+import {LeituraQrComponent} from './leitura-qr/leitura-qr.component';
+
+@NgModule({
+  declarations: [
+    AppComponent,
+
+
+  ],
+  imports: [
+    BrowserModule,
+    HttpClientModule,
+    ReactiveFormsModule,
+    FormsModule,
+    AppRoutingModule,
+    CalcularComponent,
+    ResultadosComponent,
+    CommonModule,
+    MonitoramentoComponent,
+    ConsumoMensalCalcularComponent,
+    ConsumoMensalListarComponent,
+    GraficoContadorComponent,
+    UploadImagemComponent,
+    ListaLeiturasComponent,
+    ZXingScannerModule,
+    NgxQRCodeModule,
+    LeituraQrComponent,
+    // Certifique-se de ter adicionado o ChartsModule aqui
+  ],
+  providers: [provideCharts(withDefaultRegisterables())],
+  bootstrap: [AppComponent]
+})
+export class AppModule { }
+------------------------------------
+app.routes.ts (SEM CADASTRO/LOGIN)
+
+import { Routes } from '@angular/router';
+
+import { LayoutComponent } from './layout/layout.component';
+import { HomeComponent } from './pages/home/home.component';
+
+import { CalcularComponent } from './calcular/calcular.component';
+import { ResultadosComponent } from './resultados/resultados.component';
+import { MonitoramentoComponent } from './monitoramento/monitoramento.component';
+import {ConsumoMensalListarComponent} from './consumo-mensal-listar/consumo-mensal-listar.component';
+import {GraficoContadorComponent} from './grafico-contador/grafico-contador.component';
+import {ConsumoMensalCalcularComponent} from './consumo-mensal-calcular/consumo-mensal-calcular.component';
+import {UploadImagemComponent} from './upload-imagem/upload-imagem.component';
+import {ListaLeiturasComponent} from './lista-leituras/lista-leituras.component';
+import {LeituraQrComponent} from './leitura-qr/leitura-qr.component';
+
+export const routes: Routes = [
+  {
+    path: '',
+    component: LayoutComponent,
+    children: [
+      { path: '', component: HomeComponent },
+
+      // Rotas originais dos aparelhos
+      { path: 'calcular', component: CalcularComponent },
+      { path: 'resultados', component: ResultadosComponent },
+      { path: 'monitoramento', component: MonitoramentoComponent },
+
+      // Rotas do contador de energia
+      { path: 'consumo-mensal-calcular', component: ConsumoMensalCalcularComponent },
+      { path: 'consumo-mensal-listar', component: ConsumoMensalListarComponent },
+      { path: 'grafico-contador', component: GraficoContadorComponent },
+
+      //Rotas de OCR
+      //{ path: '', redirectTo: 'upload', pathMatch: 'full' },
+      { path: 'upload', component: UploadImagemComponent },
+      { path: 'leituras', component: ListaLeiturasComponent },
+      //{ path: '**', redirectTo: 'upload' },
+
+      //Rotas de QrCode OCR Celular
+      { path: 'leitura-qr', component: LeituraQrComponent },
+
+      //Rotas Login_Cadastro_Django
+
+    ]
+  },
+  { path: '**', redirectTo: '' }
+];
+------------------------------------------------
+app.module.ts (COM CADASTRO/LOGIN)
+
+import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { HttpClientModule } from '@angular/common/http';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { AppRoutingModule } from './app-routing.module';
+import { CommonModule } from '@angular/common';
+
+// Importando os módulos do ng2-charts
+//import { NgChartsModule } from 'ng2-charts';
+import {provideCharts, withDefaultRegisterables} from 'ng2-charts';
+
+// Componentes
+import { AppComponent } from './app.component';
+import { CalcularComponent } from './calcular/calcular.component';
+import { ResultadosComponent } from './resultados/resultados.component';
+import { MonitoramentoComponent } from './monitoramento/monitoramento.component';
+import {ConsumoMensalListarComponent} from './consumo-mensal-listar/consumo-mensal-listar.component';
+import {GraficoContadorComponent} from './grafico-contador/grafico-contador.component';
+import {ConsumoMensalCalcularComponent} from './consumo-mensal-calcular/consumo-mensal-calcular.component';
+import {UploadImagemComponent} from './upload-imagem/upload-imagem.component';
+import {ListaLeiturasComponent} from './lista-leituras/lista-leituras.component';
+import {ZXingScannerModule} from '@zxing/ngx-scanner';
+import {NgxQRCodeModule} from '@techiediaries/ngx-qrcode';
+import {LeituraQrComponent} from './leitura-qr/leitura-qr.component';
+
+//Importando Login_Cadastro_Django
+import { LoginComponent } from './login/login.component';
+import { RegisterComponent } from './register/register.component';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { AuthInterceptor } from './services/auth.interceptor';
+
+@NgModule({
+  declarations: [
+    AppComponent,
+
+
+  ],
+  imports: [
+    BrowserModule,
+    HttpClientModule,
+    ReactiveFormsModule,
+    FormsModule,
+    AppRoutingModule,
+    CalcularComponent,
+    ResultadosComponent,
+    CommonModule,
+    MonitoramentoComponent,
+    ConsumoMensalCalcularComponent,
+    ConsumoMensalListarComponent,
+    GraficoContadorComponent,
+    UploadImagemComponent,
+    ListaLeiturasComponent,
+    ZXingScannerModule,
+    NgxQRCodeModule,
+    LeituraQrComponent,
+    LoginComponent,
+    RegisterComponent,
+
+    // Certifique-se de ter adicionado o ChartsModule aqui
+  ],
+  providers: [
+    provideCharts(withDefaultRegisterables()),
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true
+    }
+  ],
+  bootstrap: [AppComponent]
+})
+export class AppModule { }
+-----------------------------------------------------
+app.routes.ts (COM CADASTRO/LOGIN)
+
+import { Routes } from '@angular/router';
+
+import { LayoutComponent } from './layout/layout.component';
+import { HomeComponent } from './pages/home/home.component';
+
+import { CalcularComponent } from './calcular/calcular.component';
+import { ResultadosComponent } from './resultados/resultados.component';
+import { MonitoramentoComponent } from './monitoramento/monitoramento.component';
+import { ConsumoMensalListarComponent } from './consumo-mensal-listar/consumo-mensal-listar.component';
+import { GraficoContadorComponent } from './grafico-contador/grafico-contador.component';
+import { ConsumoMensalCalcularComponent } from './consumo-mensal-calcular/consumo-mensal-calcular.component';
+import { UploadImagemComponent } from './upload-imagem/upload-imagem.component';
+import { ListaLeiturasComponent } from './lista-leituras/lista-leituras.component';
+import { LeituraQrComponent } from './leitura-qr/leitura-qr.component';
+
+import { LoginComponent } from './login/login.component';
+import { RegisterComponent } from './register/register.component';
+
+import { AuthGuard } from './services/auth.guard';
+
+export const routes: Routes = [
+  {
+    path: '',
+    component: LayoutComponent,
+    children: [
+      { path: '', component: HomeComponent, canActivate: [AuthGuard] },
+
+      // Rotas dos aparelhos (protegidas)
+      { path: 'calcular', component: CalcularComponent, canActivate: [AuthGuard] },
+      { path: 'resultados', component: ResultadosComponent, canActivate: [AuthGuard] },
+      { path: 'monitoramento', component: MonitoramentoComponent, canActivate: [AuthGuard] },
+
+      // Rotas do contador de energia (protegidas)
+      { path: 'consumo-mensal-calcular', component: ConsumoMensalCalcularComponent, canActivate: [AuthGuard] },
+      { path: 'consumo-mensal-listar', component: ConsumoMensalListarComponent, canActivate: [AuthGuard] },
+      { path: 'grafico-contador', component: GraficoContadorComponent, canActivate: [AuthGuard] },
+
+      // Rotas de OCR (protegidas)
+      { path: 'upload', component: UploadImagemComponent, canActivate: [AuthGuard] },
+      { path: 'leituras', component: ListaLeiturasComponent, canActivate: [AuthGuard] },
+
+      // Rotas de QrCode OCR Celular (protegidas)
+      { path: 'leitura-qr', component: LeituraQrComponent, canActivate: [AuthGuard] },
+    ]
+  },
+
+  // Rotas públicas (não protegidas)
+  { path: 'login', component: LoginComponent },
+  { path: 'register', component: RegisterComponent},
+
+  // Redirecionamento padrão
+  { path: '**', redirectTo: 'login' }
+];
+
+
