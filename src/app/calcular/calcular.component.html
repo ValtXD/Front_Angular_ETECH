@@ -1,82 +1,103 @@
 <div class="card">
-  <h1>Registro de Aparelhos</h1>
+  <h2>{{ editandoId ? 'Editar Aparelho' : 'Cadastrar Aparelho' }}</h2>
+  <form [formGroup]="aparelhoForm" (ngSubmit)="onSubmit()">
+    <div>
+      <label>Data:</label>
+      <input type="date" formControlName="data_cadastro" class="form-control" />
+    </div><br>
 
-<form [formGroup]="aparelhoForm" (ngSubmit)="onSubmit()" class="mb-4">
-  <div class="form-group mb-2">
-    <label>Data de Cadastro</label>
-    <input type="date" class="form-control" formControlName="data_cadastro">
+    <div>
+      <label>Ambiente:</label>
+      <select formControlName="ambiente" class="form-control">
+        <option *ngFor="let amb of ambientes" [value]="amb.id">{{ amb.nome }}</option>
+      </select>
+    </div><br>
+
+    <div>
+      <label>Estado:</label>
+      <select formControlName="estado" class="form-control">
+        <option *ngFor="let est of estados" [value]="est.id">{{ est.nome }}</option>
+      </select>
+    </div><br>
+
+    <div>
+      <label>Bandeira:</label>
+      <select formControlName="bandeira" class="form-control">
+        <option *ngFor="let ban of bandeiras" [value]="ban.id">{{ ban.cor }}</option>
+      </select>
+    </div><br>
+
+    <div>
+      <label>Nome:</label>
+      <input type="text" formControlName="nome" class="form-control" />
+    </div><br>
+
+    <div>
+      <label>Potência (W):</label>
+      <input type="number" formControlName="potencia_watts" class="form-control" />
+    </div><br>
+
+    <div>
+      <label>Tempo uso diário (h):</label>
+      <input type="number" formControlName="tempo_uso_diario_horas" class="form-control" />
+    </div><br>
+
+    <div>
+      <label>Quantidade:</label>
+      <input type="number" formControlName="quantidade" class="form-control" />
+    </div><br>
+
+    <div class="mt-3">
+      <button class="btn btn-primary" type="submit">{{ editandoId ? 'Salvar Edição' : 'Cadastrar' }}</button>
+      <button class="btn btn-secondary" type="button" (click)="irParaResultados()">Ver Resultados</button>
+    </div>
+  </form>
+</div>
+
+<div class="card">
+  <h3>Filtros</h3>
+  <div>
+    <label>Buscar por nome:</label>
+    <input [(ngModel)]="filtros.nome" class="form-control" placeholder="Ex: Geladeira" />
   </div>
 
-  <div class="form-group mb-2">
-    <label>Ambiente</label>
-    <select class="form-control" formControlName="ambiente">
-      <option *ngFor="let ambiente of ambientes" [value]="ambiente?.id">{{ ambiente?.nome }}</option>
-    </select>
+  <div class="mt-2">
+    <label>Filtrar por data:</label>
+    <input type="date" [(ngModel)]="filtros.data" class="form-control" />
   </div>
+</div>
 
-  <div class="form-group mb-2">
-    <label>Estado</label>
-    <select class="form-control" formControlName="estado">
-      <option *ngFor="let estado of estados" [value]="estado?.id">{{ estado?.nome }}</option>
-    </select>
-  </div>
-
-  <div class="form-group mb-2">
-    <label>Bandeira</label>
-    <select class="form-control" formControlName="bandeira">
-      <option *ngFor="let bandeira of bandeiras" [value]="bandeira?.id">{{ bandeira?.cor }}</option>
-    </select>
-  </div>
-
-  <div class="form-group mb-2">
-    <label>Nome do Aparelho</label>
-    <input type="text" class="form-control" formControlName="nome">
-  </div>
-
-  <div class="form-group mb-2">
-    <label>Potência (W)</label>
-    <input type="number" class="form-control" formControlName="potencia_watts">
-  </div>
-
-  <div class="form-group mb-2">
-    <label>Tempo de uso diário (horas)</label>
-    <input type="number" class="form-control" formControlName="tempo_uso_diario_horas">
-  </div>
-
-  <div class="form-group mb-3">
-    <label>Quantidade</label>
-    <input type="number" class="form-control" formControlName="quantidade">
-  </div>
-
-  <button type="submit" class="btn btn-success">Adicionar Aparelho</button>
-  <button type="button" class="btn btn-primary ml-3" (click)="irParaResultados()">Ver Resultados</button>
-</form>
-
-<section *ngIf="aparelhos.length > 0" class="aparelhos-lista mt-4">
-  <h5>Aparelhos Cadastrados</h5>
-  <table class="table table-bordered table-striped">
-    <thead class="table-dark">
+<div class="card">
+  <h2>Aparelhos Registrados</h2>
+  <table>
+    <thead>
     <tr>
       <th>Nome</th>
-      <th>Potência (W)</th>
-      <th>Tempo (h/dia)</th>
-      <th>Qtd</th>
       <th>Data</th>
+      <th>Ambiente</th>
+      <th>Estado</th>
+      <th>Bandeira</th>
+      <th>Potência (W)</th>
+      <th>Uso Diário (h)</th>
+      <th>Qtd</th>
       <th>Ações</th>
     </tr>
     </thead>
     <tbody>
-    <tr *ngFor="let ap of aparelhos">
-      <td>{{ ap.nome }}</td>
-      <td>{{ ap.potencia_watts }}</td>
-      <td>{{ ap.tempo_uso_diario_horas }}</td>
-      <td>{{ ap.quantidade }}</td>
-      <td>{{ ap.data_cadastro | date: 'dd/MM/yyyy' }}</td>
+    <tr *ngFor="let a of aparelhosFiltrados">
+      <td>{{ a.nome }}</td>
+      <td>{{ a.data_cadastro }}</td>
+      <td>{{ a.ambiente.nome }}</td>
+      <td>{{ a.estado.nome }}</td>
+      <td>{{ a.bandeira.cor }}</td>
+      <td>{{ a.potencia_watts }}</td>
+      <td>{{ a.tempo_uso_diario_horas }}</td>
+      <td>{{ a.quantidade }}</td>
       <td>
-        <button (click)="remover(ap.id)" class="btn btn-sm btn-danger">Remover</button>
+        <button class="btn btn-sm btn-primary" (click)="editar(a)">Editar</button>
+        <button class="btn btn-sm btn-danger" (click)="remover(a.id)">Remover</button>
       </td>
     </tr>
     </tbody>
   </table>
-</section>
 </div>

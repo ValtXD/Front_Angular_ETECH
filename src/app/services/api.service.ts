@@ -27,6 +27,10 @@ export class ApiService {
     return this.http.get<Bandeira[]>(`${this.baseUrl}/bandeiras/`);
   }
 
+  atualizarAparelho(id: number, payload: any): Observable<any> {
+    return this.http.put(`${this.baseUrl}/aparelhos/${id}/`, payload);
+  }
+
   getAparelhos(data?: string): Observable<Aparelho[]> {
     let params = new HttpParams();
     if (data) params = params.set('data', data);
@@ -46,6 +50,31 @@ export class ApiService {
     let params = new HttpParams();
     if (data) params = params.set('data', data);
     return this.http.get<any>(`${this.baseUrl}/resultados/`, { params });
+  }
+
+  gerarDicaIA(mensagem: string): Observable<any> {
+    const url = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=AIzaSyClP7PDzQR6AYg1hH7RZoNiZ-reoiQrNrs';
+
+    const body = {
+      contents: [{
+        parts: [{ text: mensagem }]
+      }],
+      generationConfig: {
+        temperature: 0.7,
+        candidateCount: 1,
+        maxOutputTokens: 2048
+      },
+      safetySettings: [
+        {
+          category: "HARM_CATEGORY_DANGEROUS_CONTENT",
+          threshold: "BLOCK_ONLY_HIGH"
+        }
+      ]
+    };
+
+    return this.http.post(url, body, {
+      headers: { 'Content-Type': 'application/json' }
+    });
   }
 
   getMonitoramento(params?: any) {

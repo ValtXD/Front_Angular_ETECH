@@ -1,3 +1,4 @@
+// calcular.component.ts
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ApiService } from '../services/api.service';
@@ -27,6 +28,8 @@ export class CalcularComponent implements OnInit {
   estados: Estado[] = [];
   bandeiras: Bandeira[] = [];
   aparelhos: Aparelho[] = [];
+  editandoId: number | null = null;
+  filtros = { nome: '', data: '' };
 
   constructor(
     private api: ApiService,
@@ -56,12 +59,43 @@ export class CalcularComponent implements OnInit {
     this.api.getAparelhos().subscribe(data => this.aparelhos = data);
   }
 
+  get aparelhosFiltrados() {
+    return this.aparelhos.filter(a => {
+      const nomeOk = this.filtros.nome === '' || a.nome.toLowerCase().includes(this.filtros.nome.toLowerCase());
+      const dataOk = this.filtros.data === '' || a.data_cadastro === this.filtros.data;
+      return nomeOk && dataOk;
+    });
+  }
+
+  editar(aparelho: Aparelho) {
+    const confirmar = window.confirm(`Deseja editar o aparelho "${aparelho.nome}"?`);
+    if (!confirmar) return;
+
+    this.editandoId = aparelho.id;
+    this.aparelhoForm.patchValue({
+      data_cadastro: aparelho.data_cadastro,
+      ambiente: aparelho.ambiente.id,
+      estado: aparelho.estado.id,
+      bandeira: aparelho.bandeira.id,
+      nome: aparelho.nome,
+      potencia_watts: aparelho.potencia_watts,
+      tempo_uso_diario_horas: aparelho.tempo_uso_diario_horas,
+      quantidade: aparelho.quantidade,
+    });
+  }
+
+
+  remover(id: number) {
+    const confirmar = window.confirm('Tem certeza que deseja remover este aparelho?');
+    if (!confirmar) return;
+
+    this.api.removerAparelho(id).subscribe(() => this.carregarAparelhos());
+  }
+
   onSubmit() {
     if (this.aparelhoForm.invalid) return;
 
     const formValue = this.aparelhoForm.value;
-
-    // Ajuste: enviar campos com sufixo _id conforme backend espera
     const payload = {
       data_cadastro: formValue.data_cadastro,
       ambiente_id: Number(formValue.ambiente),
@@ -73,24 +107,20 @@ export class CalcularComponent implements OnInit {
       quantidade: formValue.quantidade,
     };
 
-    console.log('Payload corrigido:', payload);
-
-    this.api.criarAparelho(payload).subscribe({
-      next: () => {
-        this.carregarAparelhos();
+    if (this.editandoId) {
+      this.api.atualizarAparelho(this.editandoId, payload).subscribe(() => {
+        this.editandoId = null;
         this.aparelhoForm.reset({ quantidade: 1, data_cadastro: new Date().toISOString().slice(0, 10) });
-      },
-      error: (err) => {
-        console.error('Erro ao criar aparelho', err);
-        if (err.error) {
-          console.error('Detalhes do erro:', err.error);
-        }
-      }
-    });
-  }
-
-  remover(id: number) {
-    this.api.removerAparelho(id).subscribe(() => this.carregarAparelhos());
+        this.carregarAparelhos();
+        alert('Edição salva com sucesso!');
+      });
+    } else {
+      this.api.criarAparelho(payload).subscribe(() => {
+        this.aparelhoForm.reset({ quantidade: 1, data_cadastro: new Date().toISOString().slice(0, 10) });
+        this.carregarAparelhos();
+        alert('Cadastro feito com sucesso!');
+      });
+    }
   }
 
   irParaResultados() {

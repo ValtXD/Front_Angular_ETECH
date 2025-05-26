@@ -1,57 +1,93 @@
 <h2>Upload de Imagem do Contador</h2>
 
-<input
-  type="file"
-  accept="image/*"
-  capture="environment"
-  (change)="onFileSelected($event)"
-/>
+<div style="text-align: center; margin-bottom: 20px;">
+  <img src="qrcode.png" alt="QR Code" style="width: 180px; height: 180px;" />
+  <p>Escaneie este QR Code para dispositivos móveis para abrir a página.</p>
+</div>
 
-<div *ngIf="textoOCR">
-  <h3>Texto extraído do OCR:</h3>
+<div style="margin-bottom: 20px;">
+  <input type="file" accept="image/*" capture="environment" (change)="onFileSelected($event)" />
+</div>
+
+<div *ngIf="imagemPreviewUrl" style="margin-bottom: 20px; text-align:center;">
+  <img [src]="imagemPreviewUrl" alt="Preview da Imagem" style="max-width: 100%; max-height: 300px; border-radius: 6px; box-shadow: 0 0 8px rgba(0,0,0,0.2);" />
+</div>
+
+<div style="margin-bottom: 20px;">
+  <button (click)="processarOCR()" [disabled]="!imagemSelecionada" class="btn btn-secondary">
+    Processar OCR
+  </button>
+</div>
+
+<div *ngIf="mensagem" style="color: red; margin-bottom: 15px;">
+  {{ mensagem }}
+</div>
+
+<div *ngIf="textoOCR" style="margin-bottom: 20px;">
+  <h4>Texto extraído do OCR:</h4>
   <pre>{{ textoOCR }}</pre>
 </div>
 
-<p *ngIf="valorExtraido !== null">Valor extraído: <strong>{{ valorExtraido }}</strong> kWh</p>
-
-<p *ngIf="valorCorrigido !== null">
-  <label>Corrija o valor se necessário:</label>
-  <input type="number" [(ngModel)]="valorCorrigido" />
+<p *ngIf="valorExtraido !== null" style="margin-bottom: 20px;">
+  Valor extraído: <strong>{{ valorExtraido }}</strong> kWh
 </p>
 
-<form (ngSubmit)="salvarLeitura()" #form="ngForm">
-  <label for="estado">Estado:</label>
-  <select id="estado" [(ngModel)]="estadoSelecionadoId" name="estado" required>
-    <option [value]="undefined" disabled selected>Selecione um estado</option>
-    <option *ngFor="let estado of estados" [value]="estado.id">{{ estado.nome }}</option>
-  </select>
+<div *ngIf="podeMostrarBotaoSalvar" style="margin-bottom: 20px;">
+  <label>Corrija o valor se necessário:</label>
+  <input type="number" [(ngModel)]="valorCorrigido" />
+</div>
 
-  <label for="bandeira">Bandeira:</label>
-  <select id="bandeira" [(ngModel)]="bandeiraSelecionadaId" name="bandeira" required>
-    <option [value]="undefined" disabled selected>Selecione uma bandeira</option>
-    <option *ngFor="let bandeira of bandeiras" [value]="bandeira.id">
-      {{ bandeira.cor }} - {{ bandeira.descricao }}
-    </option>
-  </select>
+<form (ngSubmit)="salvarLeitura()" #form="ngForm" style="max-width: 400px; margin: auto;">
+  <div style="margin-bottom: 10px;">
+    <label for="estado">Estado:</label>
+    <select
+      id="estado"
+      [ngModel]="estadoSelecionadoId"
+      (ngModelChange)="estadoSelecionadoId = $event === '' ? null : +$event"
+      name="estado"
+      required
+      style="width: 100%; padding: 5px;"
+    >
+      <option value="" disabled selected>Selecione um estado</option>
+      <option *ngFor="let estado of estados" [value]="estado.id">{{ estado.nome }}</option>
+    </select>
+  </div>
 
-  <label>
-    <input type="checkbox" [(ngModel)]="tarifaSocial" name="tarifaSocial" />
-    Tarifa Social
-  </label>
+  <div style="margin-bottom: 10px;">
+    <label for="bandeira">Bandeira:</label>
+    <select
+      id="bandeira"
+      [ngModel]="bandeiraSelecionadaId"
+      (ngModelChange)="bandeiraSelecionadaId = $event === '' ? null : +$event"
+      name="bandeira"
+      required
+      style="width: 100%; padding: 5px;"
+    >
+      <option value="" disabled selected>Selecione uma bandeira</option>
+      <option *ngFor="let bandeira of bandeiras" [value]="bandeira.id">
+        {{ bandeira.cor }} - {{ bandeira.descricao }}
+      </option>
+    </select>
+  </div>
+
+  <div style="margin-bottom: 20px;">
+    <label>
+      <input type="checkbox" [(ngModel)]="tarifaSocial" name="tarifaSocial" />
+      Tarifa Social
+    </label>
+  </div>
 
   <button
     type="submit"
-    [disabled]="
-      !valorCorrigido ||
-      !estadoSelecionadoId ||
-      !bandeiraSelecionadaId ||
-      !imagemSelecionada
-    "
+    *ngIf="podeMostrarBotaoSalvar"
+    [disabled]="!podeSalvar"
+    class="btn btn-success"
+    style="width: 100%;"
   >
     Salvar Leitura
   </button>
 </form>
 
-<div *ngIf="mensagem" style="color: red; margin-top: 10px;">
-  {{ mensagem }}
+<div style="text-align: center; margin-top: 20px;">
+  <button (click)="irParaLeituras()" class="btn btn-info">Ir para Lista de Leituras</button>
 </div>

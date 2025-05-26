@@ -1,16 +1,16 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { ContadorService, ConsumoMensal } from '../services/contador.service';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import {Estado} from '../models/estado';
-import {Bandeira} from '../models/bandeira';
+import { Estado } from '../models/estado';
+import { Bandeira } from '../models/bandeira';
 
 @Component({
   selector: 'app-consumo-mensal-calcular',
   templateUrl: './consumo-mensal-calcular.component.html',
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule],
+  imports: [ReactiveFormsModule, CommonModule, FormsModule],
   styleUrls: ['./consumo-mensal-calcular.component.css']
 })
 export class ConsumoMensalCalcularComponent implements OnInit {
@@ -18,6 +18,8 @@ export class ConsumoMensalCalcularComponent implements OnInit {
   estados: any[] = [];
   bandeiras: any[] = [];
   registros: ConsumoMensal[] = [];
+  filtroMesAno: string = '';
+  editandoId: number | null = null;
 
   constructor(
     private fb: FormBuilder,
@@ -64,6 +66,26 @@ export class ConsumoMensalCalcularComponent implements OnInit {
     });
   }
 
+  get registrosFiltrados(): ConsumoMensal[] {
+    if (!this.filtroMesAno) return this.registros;
+    const [ano, mes] = this.filtroMesAno.split('-').map(Number);
+    return this.registros.filter(r => r.ano === ano && r.mes === mes);
+  }
+
+  editarRegistro(registro: ConsumoMensal) {
+    if (!confirm('Deseja editar este registro?')) return;
+    this.editandoId = registro.id;
+    const dataStr = `${registro.ano}-${registro.mes.toString().padStart(2, '0')}`;
+    this.form.patchValue({
+      data: dataStr,
+      estado: typeof registro.estado === 'object' ? registro.estado.id : registro.estado,
+      bandeira: typeof registro.bandeira === 'object' ? registro.bandeira.id : registro.bandeira,
+      tarifa_social: registro.tarifa_social,
+      leitura_inicial: registro.leitura_inicial,
+      leitura_final: registro.leitura_final
+    });
+  }
+
   onSubmit() {
     if (this.form.invalid) return;
 
@@ -72,12 +94,12 @@ export class ConsumoMensalCalcularComponent implements OnInit {
       return;
     }
 
-    // Monta string 'data' para backend: 'YYYY-MM-01'
-    const data = this.form.value.data; // 'YYYY-MM'
-    const dataCompleta = data + '-01';
+    const data = this.form.value.data;
+    const [ano, mes] = data.split('-').map(Number);
 
     const payload = {
-      data: dataCompleta,
+      ano,
+      mes,
       estado: this.form.value.estado,
       bandeira: this.form.value.bandeira,
       tarifa_social: this.form.value.tarifa_social,
@@ -85,17 +107,32 @@ export class ConsumoMensalCalcularComponent implements OnInit {
       leitura_final: Number(this.form.value.leitura_final)
     };
 
-    this.contadorService.calcularConsumo(payload).subscribe({
-      next: registroSalvo => {
-        alert('Registro salvo com sucesso!');
-        this.form.reset({ tarifa_social: false });
-        this.registros.unshift(registroSalvo);
-      },
-      error: err => {
-        alert('Erro ao salvar registro: ' + JSON.stringify(err.error));
-        console.error(err);
-      }
-    });
+    if (this.editandoId) {
+      this.contadorService.atualizar(this.editandoId, payload).subscribe({
+        next: registroAtualizado => {
+          alert('Registro atualizado com sucesso!');
+          this.editandoId = null;
+          this.form.reset({ tarifa_social: false });
+          this.carregarRegistros();
+        },
+        error: err => {
+          alert('Erro ao atualizar registro: ' + JSON.stringify(err.error));
+          console.error(err);
+        }
+      });
+    } else {
+      this.contadorService.criar(payload).subscribe({
+        next: registroSalvo => {
+          alert('Registro salvo com sucesso!');
+          this.form.reset({ tarifa_social: false });
+          this.registros.unshift(registroSalvo);
+        },
+        error: err => {
+          alert('Erro ao salvar registro: ' + JSON.stringify(err.error));
+          console.error(err);
+        }
+      });
+    }
   }
 
   removerRegistro(id: number) {

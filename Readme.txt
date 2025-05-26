@@ -28,3 +28,16 @@ gráfico-contador
 
 >Services:
 contador.service
+-------------------------------
+Tela OCR
+>Components:
+upload-imagem
+lista-leituras
+
+>Services:
+ocr-contador.service
+-------------------------------
+Tela OCR Celular
+>Components:
+
+>Services:

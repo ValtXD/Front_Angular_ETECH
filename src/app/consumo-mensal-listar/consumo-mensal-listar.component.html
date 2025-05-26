@@ -52,5 +52,16 @@
   <div class="mt-3 d-flex gap-2">
     <button class="btn btn-primary" (click)="novo()">Novo Registro</button>
     <button class="btn btn-info" (click)="irParaGrafico()">Gráfico</button>
+    <button class="btn btn-warning" (click)="gerarDica()" [disabled]="carregandoDica">
+      {{ carregandoDica ? 'Gerando dica...' : 'Gerar Dica' }}
+    </button>
+  </div>
+
+  <div *ngIf="modalAberto" class="modal-fundo">
+    <div class="modal-conteudo">
+      <h3>Dica de Economia de Energia</h3>
+      <pre style="white-space: pre-wrap;">{{ dicaIA }}</pre>
+      <button class="btn btn-secondary" (click)="fecharModal()">Fechar</button>
+    </div>
   </div>
 </div>

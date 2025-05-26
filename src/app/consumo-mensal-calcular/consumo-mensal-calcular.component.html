@@ -1,79 +1,95 @@
-<div class="card p-3">
+<!-- Card: Formulário -->
+<div class="card">
+  <h2 class="card-header">{{ editandoId ? 'Editar Consumo' : 'Cadastrar Consumo' }}</h2>
+  <div class="card-body">
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <div>
+        <label>Data (Mês/Ano):</label>
+        <input type="month" formControlName="data" class="form-control" />
+      </div><br>
 
-  <h2>Registrar Consumo/Contador Mensal</h2>
+      <div>
+        <label>Estado:</label>
+        <select formControlName="estado" class="form-control">
+          <option *ngFor="let est of estados" [value]="est.id">{{ est.nome }}</option>
+        </select>
+      </div><br>
 
-  <form [formGroup]="form" (ngSubmit)="onSubmit()" class="mb-4">
+      <div>
+        <label>Bandeira:</label>
+        <select formControlName="bandeira" class="form-control">
+          <option *ngFor="let ban of bandeiras" [value]="ban.id">{{ ban.cor }}</option>
+        </select>
+      </div><br>
 
-    <div class="form-group mb-3">
-      <label for="data">Data (Mês/Ano)</label>
-      <input id="data" type="month" formControlName="data" class="form-control" />
-    </div><br>
+      <div class="form-check mb-3">
+        <input type="checkbox" id="tarifaSocial" formControlName="tarifa_social" class="form-check-input" />
+        <label for="tarifaSocial" class="form-check-label">Tarifa Social</label>
+      </div><br>
 
-    <div class="form-group mb-3">
-      <label for="estado">Estado</label>
-      <select id="estado" formControlName="estado" class="form-control">
-        <option value="" disabled>Selecione o estado</option>
-        <option *ngFor="let estado of estados" [value]="estado.id">{{ estado.nome }}</option>
-      </select>
-    </div><br>
+      <div>
+        <label>Leitura Inicial (kWh):</label>
+        <input type="number" formControlName="leitura_inicial" class="form-control" />
+      </div><br>
 
-    <div class="form-group mb-3">
-      <label for="bandeira">Bandeira Tarifária</label>
-      <select id="bandeira" formControlName="bandeira" class="form-control">
-        <option value="" disabled>Selecione a bandeira</option>
-        <option *ngFor="let bandeira of bandeiras" [value]="bandeira.id">{{ bandeira.cor }}</option>
-      </select>
-    </div><br>
+      <div>
+        <label>Leitura Final (kWh):</label>
+        <input type="number" formControlName="leitura_final" class="form-control" />
+      </div><br>
 
-    <div class="form-check mb-3">
-      <input type="checkbox" id="tarifaSocial" formControlName="tarifa_social" class="form-check-input" />
-      <label for="tarifaSocial" class="form-check-label">Tarifa Social</label>
-    </div><br>
-
-    <div class="form-group mb-3">
-      <label for="leituraInicial">Leitura Inicial (kWh)</label>
-      <input id="leituraInicial" type="number" formControlName="leitura_inicial" min="0" class="form-control" />
-    </div><br>
-
-    <div class="form-group mb-4">
-      <label for="leituraFinal">Leitura Final (kWh)</label>
-      <input id="leituraFinal" type="number" formControlName="leitura_final" min="0" class="form-control" />
-    </div><br>
-
-    <button type="submit" class="btn btn-primary" [disabled]="form.invalid">Adicionar Registro</button>
-    <button type="button" class="btn btn-secondary ms-2" (click)="irParaResultados()">Ver Resultados</button>
-  </form>
-
-  <h3>Registros Cadastrados</h3>
-  <table class="table table-bordered" *ngIf="registros.length > 0">
-    <thead>
-    <tr>
-      <th>Data</th>
-      <th>Estado</th>
-      <th>Bandeira</th>
-      <th>Tarifa Social</th>
-      <th>Leitura Inicial</th>
-      <th>Leitura Final</th>
-      <th>Ações</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr *ngFor="let r of registros">
-      <td>{{ r.ano }}-{{ r.mes < 10 ? ('0' + r.mes) : r.mes }}</td>
-      <td>{{ getEstadoNome(r.estado) }}</td>
-      <td>{{ getBandeiraCor(r.bandeira) }}</td>
-      <td>{{ r.tarifa_social ? 'Sim' : 'Não' }}</td>
-      <td>{{ r.leitura_inicial }}</td>
-      <td>{{ r.leitura_final }}</td>
-      <td>
-        <button class="btn btn-sm btn-danger" (click)="removerRegistro(r.id)">Remover</button>
-      </td>
-    </tr>
-    </tbody>
-  </table>
-
-  <div *ngIf="registros.length === 0" class="alert alert-info mt-3">
-    Nenhum registro cadastrado ainda.
+      <div class="mt-3">
+        <button class="btn btn-primary" type="submit">
+          {{ editandoId ? 'Salvar Edição' : 'Cadastrar' }}
+        </button>
+        <button class="btn btn-secondary ms-2" type="button" (click)="irParaResultados()">Ver Resultados</button>
+      </div>
+    </form>
   </div>
+</div>
 
+<!-- Card: Filtros -->
+<div class="card mt-4">
+  <h3 class="card-header">Filtros</h3>
+  <div class="card-body">
+    <label>Filtrar por mês/ano:</label>
+    <input type="month" [(ngModel)]="filtroMesAno" class="form-control" />
+  </div>
+</div>
+
+<!-- Card: Registros -->
+<div class="card mt-4">
+  <h2 class="card-header">Registros Cadastrados</h2>
+  <div class="card-body">
+    <table class="table table-bordered table-striped" *ngIf="registrosFiltrados.length > 0">
+      <thead>
+      <tr>
+        <th>Data</th>
+        <th>Estado</th>
+        <th>Bandeira</th>
+        <th>Tarifa Social</th>
+        <th>Leitura Inicial</th>
+        <th>Leitura Final</th>
+        <th>Ações</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let r of registrosFiltrados">
+        <td>{{ r.ano }}-{{ r.mes < 10 ? ('0' + r.mes) : r.mes }}</td>
+        <td>{{ getEstadoNome(r.estado) }}</td>
+        <td>{{ getBandeiraCor(r.bandeira) }}</td>
+        <td>{{ r.tarifa_social ? 'Sim' : 'Não' }}</td>
+        <td>{{ r.leitura_inicial }}</td>
+        <td>{{ r.leitura_final }}</td>
+        <td>
+          <button class="btn btn-sm btn-primary me-2" (click)="editarRegistro(r)">Editar</button>
+          <button class="btn btn-sm btn-danger" (click)="removerRegistro(r.id)">Remover</button>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+
+    <div *ngIf="registrosFiltrados.length === 0" class="alert alert-info">
+      Nenhum registro encontrado para o filtro selecionado.
+    </div>
+  </div>
 </div>

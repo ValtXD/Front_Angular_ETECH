@@ -19,6 +19,9 @@ import {GraficoContadorComponent} from './grafico-contador/grafico-contador.comp
 import {ConsumoMensalCalcularComponent} from './consumo-mensal-calcular/consumo-mensal-calcular.component';
 import {UploadImagemComponent} from './upload-imagem/upload-imagem.component';
 import {ListaLeiturasComponent} from './lista-leituras/lista-leituras.component';
+import {ZXingScannerModule} from '@zxing/ngx-scanner';
+import {NgxQRCodeModule} from '@techiediaries/ngx-qrcode';
+import {LeituraQrComponent} from './leitura-qr/leitura-qr.component';
 
 @NgModule({
   declarations: [
@@ -41,6 +44,9 @@ import {ListaLeiturasComponent} from './lista-leituras/lista-leituras.component'
     GraficoContadorComponent,
     UploadImagemComponent,
     ListaLeiturasComponent,
+    ZXingScannerModule,
+    NgxQRCodeModule,
+    LeituraQrComponent,
     // Certifique-se de ter adicionado o ChartsModule aqui
   ],
   providers: [provideCharts(withDefaultRegisterables())],

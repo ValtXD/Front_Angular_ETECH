@@ -31,7 +31,7 @@ export interface ConsumoMensal {
 }
 
 interface ResultadoConsumoResponse {
-  registros: any[];          // ideal definir uma interface detalhada para registro, ex: ConsumoMensal
+  registros: ConsumoMensal[];
   consumo_total: number;
   custo_total: number;
   consumo_anual_estimado?: number;
@@ -44,7 +44,8 @@ interface ResultadoConsumoResponse {
 export class ContadorService {
   private baseUrl = 'http://localhost:8000/api';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {
+  }
 
   getEstados(): Observable<Estado[]> {
     return this.http.get<Estado[]>(`${this.baseUrl}/estados/`);
@@ -54,7 +55,7 @@ export class ContadorService {
     return this.http.get<Bandeira[]>(`${this.baseUrl}/bandeiras/`);
   }
 
-  calcularConsumo(data: any): Observable<ConsumoMensal> {
+  criar(data: any): Observable<ConsumoMensal> {
     return this.http.post<ConsumoMensal>(`${this.baseUrl}/consumo-mensal/`, data);
   }
 
@@ -75,15 +76,59 @@ export class ContadorService {
   }
 
   deletar(id: number): Observable<any> {
-    return this.http.post(`${this.baseUrl}/deletar-consumo-mensal/${id}/`, {});
+    return this.http.delete(`${this.baseUrl}/consumo-mensal/${id}/`);
   }
 
   obterDadosGrafico(): Observable<{ labels: string[], consumos: number[], custos: number[] }> {
-    return this.http.get<{ labels: string[], consumos: number[], custos: number[] }>(`${this.baseUrl}/grafico-contador/`);
+    return this.http.get<{
+      labels: string[],
+      consumos: number[],
+      custos: number[]
+    }>(`${this.baseUrl}/grafico-contador/`);
+  }
+
+  obterDadosGraficoAnual(): Observable<{ labels: string[], consumos: number[], custos: number[] }> {
+    return this.http.get<{
+      labels: string[],
+      consumos: number[],
+      custos: number[]
+    }>(`${this.baseUrl}/grafico-contador-anual/`);
   }
 
   listarConsumosComFiltro(params: any): Observable<ResultadoConsumoResponse> {
-    return this.http.get<ResultadoConsumoResponse>(`${this.baseUrl}/resultados-contador/`, { params });
+    return this.http.get<ResultadoConsumoResponse>(`${this.baseUrl}/resultados-contador/`, {params});
   }
 
+  atualizar(id: number, payload: any): Observable<any> {
+    return this.http.put(`${this.baseUrl}/consumo-mensal/${id}/`, payload);
+  }
+
+  gerarDicaIA(mensagem: string): Observable<any> {
+    const url = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=AIzaSyClP7PDzQR6AYg1hH7RZoNiZ-reoiQrNrs';
+
+    const body = {
+      contents: [{
+        parts: [{
+          text: mensagem
+        }]
+      }],
+      generationConfig: {
+        temperature: 0.7,  // Mais criativo
+        candidateCount: 1,
+        maxOutputTokens: 2000,  // Resposta mais longa
+        topP: 0.9,
+        topK: 40
+      },
+      safetySettings: [
+        {
+          category: "HARM_CATEGORY_DANGEROUS_CONTENT",
+          threshold: "BLOCK_ONLY_HIGH"
+        }
+      ]
+    };
+
+    return this.http.post(url, body, {
+      headers: {'Content-Type': 'application/json'}
+    });
+  }
 }

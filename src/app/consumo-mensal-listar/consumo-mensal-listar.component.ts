@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ContadorService } from '../services/contador.service';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import {FormsModule} from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-consumo-mensal-listar',
@@ -19,10 +19,15 @@ export class ConsumoMensalListarComponent implements OnInit {
   custoAnualTotal = 0;
 
   anosDisponiveis: number[] = [];
-  mesesDisponiveis = Array.from({length: 12}, (_, i) => i + 1);
+  mesesDisponiveis = Array.from({ length: 12 }, (_, i) => i + 1);
 
   anoSelecionado: number | null = null;
   mesSelecionado: number | null = null;
+
+  dicaIA: string = '';
+  carregandoDica = false;
+
+  modalAberto = false;  // controle do modal
 
   constructor(private contadorService: ContadorService, private router: Router) {}
 
@@ -34,7 +39,7 @@ export class ConsumoMensalListarComponent implements OnInit {
   carregarAnos() {
     const anoAtual = new Date().getFullYear();
     this.anosDisponiveis = [];
-    for(let i = anoAtual; i >= anoAtual - 10; i--) {
+    for (let i = anoAtual; i >= anoAtual - 10; i--) {
       this.anosDisponiveis.push(i);
     }
   }
@@ -73,5 +78,73 @@ export class ConsumoMensalListarComponent implements OnInit {
 
   novo() {
     this.router.navigate(['/consumo-mensal-calcular']);
+  }
+
+  abrirModal() {
+    this.modalAberto = true;
+  }
+
+  fecharModal() {
+    this.modalAberto = false;
+  }
+
+  gerarDica() {
+    if (this.registros.length === 0) {
+      alert('Nenhum registro para gerar dica.');
+      return;
+    }
+
+    const consumos = this.registros.map(r => r.consumo_kwh);
+    const custos = this.registros.map(r => r.total_pagar);
+    const mediaConsumo = consumos.reduce((a, b) => a + b, 0) / consumos.length;
+    const mediaCusto = custos.reduce((a, b) => a + b, 0) / custos.length;
+    const maxConsumo = Math.max(...consumos);
+    const minConsumo = Math.min(...consumos);
+
+    const mensagem = `
+Analise estes dados de consumo de energia elétrica e forneça recomendações detalhadas para economizar energia:
+
+DADOS:
+- Período analisado: ${this.registros.length} meses
+- Consumo médio mensal: ${mediaConsumo.toFixed(2)} kWh
+- Custo médio mensal: R$ ${mediaCusto.toFixed(2)}
+- Maior consumo: ${maxConsumo} kWh
+- Menor consumo: ${minConsumo} kWh
+
+DETALHES POR MÊS:
+${this.registros.map(r =>
+      `- ${r.mes}/${r.ano}: ${r.consumo_kwh} kWh (R$ ${r.total_pagar}) ${r.bandeira_cor ? '| Bandeira: ' + r.bandeira_cor : ''}`
+    ).join('\n')}
+
+REQUISITOS PARA ANÁLISE:
+1. Identifique padrões de consumo ao longo dos meses
+2. Analise o impacto das bandeiras tarifárias nos custos
+3. Compare meses de maior e menor consumo
+4. Sugira medidas específicas para reduzir o consumo nos meses mais críticos
+5. Calcule estimativas de economia potencial
+6. Recomende hábitos para economia de energia
+7. Inclua dicas sobre horários de consumo
+
+Formate a resposta em tópicos claros com pelo menos 5 recomendações específicas.
+`;
+
+    this.carregandoDica = true;
+    this.contadorService.gerarDicaIA(mensagem).subscribe({
+      next: (res) => {
+        this.carregandoDica = false;
+        if (res.candidates && res.candidates.length > 0) {
+          this.dicaIA = res.candidates[0].content.parts[0].text;
+        } else {
+          this.dicaIA = 'Nenhuma resposta obtida da IA.';
+        }
+        this.abrirModal();
+      },
+      error: (err) => {
+        console.error('Erro ao gerar dica IA:', err);
+        this.carregandoDica = false;
+        this.dicaIA = 'Erro ao gerar dica. Verifique o console para detalhes.';
+        this.abrirModal();
+      }
+    });
   }
 }

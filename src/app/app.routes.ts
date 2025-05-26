@@ -11,6 +11,7 @@ import {GraficoContadorComponent} from './grafico-contador/grafico-contador.comp
 import {ConsumoMensalCalcularComponent} from './consumo-mensal-calcular/consumo-mensal-calcular.component';
 import {UploadImagemComponent} from './upload-imagem/upload-imagem.component';
 import {ListaLeiturasComponent} from './lista-leituras/lista-leituras.component';
+import {LeituraQrComponent} from './leitura-qr/leitura-qr.component';
 
 export const routes: Routes = [
   {
@@ -30,9 +31,13 @@ export const routes: Routes = [
       { path: 'grafico-contador', component: GraficoContadorComponent },
 
       //Rotas de OCR
-      { path: '', redirectTo: 'upload', pathMatch: 'full' },
+      //{ path: '', redirectTo: 'upload', pathMatch: 'full' },
       { path: 'upload', component: UploadImagemComponent },
       { path: 'leituras', component: ListaLeiturasComponent },
+      //{ path: '**', redirectTo: 'upload' },
+
+      //Rotas de QrCode OCR Celular
+      { path: 'leitura-qr', component: LeituraQrComponent },
     ]
   },
   { path: '**', redirectTo: '' }

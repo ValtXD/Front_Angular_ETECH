@@ -1,18 +1,39 @@
 <h2>Leituras Registradas com Consumo e Custo</h2>
 
-<table border="1" cellspacing="0" cellpadding="5">
+<button (click)="voltarParaUpload()" style="margin-bottom: 15px;">
+  ← Voltar para Upload
+</button>
+
+<!-- Form principal filtro Mês e Ano -->
+<form (ngSubmit)="aplicarFiltro()" style="margin-bottom: 1rem;">
+  <label for="mes">Mês:</label>
+  <select id="mes" [(ngModel)]="filtroMes" name="mes">
+    <option *ngFor="let mes of meses" [value]="mes.value">{{ mes.label }}</option>
+  </select>
+
+  <label for="ano" style="margin-left: 1rem;">Ano:</label>
+  <select id="ano" [(ngModel)]="filtroAno" name="ano">
+    <option value="">Todos</option>
+    <option *ngFor="let ano of anos" [value]="ano">{{ ano }}</option>
+  </select>
+
+  <button type="submit" style="margin-left: 1rem;">Filtrar</button>
+</form>
+
+<!-- Tabela principal das leituras -->
+<table border="1" cellspacing="0" cellpadding="5" style="width: 100%;">
   <thead>
   <tr>
     <th>Data</th>
     <th>Valor Extraído (kWh)</th>
     <th>Valor Corrigido (kWh)</th>
-    <th>Consumo desde leitura anterior (kWh)</th>
-    <th>Custo Estimado (R$)</th>
     <th>Estado</th>
     <th>Tarifa (R$/kWh)</th>
+    <th>Custo Estimado Total (R$)</th>
     <th>Bandeira</th>
     <th>Tarifa Social</th>
     <th>Imagem</th>
+    <th>Ações</th>
   </tr>
   </thead>
   <tbody>
@@ -20,24 +41,52 @@
     <td>{{ leitura.data_registro | date: 'dd/MM/yyyy HH:mm' }}</td>
     <td>{{ leitura.valor_extraido }}</td>
     <td>{{ leitura.valor_corrigido }}</td>
+    <td>{{ leitura.estado.nome || 'N/A' }}</td>
     <td>
-      {{ leitura.consumo_entre_leituras !== null ? leitura.consumo_entre_leituras : 'N/A' }}
+      {{ leitura.tarifa_valor_kwh !== undefined && leitura.tarifa_valor_kwh !== null
+      ? (leitura.tarifa_valor_kwh | number:'1.3-3')
+      : 'N/A' }}
     </td>
     <td>
-      {{ leitura.custo_total !== null ? (leitura.custo_total | currency: 'BRL') : 'N/A' }}
+      {{ leitura.custo_total !== null && leitura.custo_total !== undefined
+      ? (leitura.custo_total | currency:'BRL')
+      : 'N/A' }}
     </td>
-    <td>{{ leitura.estado.nome }}</td>
-    <td>{{ leitura.estado.tarifa_valor_kwh | currency: 'BRL' }}</td>
-    <td>{{ leitura.bandeira.cor }} - {{ leitura.bandeira.descricao }}</td>
+    <td>{{ leitura.bandeira.cor || 'N/A' }} - {{ leitura.bandeira.descricao || 'N/A' }}</td>
     <td>{{ leitura.tarifa_social ? 'Sim' : 'Não' }}</td>
     <td>
-      <img
-        *ngIf="leitura.imagem_url"
-        [src]="leitura.imagem_url"
-        alt="Foto leitura"
-        width="120"
-      />
+      <img *ngIf="leitura.imagem_url; else semImagem" [src]="getImagemUrl(leitura.imagem_url)" alt="Foto leitura" width="120" />
+      <ng-template #semImagem>N/A</ng-template>
+    </td>
+    <td>
+      <button (click)="confirmarRemocao(leitura.id)">Remover</button>
     </td>
   </tr>
   </tbody>
 </table>
+
+<!-- Seção de médias filtrada por Estado -->
+<div style="margin-top: 30px; font-weight: bold; max-width: 700px;">
+  <h3>Média para o Estado Selecionado</h3>
+
+  <label for="estado-media">Filtrar por Estado:</label>
+  <select id="estado-media" [(ngModel)]="filtroEstadoId" name="estadoMedia" (change)="calcularMediasPorEstado()" style="margin-bottom: 1rem;">
+    <option [ngValue]="null">-- Selecionar --</option>
+    <option *ngFor="let estado of estados" [ngValue]="estado.id">{{ estado.nome }}</option>
+  </select>
+
+  <table border="1" cellspacing="0" cellpadding="5" style="width: 100%;">
+    <thead>
+    <tr>
+      <th>Diferença Valor Corrigido (kWh)</th>
+      <th>Diferença Custo Estimado (R$)</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+      <td>{{ medias.diferencaValorCorrigidoMedia !== null ? (medias.diferencaValorCorrigidoMedia | number:'1.3-3') : 'N/A' }}</td>
+      <td>{{ medias.diferencaCustoEstimadoMedia !== null ? (medias.diferencaCustoEstimadoMedia | currency:'BRL') : 'N/A' }}</td>
+    </tr>
+    </tbody>
+  </table>
+</div>
