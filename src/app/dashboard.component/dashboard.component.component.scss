@@ -1,0 +1,29 @@
+.dashboard-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin: 16px;
+}
+
+.dashboard-card {
+  flex: 1 1 220px;
+  min-width: 220px;
+}
+
+.spacer {
+  flex: 1 1 auto;
+}
+
+.bandeira-display {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.bandeira-indicator {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: inline-block;
+  border: 1px solid #555;
+}

@@ -4,15 +4,32 @@ import { interval, Subscription } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-import {CurrencyPipe, DatePipe, DecimalPipe} from '@angular/common';
+import { CurrencyPipe, DatePipe, DecimalPipe } from '@angular/common';
 import { CommonModule } from '@angular/common';
+
+import { MatCardModule } from '@angular/material/card';
+import { MatSelectModule } from '@angular/material/select';
+import { MatTableModule } from '@angular/material/table';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-lista-leituras',
   templateUrl: './lista-leituras.component.html',
-  styleUrls: ['./lista-leituras.component.css'],
+  styleUrls: ['./lista-leituras.component.scss'],
   standalone: true,
-  imports: [FormsModule, DecimalPipe, CurrencyPipe, DatePipe, CommonModule]
+  imports: [
+    FormsModule,
+    DecimalPipe,
+    CurrencyPipe,
+    DatePipe,
+    CommonModule,
+    MatCardModule,
+    MatSelectModule,
+    MatTableModule,
+    MatIconModule,
+    MatButtonModule
+  ]
 })
 export class ListaLeiturasComponent implements OnInit, OnDestroy {
   leituras: LeituraOCR[] = [];
@@ -46,6 +63,24 @@ export class ListaLeiturasComponent implements OnInit, OnDestroy {
 
   private pollingSubscription?: Subscription;
   baseUrl = 'http://localhost:8000';
+
+  displayedColumns = [
+    'data_registro',
+    'valor_extraido',
+    'valor_corrigido',
+    'estado',
+    'tarifa_valor_kwh',
+    'custo_total',
+    'bandeira',
+    'tarifa_social',
+    'imagem',
+    'acoes'
+  ];
+
+  mediasColumns = [
+    'diferencaValorCorrigidoMedia',
+    'diferencaCustoEstimadoMedia',
+  ];
 
   constructor(
     private ocrContadorService: OcrContadorService,
@@ -101,7 +136,6 @@ export class ListaLeiturasComponent implements OnInit, OnDestroy {
       return;
     }
 
-    // Filtra leituras do estado selecionado e ordena por data
     const leiturasEstado = this.leituras
       .filter(l => l.estado?.id === this.filtroEstadoId)
       .sort((a, b) => new Date(a.data_registro).getTime() - new Date(b.data_registro).getTime());
@@ -116,7 +150,6 @@ export class ListaLeiturasComponent implements OnInit, OnDestroy {
       return;
     }
 
-    // Calcula médias simples para valores extraido e corrigido
     const valorExtraidoTotal = leiturasEstado.reduce((acc, cur) => acc + cur.valor_extraido, 0);
     const valorCorrigidoTotal = leiturasEstado.reduce((acc, cur) => acc + cur.valor_corrigido, 0);
     const custoEstimadoTotal = leiturasEstado.reduce((acc, cur) => acc + (cur.custo_total || 0), 0);
@@ -124,7 +157,6 @@ export class ListaLeiturasComponent implements OnInit, OnDestroy {
     const valorExtraidoMedia = valorExtraidoTotal / leiturasEstado.length;
     const valorCorrigidoMedia = valorCorrigidoTotal / leiturasEstado.length;
 
-    // Diferenças entre último e primeiro valor corrigido e custo estimado
     const primeiraLeitura = leiturasEstado[0];
     const ultimaLeitura = leiturasEstado[leiturasEstado.length - 1];
     const diferencaValorCorrigidoMedia = ultimaLeitura.valor_corrigido - primeiraLeitura.valor_corrigido;

@@ -2,17 +2,21 @@ import { Component, OnInit } from '@angular/core';
 import { ContadorService } from '../services/contador.service';
 import { Chart, registerables, TooltipItem } from 'chart.js';
 import { Router } from '@angular/router';
-
+import {MatCardModule} from '@angular/material/card';
+import {MatButtonModule} from '@angular/material/button';
+import {MatRadioModule} from '@angular/material/radio';
+import {FormsModule} from '@angular/forms';
 Chart.register(...registerables);
 
 @Component({
   selector: 'app-grafico-contador',
   templateUrl: './grafico-contador.component.html',
   standalone: true,
-  styleUrls: ['./grafico-contador.component.css']
+  imports: [MatCardModule, MatButtonModule, MatRadioModule, FormsModule],
+  styleUrls: ['./grafico-contador.component.scss']
 })
 export class GraficoContadorComponent implements OnInit {
-  chart: Chart | undefined;
+  chart?: Chart;
   modo: 'mensal' | 'anual' = 'mensal';
 
   constructor(private contadorService: ContadorService, private router: Router) {}
@@ -26,18 +30,14 @@ export class GraficoContadorComponent implements OnInit {
       this.chart.destroy();
     }
 
-    // Sempre usar dados mensais, mas processar diferentemente para os modos
     this.contadorService.obterDadosGrafico().subscribe(data => {
       if (this.modo === 'mensal') {
-        // Dados normais mensais
         this.criarGrafico(data.labels, data.consumos, data.custos);
       } else {
-        // Modo anual: projetar os dados mensais para o próximo ano
         const labelsAnual = data.labels.map(label => {
-          // label no formato MM/YYYY
           const [mesStr, anoStr] = label.split('/');
-          const anoNum = Number(anoStr) + 1; // ano + 1
-          return `${mesStr}/${anoNum}`; // exemplo: "01/2026"
+          const anoNum = Number(anoStr) + 1;
+          return `${mesStr}/${anoNum}`;
         });
 
         const consumosAnual = data.consumos.map(c => c * 12);
@@ -95,11 +95,7 @@ export class GraficoContadorComponent implements OnInit {
               label: (context: TooltipItem<'line'>) => {
                 const label = context.dataset.label || '';
                 const value = context.parsed.y;
-                if (typeof value === 'number') {
-                  return `${label}: ${value.toFixed(2)}`;
-                } else {
-                  return `${label}: ${value}`;
-                }
+                return typeof value === 'number' ? `${label}: ${value.toFixed(2)}` : `${label}: ${value}`;
               },
               footer: (tooltipItems) => {
                 if (tooltipItems.length > 0) {
@@ -139,17 +135,12 @@ export class GraficoContadorComponent implements OnInit {
     });
   }
 
-  onModoChange(event: Event) {
-    const input = event.target as HTMLInputElement;
-    this.modo = input.value as 'mensal' | 'anual';
+  onModoChange(event: any) {
+    this.modo = event.value;
     this.carregarDados();
   }
 
   voltar() {
     this.router.navigate(['/consumo-mensal-listar']);
-  }
-
-  dica() {
-    alert('Aqui vai aparecer a dica que você quer mostrar ao usuário.');
   }
 }

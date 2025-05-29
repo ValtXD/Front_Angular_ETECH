@@ -1,15 +1,30 @@
-<form (ngSubmit)="onSubmit()">
-  <label>Usuário</label>
-  <input [(ngModel)]="username" name="username" required />
+<mat-card class="register-card">
+  <mat-card-title>Cadastro</mat-card-title>
+  <form (ngSubmit)="onSubmit()" class="register-form" #registerForm="ngForm">
 
-  <label>Email</label>
-  <input type="email" [(ngModel)]="email" name="email" required />
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Usuário</mat-label>
+      <input matInput name="username" [(ngModel)]="username" required #usernameInput="ngModel" />
+      <mat-error *ngIf="usernameInput.invalid && usernameInput.touched">Usuário é obrigatório</mat-error>
+    </mat-form-field>
 
-  <label>Senha</label>
-  <input type="password" [(ngModel)]="password" name="password" required />
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Email</mat-label>
+      <input matInput type="email" name="email" [(ngModel)]="email" required #emailInput="ngModel" />
+      <mat-error *ngIf="emailInput.invalid && emailInput.touched">Email é obrigatório e deve ser válido</mat-error>
+    </mat-form-field>
 
-  <button type="submit">Cadastrar</button>
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Senha</mat-label>
+      <input matInput type="password" name="password" [(ngModel)]="password" required #passwordInput="ngModel" />
+      <mat-error *ngIf="passwordInput.invalid && passwordInput.touched">Senha é obrigatória</mat-error>
+    </mat-form-field>
 
-  <div *ngIf="errorMsg" style="color:red">{{ errorMsg }}</div>
-  <div *ngIf="successMsg" style="color:green">{{ successMsg }}</div>
-</form>
+    <div class="error-message" *ngIf="errorMsg">{{ errorMsg }}</div>
+    <div class="success-message" *ngIf="successMsg">{{ successMsg }}</div>
+
+    <div class="buttons">
+      <button mat-raised-button color="primary" type="submit" [disabled]="registerForm.invalid">Cadastrar</button>
+    </div>
+  </form>
+</mat-card>

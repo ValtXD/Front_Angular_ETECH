@@ -1,32 +1,18 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 import { CommonModule } from '@angular/common';
-
-// Importando os módulos do ng2-charts
-//import { NgChartsModule } from 'ng2-charts';
-import {provideCharts, withDefaultRegisterables} from 'ng2-charts';
-
-// Componentes
+import { AuthInterceptor } from './services/auth.interceptor';
 import { AppComponent } from './app.component';
-import { CalcularComponent } from './calcular/calcular.component';
-import { ResultadosComponent } from './resultados/resultados.component';
-import { MonitoramentoComponent } from './monitoramento/monitoramento.component';
-import {ConsumoMensalListarComponent} from './consumo-mensal-listar/consumo-mensal-listar.component';
-import {GraficoContadorComponent} from './grafico-contador/grafico-contador.component';
-import {ConsumoMensalCalcularComponent} from './consumo-mensal-calcular/consumo-mensal-calcular.component';
-import {UploadImagemComponent} from './upload-imagem/upload-imagem.component';
-import {ListaLeiturasComponent} from './lista-leituras/lista-leituras.component';
-import {ZXingScannerModule} from '@zxing/ngx-scanner';
-import {NgxQRCodeModule} from '@techiediaries/ngx-qrcode';
-import {LeituraQrComponent} from './leitura-qr/leitura-qr.component';
+import { LoginComponent } from './login/login.component';
+import { RegisterComponent } from './register/register.component';
+import {DashboardComponent} from './dashboard.component/dashboard.component.component';
+
 
 @NgModule({
   declarations: [
-    AppComponent,
-
 
   ],
   imports: [
@@ -34,22 +20,14 @@ import {LeituraQrComponent} from './leitura-qr/leitura-qr.component';
     HttpClientModule,
     ReactiveFormsModule,
     FormsModule,
-    AppRoutingModule,
-    CalcularComponent,
-    ResultadosComponent,
     CommonModule,
-    MonitoramentoComponent,
-    ConsumoMensalCalcularComponent,
-    ConsumoMensalListarComponent,
-    GraficoContadorComponent,
-    UploadImagemComponent,
-    ListaLeiturasComponent,
-    ZXingScannerModule,
-    NgxQRCodeModule,
-    LeituraQrComponent,
-    // Certifique-se de ter adicionado o ChartsModule aqui
+    AppRoutingModule,
+    AppComponent,
+    AppComponent,
   ],
-  providers: [provideCharts(withDefaultRegisterables())],
-  bootstrap: [AppComponent]
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
+  ],
+  bootstrap: [],
 })
-export class AppModule { }
+export class AppModule {}

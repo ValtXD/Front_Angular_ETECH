@@ -3,15 +3,34 @@ import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormsModule } 
 import { ContadorService, ConsumoMensal } from '../services/contador.service';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { Estado } from '../models/estado';
-import { Bandeira } from '../models/bandeira';
+import {MatInputModule} from '@angular/material/input';
+import {MatSelectModule} from '@angular/material/select';
+import {MatCheckboxModule} from '@angular/material/checkbox';
+import {MatButtonModule} from '@angular/material/button';
+import {MatCardModule} from '@angular/material/card';
+import {MatTableModule} from '@angular/material/table';
+import {MatIconModule} from '@angular/material/icon';
+import {MatFormFieldModule} from '@angular/material/form-field';
+
 
 @Component({
+  standalone: true,
   selector: 'app-consumo-mensal-calcular',
   templateUrl: './consumo-mensal-calcular.component.html',
-  standalone: true,
-  imports: [ReactiveFormsModule, CommonModule, FormsModule],
-  styleUrls: ['./consumo-mensal-calcular.component.css']
+  styleUrls: ['./consumo-mensal-calcular.component.scss'],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    FormsModule,
+    MatInputModule,
+    MatSelectModule,
+    MatCheckboxModule,
+    MatButtonModule,
+    MatCardModule,
+    MatTableModule,
+    MatIconModule,
+    MatFormFieldModule,
+  ]
 })
 export class ConsumoMensalCalcularComponent implements OnInit {
   form!: FormGroup;
@@ -21,11 +40,17 @@ export class ConsumoMensalCalcularComponent implements OnInit {
   filtroMesAno: string = '';
   editandoId: number | null = null;
 
-  constructor(
-    private fb: FormBuilder,
-    private contadorService: ContadorService,
-    private router: Router
-  ) {}
+  displayedColumns: string[] = [
+    'data',
+    'estado',
+    'bandeira',
+    'tarifa_social',
+    'leitura_inicial',
+    'leitura_final',
+    'acoes',
+  ];
+
+  constructor(private fb: FormBuilder, private contadorService: ContadorService, private router: Router) {}
 
   ngOnInit() {
     this.form = this.fb.group({
@@ -42,12 +67,12 @@ export class ConsumoMensalCalcularComponent implements OnInit {
     this.carregarRegistros();
   }
 
-  getEstadoNome(id: Estado): string {
+  getEstadoNome(id: number): string {
     const est = this.estados.find(e => e.id === id);
     return est ? est.nome : 'Desconhecido';
   }
 
-  getBandeiraCor(id: Bandeira): string {
+  getBandeiraCor(id: number): string {
     const ban = this.bandeiras.find(b => b.id === id);
     return ban ? ban.cor : 'Desconhecido';
   }

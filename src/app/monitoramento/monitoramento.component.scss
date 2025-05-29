@@ -1,0 +1,42 @@
+.monitoramento-card {
+  max-width: 900px;
+  margin: 2rem auto;
+  padding: 2rem;
+}
+
+.title {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.select-data {
+  flex: 1;
+  margin-right: 1rem;
+}
+
+.checkbox-modo {
+  margin-left: auto;
+}
+
+.chart-container {
+  height: 350px;
+  margin-bottom: 2rem;
+}
+
+.buttons-row {
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-start;
+}
+
+.dica-modal {
+  padding: 1rem;
+  max-width: 600px;
+}

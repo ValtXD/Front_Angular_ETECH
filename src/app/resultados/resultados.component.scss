@@ -1,0 +1,70 @@
+.resultados-card {
+  max-width: 1000px;
+  margin: 20px auto;
+  padding: 24px;
+  background: linear-gradient(135deg, #a1c4fd, #c2e9fb);
+  border-radius: 12px;
+  box-shadow: 0 8px 30px rgba(0, 123, 255, 0.3);
+  color: #222;
+}
+
+.filter-select {
+  width: 300px;
+  margin-bottom: 20px;
+}
+
+.resultados-table {
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.total-row {
+  font-weight: 700;
+  background-color: rgba(0,0,0,0.1);
+}
+
+.total-label {
+  text-align: right;
+  padding-right: 10px;
+}
+
+.total-value {
+  font-weight: 600;
+  padding-right: 10px;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-start;
+}
+
+.mat-dialog-content {
+  padding: 20px;
+}
+
+.modal-dialog-custom {
+  max-width: 600px;
+  margin: auto;
+  padding: 20px;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+}
+
+.loading-text {
+  font-weight: 600;
+  color: #1976d2;
+}
+
+.dica-text p {
+  margin-bottom: 10px;
+}
+.dialog-footer {
+  text-align: right;
+  margin-top: 15px;
+}

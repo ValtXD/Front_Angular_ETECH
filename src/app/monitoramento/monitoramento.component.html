@@ -1,88 +1,40 @@
-<div class="card p-3">
-  <h1 style="text-align: center;">Monitoramento de Consumo/Aparelho</h1>
+<!-- src/app/monitoramento/monitoramento.component.html -->
+<mat-card class="monitoramento-card">
+  <h1 class="title">Monitoramento de Consumo/Aparelho</h1>
 
+  <div class="controls">
+    <mat-form-field appearance="fill" class="select-data">
+      <mat-label>Selecionar data</mat-label>
+      <mat-select [(ngModel)]="dataSelecionada" (selectionChange)="onDataChange()">
+        <mat-option *ngFor="let data of datasDisponiveis" [value]="data">{{ data | date:'dd/MM/yyyy' }}</mat-option>
+      </mat-select>
+    </mat-form-field>
 
-  <!-- Seletor de data -->
-  <div class="form-group mb-3">
-    <label for="dataSelecionada">Selecionar data:</label>
-    <select id="dataSelecionada" class="form-control" [(ngModel)]="dataSelecionada" (change)="onDataChange()">
-      <option *ngFor="let data of datasDisponiveis" [value]="data">{{ data | date: 'dd/MM/yyyy' }}</option>
-    </select>
+    <mat-checkbox [(ngModel)]="modo30dias" (change)="onModoChange()" class="checkbox-modo">
+      Modo 30 dias (média)
+    </mat-checkbox>
   </div>
 
-  <!-- Checkbox modo 30 dias -->
-  <div class="form-check mb-4">
-    <input class="form-check-input" type="checkbox" id="modo30" [(ngModel)]="modo30dias" (change)="onModoChange()" />
-    <label class="form-check-label" for="modo30">Modo 30 dias (média)</label>
-  </div>
-
-  <!-- Gráfico de consumo -->
-  <div class="mb-5" style="height: 350px;">
+  <div class="chart-container">
     <h4>Consumo por Ambiente (kWh)</h4>
     <canvas baseChart
             [data]="consumoTotalPorAmbienteChartData"
             [options]="chartOptions"
             chartType="line">
     </canvas>
-  </div><br><br><br><br><br><br><br><br>
+  </div>
 
-  <!-- Gráfico de custo -->
-  <div class="mb-5" style="height: 350px;">
+  <div class="chart-container">
     <h4>Custo por Ambiente (R$)</h4>
     <canvas baseChart
             [data]="custoTotalPorAmbienteChartData"
             [options]="chartOptions"
             chartType="line">
     </canvas>
-  </div><br><br><br><br><br><br><br><br>
-
-  <!-- Botões de ação -->
-  <div class="d-flex justify-content-between mt-4">
-    <button class="btn btn-secondary" routerLink="/resultados">← Voltar para Resultados</button>
-    <button class="btn btn-primary" (click)="gerarDicas()">Gerar dicas de economia</button>
   </div>
-</div>
 
-<!-- Modal de dicas -->
-<div class="modal-backdrop" *ngIf="modalAberto">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Dicas de Economia</h5>
-        <button type="button" class="btn-close" (click)="fecharModal()"></button>
-      </div>
-      <div class="modal-body">
-        <div *ngIf="loadingDicas">
-          <p>Gerando dicas...</p>
-        </div>
-        <div *ngIf="!loadingDicas" [innerHTML]="dicasHtml"></div>
-      </div>
-      <div class="modal-footer">
-        <button class="btn btn-secondary" (click)="fecharModal()">Fechar</button>
-      </div>
-    </div>
+  <div class="buttons-row">
+    <button mat-stroked-button color="primary" (click)="voltar()">← Voltar para Resultados</button>
+    <button mat-flat-button color="accent" (click)="gerarDicas()">Gerar dicas de economia</button>
   </div>
-</div>
-
-<style>
-  .modal-backdrop {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.5);
-    z-index: 1050;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-
-  .modal-dialog {
-    background: white;
-    border-radius: 8px;
-    max-width: 600px;
-    width: 100%;
-    padding: 1rem;
-  }
-</style>
+</mat-card>

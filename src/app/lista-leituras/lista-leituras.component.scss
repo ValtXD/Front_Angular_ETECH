@@ -1,0 +1,49 @@
+.lista-leituras-card {
+  max-width: 1200px;
+  margin: 20px auto;
+  padding: 24px;
+  background: linear-gradient(135deg, #e0c3fc, #8ec5fc);
+  border-radius: 12px;
+  box-shadow: 0 8px 30px rgba(142, 197, 252, 0.5);
+  color: #222;
+}
+
+.filtros-container {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.filtro-mes, .filtro-ano {
+  width: 150px;
+}
+
+.imagem-thumb {
+  max-width: 100px;
+  max-height: 70px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+.no-data {
+  text-align: center;
+  font-weight: 600;
+  color: #444;
+  margin-top: 40px;
+}
+
+.medias-card {
+  margin-top: 30px;
+  padding: 16px;
+  background-color: #ffffffcc;
+  border-radius: 10px;
+}
+
+.medias-table {
+  width: 100%;
+  margin-top: 10px;
+}
+
+.mat-header-cell, .mat-cell {
+  padding: 8px 16px;
+}

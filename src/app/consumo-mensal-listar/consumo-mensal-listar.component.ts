@@ -3,13 +3,29 @@ import { ContadorService } from '../services/contador.service';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import {MatTableModule} from '@angular/material/table';
+import {MatButtonModule} from '@angular/material/button';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import {MatCardModule} from '@angular/material/card';
+import {MatSelectModule} from '@angular/material/select';
+import {MatDialogModule} from '@angular/material/dialog';
+
 
 @Component({
   selector: 'app-consumo-mensal-listar',
   templateUrl: './consumo-mensal-listar.component.html',
   standalone: true,
-  imports: [CommonModule, FormsModule],
-  styleUrls: ['./consumo-mensal-listar.component.css']
+  imports: [
+    CommonModule,
+    FormsModule,
+    MatTableModule,
+    MatButtonModule,
+    MatProgressSpinnerModule,
+    MatCardModule,
+    MatSelectModule,
+    MatDialogModule,
+  ],
+  styleUrls: ['./consumo-mensal-listar.component.scss']
 })
 export class ConsumoMensalListarComponent implements OnInit {
   registros: any[] = [];
@@ -28,6 +44,17 @@ export class ConsumoMensalListarComponent implements OnInit {
   carregandoDica = false;
 
   modalAberto = false;  // controle do modal
+
+  displayedColumns: string[] = [
+    'ano',
+    'mes',
+    'estado_nome',
+    'bandeira_cor',
+    'consumo_kwh',
+    'consumo_anual',
+    'total_pagar',
+    'total_pagar_anual'
+  ];
 
   constructor(private contadorService: ContadorService, private router: Router) {}
 

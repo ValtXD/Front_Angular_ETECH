@@ -1,92 +1,131 @@
-<h2>Leituras Registradas com Consumo e Custo</h2>
+<mat-card class="lista-leituras-card">
+  <mat-card-title>Leituras Registradas com Consumo e Custo</mat-card-title>
 
-<button (click)="voltarParaUpload()" style="margin-bottom: 15px;">
-  ← Voltar para Upload
-</button>
+  <div class="filtros-container">
+    <mat-form-field appearance="fill" class="filtro-mes">
+      <mat-label>Mês</mat-label>
+      <mat-select [(value)]="filtroMes" (selectionChange)="aplicarFiltro()">
+        <mat-option *ngFor="let mes of meses" [value]="mes.value">{{ mes.label }}</mat-option>
+      </mat-select>
+    </mat-form-field>
 
-<!-- Form principal filtro Mês e Ano -->
-<form (ngSubmit)="aplicarFiltro()" style="margin-bottom: 1rem;">
-  <label for="mes">Mês:</label>
-  <select id="mes" [(ngModel)]="filtroMes" name="mes">
-    <option *ngFor="let mes of meses" [value]="mes.value">{{ mes.label }}</option>
-  </select>
+    <mat-form-field appearance="fill" class="filtro-ano">
+      <mat-label>Ano</mat-label>
+      <mat-select [(value)]="filtroAno" (selectionChange)="aplicarFiltro()">
+        <mat-option value="">Todos</mat-option>
+        <mat-option *ngFor="let ano of anos" [value]="ano">{{ ano }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
 
-  <label for="ano" style="margin-left: 1rem;">Ano:</label>
-  <select id="ano" [(ngModel)]="filtroAno" name="ano">
-    <option value="">Todos</option>
-    <option *ngFor="let ano of anos" [value]="ano">{{ ano }}</option>
-  </select>
+  <table mat-table [dataSource]="leituras" class="mat-elevation-z8" *ngIf="leituras.length > 0">
 
-  <button type="submit" style="margin-left: 1rem;">Filtrar</button>
-</form>
+    <!-- Data Column -->
+    <ng-container matColumnDef="data_registro">
+      <th mat-header-cell *matHeaderCellDef>Data</th>
+      <td mat-cell *matCellDef="let leitura">{{ leitura.data_registro | date: 'dd/MM/yyyy HH:mm' }}</td>
+    </ng-container>
 
-<!-- Tabela principal das leituras -->
-<table border="1" cellspacing="0" cellpadding="5" style="width: 100%;">
-  <thead>
-  <tr>
-    <th>Data</th>
-    <th>Valor Extraído (kWh)</th>
-    <th>Valor Corrigido (kWh)</th>
-    <th>Estado</th>
-    <th>Tarifa (R$/kWh)</th>
-    <th>Custo Estimado Total (R$)</th>
-    <th>Bandeira</th>
-    <th>Tarifa Social</th>
-    <th>Imagem</th>
-    <th>Ações</th>
-  </tr>
-  </thead>
-  <tbody>
-  <tr *ngFor="let leitura of leituras">
-    <td>{{ leitura.data_registro | date: 'dd/MM/yyyy HH:mm' }}</td>
-    <td>{{ leitura.valor_extraido }}</td>
-    <td>{{ leitura.valor_corrigido }}</td>
-    <td>{{ leitura.estado.nome || 'N/A' }}</td>
-    <td>
-      {{ leitura.tarifa_valor_kwh !== undefined && leitura.tarifa_valor_kwh !== null
-      ? (leitura.tarifa_valor_kwh | number:'1.3-3')
-      : 'N/A' }}
-    </td>
-    <td>
-      {{ leitura.custo_total !== null && leitura.custo_total !== undefined
-      ? (leitura.custo_total | currency:'BRL')
-      : 'N/A' }}
-    </td>
-    <td>{{ leitura.bandeira.cor || 'N/A' }} - {{ leitura.bandeira.descricao || 'N/A' }}</td>
-    <td>{{ leitura.tarifa_social ? 'Sim' : 'Não' }}</td>
-    <td>
-      <img *ngIf="leitura.imagem_url; else semImagem" [src]="getImagemUrl(leitura.imagem_url)" alt="Foto leitura" width="120" />
-      <ng-template #semImagem>N/A</ng-template>
-    </td>
-    <td>
-      <button (click)="confirmarRemocao(leitura.id)">Remover</button>
-    </td>
-  </tr>
-  </tbody>
-</table>
+    <!-- Valor Extraído -->
+    <ng-container matColumnDef="valor_extraido">
+      <th mat-header-cell *matHeaderCellDef>Valor Extraído (kWh)</th>
+      <td mat-cell *matCellDef="let leitura">{{ leitura.valor_extraido }}</td>
+    </ng-container>
 
-<!-- Seção de médias filtrada por Estado -->
-<div style="margin-top: 30px; font-weight: bold; max-width: 700px;">
-  <h3>Média para o Estado Selecionado</h3>
+    <!-- Valor Corrigido -->
+    <ng-container matColumnDef="valor_corrigido">
+      <th mat-header-cell *matHeaderCellDef>Valor Corrigido (kWh)</th>
+      <td mat-cell *matCellDef="let leitura">{{ leitura.valor_corrigido }}</td>
+    </ng-container>
 
-  <label for="estado-media">Filtrar por Estado:</label>
-  <select id="estado-media" [(ngModel)]="filtroEstadoId" name="estadoMedia" (change)="calcularMediasPorEstado()" style="margin-bottom: 1rem;">
-    <option [ngValue]="null">-- Selecionar --</option>
-    <option *ngFor="let estado of estados" [ngValue]="estado.id">{{ estado.nome }}</option>
-  </select>
+    <!-- Estado -->
+    <ng-container matColumnDef="estado">
+      <th mat-header-cell *matHeaderCellDef>Estado</th>
+      <td mat-cell *matCellDef="let leitura">{{ leitura.estado.nome || 'N/A' }}</td>
+    </ng-container>
 
-  <table border="1" cellspacing="0" cellpadding="5" style="width: 100%;">
-    <thead>
-    <tr>
-      <th>Diferença Valor Corrigido (kWh)</th>
-      <th>Diferença Custo Estimado (R$)</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr>
-      <td>{{ medias.diferencaValorCorrigidoMedia !== null ? (medias.diferencaValorCorrigidoMedia | number:'1.3-3') : 'N/A' }}</td>
-      <td>{{ medias.diferencaCustoEstimadoMedia !== null ? (medias.diferencaCustoEstimadoMedia | currency:'BRL') : 'N/A' }}</td>
-    </tr>
-    </tbody>
+    <!-- Tarifa -->
+    <ng-container matColumnDef="tarifa_valor_kwh">
+      <th mat-header-cell *matHeaderCellDef>Tarifa (R$/kWh)</th>
+      <td mat-cell *matCellDef="let leitura">
+        {{ leitura.tarifa_valor_kwh != null ? (leitura.tarifa_valor_kwh | number: '1.3-3') : 'N/A' }}
+      </td>
+    </ng-container>
+
+    <!-- Custo Estimado Total -->
+    <ng-container matColumnDef="custo_total">
+      <th mat-header-cell *matHeaderCellDef>Custo Estimado Total (R$)</th>
+      <td mat-cell *matCellDef="let leitura">
+        {{ leitura.custo_total != null ? (leitura.custo_total | currency:'BRL') : 'N/A' }}
+      </td>
+    </ng-container>
+
+    <!-- Bandeira -->
+    <ng-container matColumnDef="bandeira">
+      <th mat-header-cell *matHeaderCellDef>Bandeira</th>
+      <td mat-cell *matCellDef="let leitura">{{ leitura.bandeira.cor || 'N/A' }} - {{ leitura.bandeira.descricao || 'N/A' }}</td>
+    </ng-container>
+
+    <!-- Tarifa Social -->
+    <ng-container matColumnDef="tarifa_social">
+      <th mat-header-cell *matHeaderCellDef>Tarifa Social</th>
+      <td mat-cell *matCellDef="let leitura">{{ leitura.tarifa_social ? 'Sim' : 'Não' }}</td>
+    </ng-container>
+
+    <!-- Imagem -->
+    <ng-container matColumnDef="imagem">
+      <th mat-header-cell *matHeaderCellDef>Imagem</th>
+      <td mat-cell *matCellDef="let leitura">
+        <img
+          *ngIf="leitura.imagem_url; else semImagem"
+          [src]="getImagemUrl(leitura.imagem_url)"
+          alt="Foto leitura"
+          class="imagem-thumb"
+        />
+        <ng-template #semImagem>N/A</ng-template>
+      </td>
+    </ng-container>
+
+    <!-- Ações -->
+    <ng-container matColumnDef="acoes">
+      <th mat-header-cell *matHeaderCellDef>Ações</th>
+      <td mat-cell *matCellDef="let leitura">
+        <button mat-icon-button color="warn" (click)="confirmarRemocao(leitura.id)" aria-label="Remover leitura">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
   </table>
-</div>
+
+  <div *ngIf="leituras.length === 0" class="no-data">
+    Nenhuma leitura encontrada para o filtro selecionado.
+  </div>
+
+  <mat-card class="medias-card">
+    <mat-card-title>Média para o Estado Selecionado</mat-card-title>
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Filtrar por Estado</mat-label>
+      <mat-select [(value)]="filtroEstadoId" (selectionChange)="calcularMediasPorEstado()">
+        <mat-option [value]="null">-- Selecionar --</mat-option>
+        <mat-option *ngFor="let estado of estados" [value]="estado.id">{{ estado.nome }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <table mat-table [dataSource]="[medias]" class="mat-elevation-z8 medias-table">
+      <ng-container matColumnDef="diferencaValorCorrigidoMedia">
+        <th mat-header-cell *matHeaderCellDef>Diferença Valor Corrigido (kWh)</th>
+        <td mat-cell *matCellDef="let m">{{ m.diferencaValorCorrigidoMedia !== null ? (m.diferencaValorCorrigidoMedia | number:'1.3-3') : 'N/A' }}</td>
+      </ng-container>
+      <ng-container matColumnDef="diferencaCustoEstimadoMedia">
+        <th mat-header-cell *matHeaderCellDef>Diferença Custo Estimado (R$)</th>
+        <td mat-cell *matCellDef="let m">{{ m.diferencaCustoEstimadoMedia !== null ? (m.diferencaCustoEstimadoMedia | currency:'BRL') : 'N/A' }}</td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="mediasColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: mediasColumns;"></tr>
+    </table>
+  </mat-card>
+</mat-card>

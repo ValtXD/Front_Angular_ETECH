@@ -1,1 +1,57 @@
-/* You can add global styles to this file, and also import other style files */
+/* Base para cards */
+mat-card {
+  max-width: 500px;
+  margin: 20px auto;
+  padding: 20px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  border-radius: 8px;
+}
+
+/* Forms full width inputs */
+.full-width {
+  width: 100%;
+}
+
+/* Espaçamento entre campos */
+mat-form-field {
+  margin-bottom: 16px;
+}
+
+/* Botões alinhados */
+button {
+  margin-top: 12px;
+}
+
+/* Mensagens de erro e sucesso */
+.error-msg {
+  color: #d32f2f;
+  margin-top: 10px;
+}
+
+.success-msg {
+  color: #388e3c;
+  margin-top: 10px;
+}
+
+/* Links dentro dos formulários */
+a {
+  color: #1976d2;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* Centralização dos títulos */
+mat-card-title {
+  text-align: center;
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+
+/* Ajuste do form */
+form {
+  display: flex;
+  flex-direction: column;
+}

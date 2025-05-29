@@ -1,112 +1,62 @@
-<h2>Leitura via QR Code</h2>
+<mat-card class="leitura-qr-card">
+  <h2>Leitura via QR Code</h2>
 
-<div style="text-align: center; margin-bottom: 20px;">
-  <img src="qrcode.png" alt="QR Code" style="width: 180px; height: 180px;" />
-  <p>Escaneie este QR Code com outro dispositivo para abrir esta página.</p>
-</div>
-
-<!-- Botões para tirar foto e escolher arquivo -->
-<div style="margin-bottom: 20px;">
-  <label for="cameraInput" class="btn btn-primary" style="cursor: pointer; margin-right: 10px;">
-    Tirar Foto do Contador
-  </label>
-  <input
-    id="cameraInput"
-    type="file"
-    accept="image/*"
-    capture="environment"
-    (change)="onFileSelected($event)"
-    style="display: none;"
-  />
-
-  <label for="fileInput" class="btn btn-secondary" style="cursor: pointer;">
-    Escolher Arquivo
-  </label>
-  <input
-    id="fileInput"
-    type="file"
-    accept="image/*"
-    (change)="onFileSelected($event)"
-    style="display: none;"
-  />
-</div>
-
-<!-- Preview da imagem -->
-<div *ngIf="previewUrl" style="text-align: center; margin-bottom: 20px;">
-  <img [src]="previewUrl" alt="Preview da Imagem" style="max-width: 300px; max-height: 300px; border: 1px solid #ddd;" />
-</div>
-
-<button (click)="processarOCR()" [disabled]="!imagemSelecionada" class="btn btn-secondary" style="margin-bottom: 20px;">
-  Processar OCR
-</button>
-
-<!-- Texto extraído do OCR -->
-<div style="margin-bottom: 20px;">
-  <h4>Valor extraído pelo OCR:</h4>
-  <p *ngIf="valorExtraido !== null; else semValor">
-    {{ valorExtraido }} kWh
-  </p>
-  <ng-template #semValor>
-    <p><i>Nenhum valor extraído ainda.</i></p>
-  </ng-template>
-</div>
-
-<!-- Campo para corrigir o valor: aparece só se valorExtraido existir -->
-<div *ngIf="valorExtraido !== null" style="margin-bottom: 20px;">
-  <label>
-    Corrigir valor:
-    <input type="number" [(ngModel)]="valorCorrigido" />
-  </label>
-</div>
-
-<!-- Formulário de seleção de estado, bandeira e tarifa social -->
-<form (ngSubmit)="salvarLeitura()" style="max-width: 400px; margin: auto;">
-  <div style="margin-bottom: 10px;">
-    <label for="estado">Estado:</label>
-    <select
-      id="estado"
-      [(ngModel)]="estadoSelecionadoId"
-      name="estado"
-      required
-      style="width: 100%; padding: 5px;"
-    >
-      <option value="" disabled>Selecione o estado</option>
-      <option *ngFor="let e of estados" [value]="e.id">{{ e.nome }}</option>
-    </select>
+  <div class="qr-container">
+    <img src="qrcode.png" alt="QR Code" />
+    <p>Escaneie este QR Code com outro dispositivo para abrir esta página.</p>
   </div>
 
-  <div style="margin-bottom: 10px;">
-    <label for="bandeira">Bandeira:</label>
-    <select
-      id="bandeira"
-      [(ngModel)]="bandeiraSelecionadaId"
-      name="bandeira"
-      required
-      style="width: 100%; padding: 5px;"
-    >
-      <option value="" disabled>Selecione a bandeira</option>
-      <option *ngFor="let b of bandeiras" [value]="b.id">{{ b.cor }} - {{ b.descricao }}</option>
-    </select>
+  <div class="file-buttons">
+    <input type="file" id="cameraInput" accept="image/*" capture="environment" (change)="onFileSelected($event)" hidden />
+    <label mat-flat-button color="primary" for="cameraInput">Tirar Foto do Contador</label>
+
+    <input type="file" id="fileInput" accept="image/*" (change)="onFileSelected($event)" hidden />
+    <label mat-stroked-button color="accent" for="fileInput">Escolher Arquivo</label>
   </div>
 
-  <div style="margin-bottom: 20px;">
-    <label>
-      <input type="checkbox" [(ngModel)]="tarifaSocial" name="tarifaSocial" />
+  <div *ngIf="previewUrl" class="preview-container">
+    <img [src]="previewUrl" alt="Preview da Imagem" />
+  </div>
+
+  <div class="process-button">
+    <button mat-flat-button color="accent" (click)="processarOCR()" [disabled]="!imagemSelecionada">
+      Processar OCR
+    </button>
+  </div>
+
+  <mat-card *ngIf="valorExtraido !== null" class="resultado-ocr">
+    <h4>Valor extraído pelo OCR:</h4>
+    <p>{{ valorExtraido }} kWh</p>
+
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Corrigir valor</mat-label>
+      <input matInput type="number" [(ngModel)]="valorCorrigido" />
+    </mat-form-field>
+  </mat-card>
+
+  <form class="selection-form" #form="ngForm" (ngSubmit)="salvarLeitura()">
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Estado</mat-label>
+      <mat-select [(ngModel)]="estadoSelecionadoId" name="estado" required>
+        <mat-option *ngFor="let e of estados" [value]="e.id">{{ e.nome }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Bandeira</mat-label>
+      <mat-select [(ngModel)]="bandeiraSelecionadaId" name="bandeira" required>
+        <mat-option *ngFor="let b of bandeiras" [value]="b.id">{{ b.cor }} - {{ b.descricao }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-checkbox [(ngModel)]="tarifaSocial" name="tarifaSocial">
       Tarifa Social
-    </label>
-  </div>
+    </mat-checkbox>
 
-  <button
-    type="button"
-    (click)="salvarLeitura()"
-    [disabled]="!podeSalvar"
-    class="btn btn-success"
-    style="width: 100%;"
-  >
-    Salvar Leitura
-  </button>
-</form>
+    <div class="save-button">
+      <button mat-raised-button color="primary" type="submit" [disabled]="!podeSalvar">Salvar Leitura</button>
+    </div>
+  </form>
 
-<div *ngIf="mensagem" style="color: red; margin-top: 15px; text-align: center;">
-  {{ mensagem }}
-</div>
+  <mat-error *ngIf="mensagem" class="error-message">{{ mensagem }}</mat-error>
+</mat-card>

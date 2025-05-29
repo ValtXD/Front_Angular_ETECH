@@ -1,103 +1,156 @@
-<div class="card">
+<mat-card class="form-card">
   <h2>{{ editandoId ? 'Editar Aparelho' : 'Cadastrar Aparelho' }}</h2>
-  <form [formGroup]="aparelhoForm" (ngSubmit)="onSubmit()">
-    <div>
-      <label>Data:</label>
-      <input type="date" formControlName="data_cadastro" class="form-control" />
-    </div><br>
+  <form [formGroup]="aparelhoForm" (ngSubmit)="onSubmit()" class="form-container">
 
-    <div>
-      <label>Ambiente:</label>
-      <select formControlName="ambiente" class="form-control">
-        <option *ngFor="let amb of ambientes" [value]="amb.id">{{ amb.nome }}</option>
-      </select>
-    </div><br>
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Data</mat-label>
+      <input matInput [matDatepicker]="picker" formControlName="data_cadastro" />
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+      <mat-error *ngIf="aparelhoForm.get('data_cadastro')?.invalid">Data é obrigatória</mat-error>
+    </mat-form-field>
 
-    <div>
-      <label>Estado:</label>
-      <select formControlName="estado" class="form-control">
-        <option *ngFor="let est of estados" [value]="est.id">{{ est.nome }}</option>
-      </select>
-    </div><br>
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Ambiente</mat-label>
+      <mat-select formControlName="ambiente">
+        <mat-option *ngFor="let amb of ambientes" [value]="amb.id">{{ amb.nome }}</mat-option>
+      </mat-select>
+      <mat-error *ngIf="aparelhoForm.get('ambiente')?.invalid">Ambiente é obrigatório</mat-error>
+    </mat-form-field>
 
-    <div>
-      <label>Bandeira:</label>
-      <select formControlName="bandeira" class="form-control">
-        <option *ngFor="let ban of bandeiras" [value]="ban.id">{{ ban.cor }}</option>
-      </select>
-    </div><br>
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Estado</mat-label>
+      <mat-select formControlName="estado">
+        <mat-option *ngFor="let est of estados" [value]="est.id">{{ est.nome }}</mat-option>
+      </mat-select>
+      <mat-error *ngIf="aparelhoForm.get('estado')?.invalid">Estado é obrigatório</mat-error>
+    </mat-form-field>
 
-    <div>
-      <label>Nome:</label>
-      <input type="text" formControlName="nome" class="form-control" />
-    </div><br>
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Bandeira</mat-label>
+      <mat-select formControlName="bandeira">
+        <mat-option *ngFor="let ban of bandeiras" [value]="ban.id">{{ ban.cor }}</mat-option>
+      </mat-select>
+      <mat-error *ngIf="aparelhoForm.get('bandeira')?.invalid">Bandeira é obrigatória</mat-error>
+    </mat-form-field>
 
-    <div>
-      <label>Potência (W):</label>
-      <input type="number" formControlName="potencia_watts" class="form-control" />
-    </div><br>
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Nome</mat-label>
+      <input matInput type="text" formControlName="nome" />
+      <mat-error *ngIf="aparelhoForm.get('nome')?.invalid">Nome é obrigatório</mat-error>
+    </mat-form-field>
 
-    <div>
-      <label>Tempo uso diário (h):</label>
-      <input type="number" formControlName="tempo_uso_diario_horas" class="form-control" />
-    </div><br>
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Potência (W)</mat-label>
+      <input matInput type="number" formControlName="potencia_watts" />
+      <mat-error *ngIf="aparelhoForm.get('potencia_watts')?.invalid">Potência é obrigatória</mat-error>
+    </mat-form-field>
 
-    <div>
-      <label>Quantidade:</label>
-      <input type="number" formControlName="quantidade" class="form-control" />
-    </div><br>
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Tempo uso diário (h)</mat-label>
+      <input matInput type="number" formControlName="tempo_uso_diario_horas" />
+      <mat-error *ngIf="aparelhoForm.get('tempo_uso_diario_horas')?.invalid">Tempo de uso diário é obrigatório</mat-error>
+    </mat-form-field>
 
-    <div class="mt-3">
-      <button class="btn btn-primary" type="submit">{{ editandoId ? 'Salvar Edição' : 'Cadastrar' }}</button>
-      <button class="btn btn-secondary" type="button" (click)="irParaResultados()">Ver Resultados</button>
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Quantidade</mat-label>
+      <input matInput type="number" formControlName="quantidade" min="1" />
+      <mat-error *ngIf="aparelhoForm.get('quantidade')?.invalid">Quantidade é obrigatória e deve ser ≥ 1</mat-error>
+    </mat-form-field>
+
+    <div class="button-row">
+      <button mat-flat-button color="primary" type="submit" [disabled]="aparelhoForm.invalid">
+        {{ editandoId ? 'Salvar Edição' : 'Cadastrar' }}
+      </button>
+      <button mat-stroked-button color="accent" type="button" (click)="irParaResultados()">
+        Ver Resultados
+      </button>
     </div>
   </form>
-</div>
+</mat-card>
 
-<div class="card">
+<mat-card class="filter-card">
   <h3>Filtros</h3>
-  <div>
-    <label>Buscar por nome:</label>
-    <input [(ngModel)]="filtros.nome" class="form-control" placeholder="Ex: Geladeira" />
-  </div>
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Buscar por nome</mat-label>
+    <input matInput [(ngModel)]="filtros.nome" placeholder="Ex: Geladeira" />
+  </mat-form-field>
 
-  <div class="mt-2">
-    <label>Filtrar por data:</label>
-    <input type="date" [(ngModel)]="filtros.data" class="form-control" />
-  </div>
-</div>
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Filtrar por data</mat-label>
+    <input matInput [matDatepicker]="filterPicker" [(ngModel)]="filtros.data" />
+    <mat-datepicker-toggle matSuffix [for]="filterPicker"></mat-datepicker-toggle>
+    <mat-datepicker #filterPicker></mat-datepicker>
+  </mat-form-field>
+</mat-card>
 
-<div class="card">
+<mat-card class="table-card">
   <h2>Aparelhos Registrados</h2>
-  <table>
-    <thead>
-    <tr>
-      <th>Nome</th>
-      <th>Data</th>
-      <th>Ambiente</th>
-      <th>Estado</th>
-      <th>Bandeira</th>
-      <th>Potência (W)</th>
-      <th>Uso Diário (h)</th>
-      <th>Qtd</th>
-      <th>Ações</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr *ngFor="let a of aparelhosFiltrados">
-      <td>{{ a.nome }}</td>
-      <td>{{ a.data_cadastro }}</td>
-      <td>{{ a.ambiente.nome }}</td>
-      <td>{{ a.estado.nome }}</td>
-      <td>{{ a.bandeira.cor }}</td>
-      <td>{{ a.potencia_watts }}</td>
-      <td>{{ a.tempo_uso_diario_horas }}</td>
-      <td>{{ a.quantidade }}</td>
-      <td>
-        <button class="btn btn-sm btn-primary" (click)="editar(a)">Editar</button>
-        <button class="btn btn-sm btn-danger" (click)="remover(a.id)">Remover</button>
+
+  <table mat-table [dataSource]="aparelhosFiltrados" class="mat-elevation-z8" matSort>
+
+    <!-- Nome -->
+    <ng-container matColumnDef="nome">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Nome</th>
+      <td mat-cell *matCellDef="let a">{{ a.nome }}</td>
+    </ng-container>
+
+    <!-- Data -->
+    <ng-container matColumnDef="data_cadastro">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Data</th>
+      <td mat-cell *matCellDef="let a">{{ a.data_cadastro | date:'dd/MM/yyyy' }}</td>
+    </ng-container>
+
+    <!-- Ambiente -->
+    <ng-container matColumnDef="ambiente">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Ambiente</th>
+      <td mat-cell *matCellDef="let a">{{ a.ambiente.nome }}</td>
+    </ng-container>
+
+    <!-- Estado -->
+    <ng-container matColumnDef="estado">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Estado</th>
+      <td mat-cell *matCellDef="let a">{{ a.estado.nome }}</td>
+    </ng-container>
+
+    <!-- Bandeira -->
+    <ng-container matColumnDef="bandeira">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Bandeira</th>
+      <td mat-cell *matCellDef="let a">{{ a.bandeira.cor }}</td>
+    </ng-container>
+
+    <!-- Potência -->
+    <ng-container matColumnDef="potencia_watts">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Potência (W)</th>
+      <td mat-cell *matCellDef="let a">{{ a.potencia_watts }}</td>
+    </ng-container>
+
+    <!-- Uso Diário -->
+    <ng-container matColumnDef="tempo_uso_diario_horas">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Uso Diário (h)</th>
+      <td mat-cell *matCellDef="let a">{{ a.tempo_uso_diario_horas }}</td>
+    </ng-container>
+
+    <!-- Quantidade -->
+    <ng-container matColumnDef="quantidade">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Qtd</th>
+      <td mat-cell *matCellDef="let a">{{ a.quantidade }}</td>
+    </ng-container>
+
+    <!-- Ações -->
+    <ng-container matColumnDef="acoes">
+      <th mat-header-cell *matHeaderCellDef>Ações</th>
+      <td mat-cell *matCellDef="let a">
+        <button mat-icon-button color="primary" (click)="editar(a)" aria-label="Editar">
+          <mat-icon>edit</mat-icon>
+        </button>
+        <button mat-icon-button color="warn" (click)="remover(a.id)" aria-label="Remover">
+          <mat-icon>delete</mat-icon>
+        </button>
       </td>
-    </tr>
-    </tbody>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
   </table>
-</div>
+</mat-card>

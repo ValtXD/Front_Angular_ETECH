@@ -1,0 +1,38 @@
+<mat-toolbar color="primary" class="mat-elevation-z4">
+  <span>Dashboard - Controle de Consumo de Energia</span>
+  <span class="spacer"></span>
+  <button mat-button color="warn" (click)="logout()">Sair</button>
+</mat-toolbar>
+
+<div class="dashboard-container">
+  <mat-card class="dashboard-card">
+    <mat-card-title>Total Consumo (kWh)</mat-card-title>
+    <mat-card-content>
+      <h2>{{ totalConsumo | number:'1.2-2' }}</h2>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card class="dashboard-card">
+    <mat-card-title>Custo Total (R$)</mat-card-title>
+    <mat-card-content>
+      <h2>{{ totalCusto | currency:'BRL' }}</h2>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card class="dashboard-card">
+    <mat-card-title>Aparelhos Ativos</mat-card-title>
+    <mat-card-content>
+      <h2>{{ aparelhosAtivos }}</h2>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card class="dashboard-card">
+    <mat-card-title>Bandeira Tarifária Atual</mat-card-title>
+    <mat-card-content>
+      <div class="bandeira-display">
+        <span class="bandeira-indicator" [ngStyle]="{'background-color': bandeiraAtual?.cor}"></span>
+        <span>{{ bandeiraAtual?.descricao || 'N/A' }}</span>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

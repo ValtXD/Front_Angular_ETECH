@@ -3,16 +3,31 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { OcrContadorQrService, Estado, Bandeira } from '../services/ocr-contador-qr.service';
 import { Router } from '@angular/router';
+import {MatCardModule} from '@angular/material/card';
+import {MatButtonModule} from '@angular/material/button';
+import {MatSelectModule} from '@angular/material/select';
+import {MatCheckboxModule} from '@angular/material/checkbox';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatInputModule} from '@angular/material/input';
 
 @Component({
   selector: 'app-leitura-qr',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [
+    CommonModule,
+    FormsModule,
+    MatCardModule,
+    MatButtonModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatSelectModule,
+    MatCheckboxModule
+  ],
   templateUrl: './leitura-qr.component.html',
-  styleUrls: ['./leitura-qr.component.css'],
+  styleUrls: ['./leitura-qr.component.scss'],
 })
 export class LeituraQrComponent implements OnInit {
-  qrData = 'http://192.168.0.4:4200/leitura-qr'; // Ajuste para seu IP
+  qrData = 'http://192.168.0.4:4200/leitura-qr'; // Ajuste conforme seu IP
 
   estados: Estado[] = [];
   bandeiras: Bandeira[] = [];
@@ -142,4 +157,3 @@ export class LeituraQrComponent implements OnInit {
     );
   }
 }
-

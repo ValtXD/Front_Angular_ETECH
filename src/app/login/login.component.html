@@ -1,16 +1,28 @@
-<form (ngSubmit)="onSubmit()">
-  <label>Usuário</label>
-  <input [(ngModel)]="username" name="username" required />
+<mat-card class="login-card">
+  <mat-card-title>Login</mat-card-title>
+  <form (ngSubmit)="onSubmit()" class="login-form" #loginForm="ngForm">
 
-  <label>Senha</label>
-  <input type="password" [(ngModel)]="password" name="password" required />
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Usuário</mat-label>
+      <input matInput name="username" [(ngModel)]="username" required #usernameInput="ngModel" />
+      <mat-error *ngIf="usernameInput.invalid && usernameInput.touched">Usuário é obrigatório</mat-error>
+    </mat-form-field>
 
-  <button type="submit">Entrar</button>
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Senha</mat-label>
+      <input matInput type="password" name="password" [(ngModel)]="password" required #passwordInput="ngModel" />
+      <mat-error *ngIf="passwordInput.invalid && passwordInput.touched">Senha é obrigatória</mat-error>
+    </mat-form-field>
 
-  <div *ngIf="errorMsg" style="color:red">{{ errorMsg }}</div>
+    <div class="error-message" *ngIf="errorMsg">{{ errorMsg }}</div>
 
-  <p>
-    Não tem uma conta?
-    <a routerLink="/register">Cadastre-se aqui</a>
-  </p>
-</form>
+    <div class="buttons">
+      <button mat-raised-button color="primary" type="submit" [disabled]="loginForm.invalid">Entrar</button>
+    </div>
+
+    <p class="register-link">
+      Não tem uma conta?
+      <a routerLink="/register">Cadastre-se aqui</a>
+    </p>
+  </form>
+</mat-card>

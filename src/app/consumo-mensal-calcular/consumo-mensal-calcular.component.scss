@@ -1,0 +1,22 @@
+:host {
+  display: flex;
+  justify-content: center;
+  margin: 20px;
+}
+
+mat-card {
+  width: 100%;
+  max-width: 700px;
+  padding: 20px;
+}
+
+.full-width {
+  width: 100%;
+  margin-bottom: 16px;
+}
+
+.button-row {
+  display: flex;
+  justify-content: flex-start;
+  gap: 10px;
+}
