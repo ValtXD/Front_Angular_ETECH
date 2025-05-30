@@ -1,0 +1,192 @@
+<h3>Resultados do Documento</h3>
+
+<div *ngIf="dados.length === 0">
+  <p>Nenhum dado disponível para mostrar resultados.</p>
+</div>
+
+<div *ngIf="dados.length > 0">
+
+  <!-- Preview simples dos dados carregados -->
+  <h4>Preview dos Dados</h4>
+  <div *ngIf="tipoDocumento === 'aparelho'">
+    <table border="1" cellspacing="0" cellpadding="5" style="width: 100%;">
+      <thead>
+      <tr>
+        <th>Aparelho</th>
+        <th>Potência (W)</th>
+        <th>Horas por Dia</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let item of dados">
+        <td>{{ item.aparelho }}</td>
+        <td>{{ item.potencia_w }}</td>
+        <td>{{ item.horas_por_dia }}</td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div *ngIf="tipoDocumento === 'contador'">
+    <table border="1" cellspacing="0" cellpadding="5" style="width: 100%;">
+      <thead>
+      <tr>
+        <th>Data</th>
+        <th>Leitura (kWh)</th>
+        <th>Consumo (kWh)</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let item of dados">
+        <td>{{ item.data }}</td>
+        <td>{{ item.leitura_kwh }}</td>
+        <td>
+          {{ getConsumoPorData(item.data) !== null ? (getConsumoPorData(item.data) | number:'1.2-2') : 'N/A' }}
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h4 style="margin-top: 1rem;">Parâmetros para cálculo</h4>
+  <label>
+    Estado:
+    <select [(ngModel)]="estadoSelecionado" name="estadoSelecionado">
+      <option [ngValue]="null" disabled>Selecione um estado</option>
+      <option *ngFor="let estado of estados" [value]="estado.id">{{ estado.nome }}</option>
+    </select>
+  </label>
+
+  <label style="margin-left: 1rem;">
+    Bandeira Tarifária:
+    <select [(ngModel)]="bandeiraSelecionada" name="bandeiraSelecionada">
+      <option [ngValue]="null" disabled>Selecione uma bandeira</option>
+      <option *ngFor="let bandeira of bandeiras" [value]="bandeira.id" [ngStyle]="{'background-color': bandeira.cor}">
+        {{ bandeira.cor}} - {{ bandeira.descricao }} (R$ {{ bandeira.valor_adicional | number:'1.2-2' }})
+      </option>
+    </select>
+  </label>
+
+  <label style="margin-left: 1rem;">
+    <input type="checkbox" [(ngModel)]="tarifaSocialAtiva" name="tarifaSocialAtiva" />
+    Tarifa Social
+  </label>
+
+  <br /><br />
+
+  <button (click)="calcularCustos()">Calcular Custos</button>
+
+  <div *ngIf="carregando" style="margin-top: 1rem;">Calculando custos...</div>
+
+  <div *ngIf="!carregando && resultadosCalculo">
+
+    <!-- Aparelho -->
+    <div *ngIf="tipoDocumento === 'aparelho'" style="margin-top: 1rem;">
+      <h4>Resultados de Aparelhos</h4>
+      <table border="1" cellspacing="0" cellpadding="5" style="width: 100%;">
+        <thead>
+        <tr>
+          <th>Aparelho</th>
+          <th>Consumo Diário (kWh)</th>
+          <th>Consumo Mensal (kWh)</th>
+          <th>Custo Normal (R$)</th>
+          <th>Custo com Tarifa Social (R$)</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let item of resultadosCalculo.resultados">
+          <td>{{ item.aparelho }}</td>
+          <td>{{ (item.consumo_mensal_kwh / 30) | number:'1.2-2' }}</td>
+          <td>{{ item.consumo_mensal_kwh | number:'1.2-2' }}</td>
+          <td>{{ item.custo_normal | currency:'BRL' }}</td>
+          <td>{{ item.custo_social | currency:'BRL' }}</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Contador -->
+    <div *ngIf="tipoDocumento === 'contador'" style="margin-top: 1rem;">
+      <h4>Resultados de Contador</h4>
+      <table border="1" cellspacing="0" cellpadding="5" style="width: 100%;">
+        <thead>
+        <tr>
+          <th>Data</th>
+          <th>Leitura (kWh)</th>
+          <th>Consumo (kWh)</th>
+          <th>Custo Normal (R$)</th>
+          <th>Custo com Tarifa Social (R$)</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let item of resultadosCalculo.resultados">
+          <td>{{ item.data }}</td>
+          <td>{{ item.leitura_kwh | number:'1.2-2' }}</td>
+          <td>{{ item.consumo | number:'1.2-2' }}</td>
+          <td>{{ item.custo_normal | currency:'BRL' }}</td>
+          <td>{{ item.custo_social | currency:'BRL' }}</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div style="margin-top: 1rem; font-weight: bold;">
+      <p>Total Consumo: {{ resultadosCalculo.total_consumo | number:'1.2-2' }} kWh</p>
+      <p>Total Custo Normal: {{ resultadosCalculo.total_custo_normal | currency:'BRL' }}</p>
+      <p>Total Custo com Tarifa Social: {{ resultadosCalculo.total_custo_social | currency:'BRL' }}</p>
+    </div>
+  </div>
+
+  <button (click)="gerarDica()" [disabled]="carregando || carregandoDica || !resultadosCalculo" style="margin-top: 1rem;">
+    {{ carregandoDica ? 'Gerando dica...' : 'Gerar Dica' }}
+  </button>
+
+  <!-- Modal simples para exibir dica -->
+  <div *ngIf="mostrarDica" class="modal-dica">
+    <div class="modal-content">
+      <button class="close-btn" (click)="fecharDica()" aria-label="Fechar dica">Fechar</button>
+      <h3>Dica Personalizada</h3>
+      <pre>{{ dicaIA }}</pre>
+    </div>
+  </div>
+</div>
+
+<style>
+  .modal-dica {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1050;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .modal-content {
+    position: relative; /* importante para o posicionamento absoluto do botão */
+    background: white;
+    border-radius: 8px;
+    max-width: 600px;
+    width: 100%;
+    padding: 1rem;
+    max-height: 80vh;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+  }
+  pre {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    max-height: 70vh;
+    overflow-y: auto;
+    flex-grow: 1; /* para ocupar espaço vertical antes do botão -> pode tirar*/
+  }
+  .close-btn {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+  }
+</style>
+

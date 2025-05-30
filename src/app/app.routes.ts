@@ -12,6 +12,8 @@ import {ConsumoMensalCalcularComponent} from './consumo-mensal-calcular/consumo-
 import {UploadImagemComponent} from './upload-imagem/upload-imagem.component';
 import {ListaLeiturasComponent} from './lista-leituras/lista-leituras.component';
 import {LeituraQrComponent} from './leitura-qr/leitura-qr.component';
+import {UploadDocumentoComponent} from './upload-documento/upload-documento.component';
+import {ResultadosDocumentoComponent} from './resultados-documento/resultados-documento.component';
 
 export const routes: Routes = [
   {
@@ -40,6 +42,10 @@ export const routes: Routes = [
       { path: 'leitura-qr', component: LeituraQrComponent },
 
       //Rotas Login_Cadastro_Django
+
+      //Rotas do Leitura_Documento
+      { path: 'upload-documento', component: UploadDocumentoComponent },
+      { path: 'resultados-documento', component: ResultadosDocumentoComponent },
 
     ]
   },

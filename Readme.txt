@@ -1,3 +1,6 @@
+Retirada do "Custo social" no gráfico -> Meninas
+Deixar consumo e custo por ambiente juntos ou separados -> podem decidir
+--------------------------------
 Rotas:
 app.routes.ts
 app-routing.module.ts (não altera, somente se necessario)
@@ -51,12 +54,14 @@ ocr-contador-qr
 -----------------------------------
 Tela de Leitura de Documentação (Relacionado á grande quantia de dados)
 >Components:
-Em desenvolvimento
+upload-documento
+resultados-documento
 
 >Services:
-Em desenvolvimento
+documento.service
 -----------------------------------
 Tela Login_Cadastro_Django (O proprio Django teria a funcionalidade, padrão e básica(Pesquisa no Chat pra ter certeza))
+(Se as meninas puderem fazer - oq fiz foi somente teste(deu erro))
 >Components:
 login
 register

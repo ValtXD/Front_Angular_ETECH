@@ -4,6 +4,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 import { CommonModule } from '@angular/common';
+import { MatTableModule } from '@angular/material/table';
 
 // Importando os módulos do ng2-charts
 //import { NgChartsModule } from 'ng2-charts';
@@ -22,6 +23,8 @@ import {ListaLeiturasComponent} from './lista-leituras/lista-leituras.component'
 import {ZXingScannerModule} from '@zxing/ngx-scanner';
 import {NgxQRCodeModule} from '@techiediaries/ngx-qrcode';
 import {LeituraQrComponent} from './leitura-qr/leitura-qr.component';
+import {UploadDocumentoComponent} from './upload-documento/upload-documento.component';
+import {ResultadosDocumentoComponent} from './resultados-documento/resultados-documento.component';
 
 @NgModule({
   declarations: [
@@ -47,6 +50,10 @@ import {LeituraQrComponent} from './leitura-qr/leitura-qr.component';
     ZXingScannerModule,
     NgxQRCodeModule,
     LeituraQrComponent,
+    MatTableModule,
+    UploadDocumentoComponent,
+    ResultadosDocumentoComponent,
+
     // Certifique-se de ter adicionado o ChartsModule aqui
   ],
   providers: [provideCharts(withDefaultRegisterables())],

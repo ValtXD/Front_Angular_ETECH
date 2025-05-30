@@ -1,0 +1,70 @@
+<h3>Upload do Documento</h3>
+
+<p>
+  Envie arquivo Excel (.xlsx, .xls) ou Word (.docx) com colunas certas.<br />
+  Aparelhos: "Aparelho", "Potencia(W)", "HorasPorDia".<br />
+  Contador: "Data" (YYYY-MM) e "LeituraDoMes(kWh)".
+</p>
+
+<h5>Download de Templates</h5>
+
+<!-- Botões para baixar os templates -->
+<div>
+  <h4>Template de Contador</h4>
+  <button (click)="baixarTemplate('contador', 'excel')" class="btn btn-primary">Baixar Contador Excel</button>
+  <button (click)="baixarTemplate('contador', 'word')" class="btn btn-secondary">Baixar Contador Word</button>
+</div>
+
+<div>
+  <h4>Template de Aparelhos</h4>
+  <button (click)="baixarTemplate('aparelho', 'excel')" class="btn btn-primary">Baixar Aparelho Excel</button>
+  <button (click)="baixarTemplate('aparelho', 'word')" class="btn btn-secondary">Baixar Aparelho Word</button>
+</div><br>
+<hr><br>
+<input type="file" (change)="onArquivoChange($event)" />
+
+<div *ngIf="carregando" style="margin-top: 1rem;">Processando arquivo...</div>
+
+<div *ngIf="erros.length > 0" style="color: red; margin-top: 1rem;">
+  <h4>Erros:</h4>
+  <ul><li *ngFor="let erro of erros">{{ erro }}</li></ul>
+</div>
+
+<div *ngIf="tipoDocumento === 'aparelho' && erros.length === 0 && dados.length > 0" style="margin-top: 2rem;">
+  <h4>Preview Aparelhos</h4>
+  <table border="1" cellspacing="0" cellpadding="5" style="width: 100%;">
+    <thead>
+    <tr><th>Aparelho</th><th>Potência (W)</th><th>Horas por Dia</th></tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let item of dados">
+      <td>{{ item.aparelho }}</td>
+      <td>{{ item.potencia_w }}</td>
+      <td>{{ item.horas_por_dia }}</td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+
+<div *ngIf="tipoDocumento === 'contador' && erros.length === 0 && dados.length > 0" style="margin-top: 2rem;">
+  <h4>Preview Contador</h4>
+  <table border="1" cellspacing="0" cellpadding="5" style="width: 100%;">
+    <thead>
+    <tr><th>Data</th><th>Leitura (kWh)</th></tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let item of dados">
+      <td>{{ item.data }}</td>
+      <td>{{ item.leitura_kwh }}</td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+
+<button
+  (click)="irParaResultados()"
+  [disabled]="dados.length === 0 || erros.length > 0"
+  style="margin-top: 1rem;"
+>
+  Ir para Resultados
+</button>
