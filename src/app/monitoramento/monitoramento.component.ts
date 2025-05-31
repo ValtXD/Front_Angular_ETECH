@@ -24,7 +24,7 @@ Chart.register(...registerables);
 export class MonitoramentoComponent implements OnInit {
   datasDisponiveis: string[] = [];
   dataSelecionada: string = '';
-  modo30dias = false;
+  modo: 'diario' | '30dias' = 'diario';
 
   consumoTotalPorAmbienteChartData?: ChartData<'line'>;
   custoTotalPorAmbienteChartData?: ChartData<'line'>;
@@ -32,34 +32,65 @@ export class MonitoramentoComponent implements OnInit {
   chartOptions: ChartConfiguration<'line'>['options'] = {
     responsive: true,
     maintainAspectRatio: false,
+    interaction: {
+      mode: 'nearest',
+      intersect: false,
+    },
     plugins: {
-      legend: { position: 'top' },
+      legend: { display: true },
       tooltip: {
+        enabled: true,
         callbacks: {
-          label: function (context: TooltipItem<'line'>) {
+          label: (context: TooltipItem<'line'>) => {
             const dataset = context.dataset as any;
             const index = context.dataIndex;
-            const extras = dataset.dadosExtras?.[index];
+            const extras = dataset.dadosExtras?.[index]; // Access dadosExtras
 
             let label = `${dataset.label}: ${context.formattedValue}`;
-            if (extras) {
+            if (extras && extras.aparelhos && extras.aparelhos.length > 0) {
               label += `\nAparelhos: ${extras.aparelhos.join(', ')}`;
-              label += `\nEstados: ${extras.estados.join(', ')}`;
-              label += `\nBandeiras: ${extras.bandeiras.join(', ')}`;
             }
             return label;
-          }
+          },
+          // You can add a footer callback here if you want to show other info like 'estados' or 'bandeiras'
+          // footer: (tooltipItems) => {
+          //   if (tooltipItems.length > 0) {
+          //     const dataset = tooltipItems[0].dataset as any;
+          //     const index = tooltipItems[0].dataIndex;
+          //     const extras = dataset.dadosExtras?.[index];
+          //     if (extras && extras.estados && extras.estados.length > 0) {
+          //       return `Estados: ${extras.estados.join(', ')}`;
+          //     }
+          //   }
+          //   return '';
+          // }
         }
       }
     },
     scales: {
-      y: { beginAtZero: true }
+      y1: {
+        type: 'linear',
+        position: 'left',
+        beginAtZero: true,
+        title: { display: true, text: 'Consumo (kWh)' }
+      },
+      y2: {
+        type: 'linear',
+        position: 'right',
+        beginAtZero: true,
+        grid: { drawOnChartArea: false },
+        title: { display: true, text: 'Custo (R$)' }
+      },
+      x: {
+        title: { display: true, text: 'Ambiente' },
+        ticks: {
+          maxRotation: 0,
+          autoSkip: true,
+          maxTicksLimit: 12
+        }
+      }
     }
   };
-
-  modalAberto = false;
-  loadingDicas = false;
-  dicasHtml = '';
 
   constructor(private http: HttpClient, private router: Router) {}
 
@@ -90,7 +121,7 @@ export class MonitoramentoComponent implements OnInit {
     if (!this.dataSelecionada) return;
 
     const params: any = { periodo: this.dataSelecionada };
-    if (this.modo30dias) {
+    if (this.modo === '30dias') {
       params.modo = '30dias';
     }
 
@@ -98,12 +129,11 @@ export class MonitoramentoComponent implements OnInit {
       next: (res) => {
         let dados = res.dados;
 
-        if (this.modo30dias) {
+        if (this.modo === '30dias') {
           dados = dados.map((d: any) => ({
             ...d,
             consumo: d.consumo * 30,
             custo_normal: d.custo_normal * 30,
-            custo_social: d.custo_social * 30
           }));
         }
 
@@ -119,11 +149,15 @@ export class MonitoramentoComponent implements OnInit {
           labels,
           datasets: [
             {
-              label: this.modo30dias ? 'Consumo Mensal (kWh)' : 'Consumo Diário (kWh)',
+              label: this.modo === '30dias' ? 'Consumo Mensal (kWh)' : 'Consumo Diário (kWh)',
               data: dados.map((d: any) => d.consumo),
               borderColor: 'blue',
-              fill: false,
-              tension: 0.1,
+              backgroundColor: 'rgba(0,0,255,0.1)',
+              fill: true,
+              tension: 0.3,
+              yAxisID: 'y1',
+              pointRadius: 5,
+              pointHoverRadius: 7,
               ...( { dadosExtras } as any )
             }
           ]
@@ -133,21 +167,17 @@ export class MonitoramentoComponent implements OnInit {
           labels,
           datasets: [
             {
-              label: this.modo30dias ? 'Custo Mensal Normal (R$)' : 'Custo Diário Normal (R$)',
+              label: this.modo === '30dias' ? 'Custo Mensal (R$)' : 'Custo Diário (R$)',
               data: dados.map((d: any) => d.custo_normal),
-              borderColor: 'red',
-              fill: false,
-              tension: 0.1,
+              borderColor: 'green',
+              backgroundColor: 'rgba(0,255,0,0.1)',
+              fill: true,
+              tension: 0.3,
+              yAxisID: 'y2',
+              pointRadius: 5,
+              pointHoverRadius: 7,
               ...( { dadosExtras } as any )
             },
-            {
-              label: this.modo30dias ? 'Custo Mensal Social (R$)' : 'Custo Diário Social (R$)',
-              data: dados.map((d: any) => d.custo_social),
-              borderColor: 'green',
-              fill: false,
-              tension: 0.1,
-              ...( { dadosExtras } as any )
-            }
           ]
         };
       },
@@ -161,42 +191,13 @@ export class MonitoramentoComponent implements OnInit {
     this.carregarDados();
   }
 
-  onModoChange() {
+  onModoChange(event: Event) {
+    const input = event.target as HTMLInputElement;
+    this.modo = input.value as 'diario' | '30dias';
     this.carregarDados();
-  }
-
-  gerarDicas() {
-    this.modalAberto = true;
-    this.loadingDicas = true;
-    this.dicasHtml = '';
-
-    const payload = {
-      dataSelecionada: this.dataSelecionada,
-      modo30dias: this.modo30dias
-    };
-
-    this.http.post<{ dicas: string }>('/api/dicas-economia/', payload).subscribe({
-      next: res => {
-        this.loadingDicas = false;
-        this.dicasHtml = this.formatarDicas(res.dicas);
-      },
-      error: err => {
-        this.loadingDicas = false;
-        this.dicasHtml = `<p>Erro ao gerar dicas: ${err.message || err.statusText}</p>`;
-      }
-    });
-  }
-
-  fecharModal() {
-    this.modalAberto = false;
   }
 
   voltar() {
     this.router.navigate(['/resultados']);
-  }
-
-  private formatarDicas(texto: string): string {
-    const paragrafos = texto.split('\n').filter(p => p.trim() !== '');
-    return paragrafos.map(p => `<p>${p}</p>`).join('');
   }
 }
