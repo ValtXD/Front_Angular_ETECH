@@ -6,6 +6,9 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { MatDialogModule } from '@angular/material/dialog';
+
+
 
 @Component({
   standalone: true,
@@ -16,6 +19,7 @@ import { Router } from '@angular/router';
     CommonModule,
     FormsModule,
     HttpClientModule,
+    MatDialogModule,
   ]
 })
 export class ResultadosComponent implements OnInit {

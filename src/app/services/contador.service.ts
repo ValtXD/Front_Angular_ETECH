@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import {HttpClient, HttpParams} from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 export interface Estado {
@@ -66,22 +66,6 @@ export class ContadorService {
     return this.http.post<ConsumoMensal>(`${this.baseUrl}/consumo-mensal/`, data);
   }
 
-  listarConsumos(): Observable<{
-    registros: ConsumoMensal[],
-    consumo_total: number,
-    custo_total: number,
-    consumo_anual_estimado?: number,
-    custo_anual_estimado?: number
-  }> {
-    return this.http.get<{
-      registros: ConsumoMensal[],
-      consumo_total: number,
-      custo_total: number,
-      consumo_anual_estimado?: number,
-      custo_anual_estimado?: number
-    }>(`${this.baseUrl}/resultados-contador/`);
-  }
-
   deletar(id: number): Observable<any> {
     return this.http.delete(`${this.baseUrl}/consumo-mensal/${id}/`);
   }
@@ -102,8 +86,8 @@ export class ContadorService {
     }>(`${this.baseUrl}/grafico-contador-anual/`);
   }
 
-  listarConsumosComFiltro(params: any): Observable<ResultadoConsumoResponse> {
-    return this.http.get<ResultadoConsumoResponse>(`${this.baseUrl}/resultados-contador/`, {params});
+  listarConsumos(params?: HttpParams | {[key:string]: any}): Observable<ResultadoConsumoResponse> {
+    return this.http.get<ResultadoConsumoResponse>(`${this.baseUrl}/resultados-contador/`, { params });
   }
 
   atualizar(id: number, payload: any): Observable<any> {

@@ -40,9 +40,7 @@ export class ApiService {
     return this.http.put(`${this.baseUrl}/aparelhos/${id}/`, payload);
   }
 
-  getAparelhos(data?: string): Observable<Aparelho[]> {
-    let params = new HttpParams();
-    if (data) params = params.set('data', data);
+  getAparelhos(params?: HttpParams): Observable<Aparelho[]> {
     return this.http.get<Aparelho[]>(`${this.baseUrl}/aparelhos/`, { params });
   }
 

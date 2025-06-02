@@ -1,58 +1,91 @@
-<div class="card p-3">
+<div class="mat-elevation-z2 p-3">
   <h1>Resultados do Contador</h1>
 
-  <div class="mb-3 d-flex gap-3 align-items-center">
-    <label for="anoFiltro" class="form-label mb-0">Ano:</label>
-    <select id="anoFiltro" [(ngModel)]="anoSelecionado" (change)="onFiltroAlterado()" class="form-select" style="width: auto;">
-      <option [ngValue]="null">Todos</option>
-      <option *ngFor="let ano of anosDisponiveis" [value]="ano">{{ ano }}</option>
-    </select>
+  <div class="mb-3 d-flex gap-3 align-items-center" style="flex-wrap: wrap;">
+    <mat-form-field appearance="fill" style="width: 120px;">
+      <mat-label>Ano</mat-label>
+      <mat-select [(value)]="anoSelecionado" (selectionChange)="onFiltroAlterado()">
+        <mat-option [value]="null">Todos</mat-option>
+        <mat-option *ngFor="let ano of anosDisponiveis" [value]="ano">{{ ano }}</mat-option>
+      </mat-select>
+    </mat-form-field>
 
-    <label for="mesFiltro" class="form-label mb-0"> Mês:</label>
-    <select id="mesFiltro" [(ngModel)]="mesSelecionado" (change)="onFiltroAlterado()" class="form-select" style="width: auto;">
-      <option [ngValue]="null">Todos</option>
-      <option *ngFor="let mes of mesesDisponiveis" [value]="mes">{{ mes }}</option>
-    </select>
+    <mat-form-field appearance="fill" style="width: 120px;">
+      <mat-label>Mês</mat-label>
+      <mat-select [(value)]="mesSelecionado" (selectionChange)="onFiltroAlterado()">
+        <mat-option [value]="null">Todos</mat-option>
+        <mat-option *ngFor="let mes of mesesDisponiveis" [value]="mes">{{ mes }}</mat-option>
+      </mat-select>
+    </mat-form-field>
   </div>
 
-  <table class="table table-striped" *ngIf="registros.length > 0">
-    <thead>
-    <tr>
-      <th>Ano</th>
-      <th>Mês</th>
-      <th>Estado</th>
-      <th>Bandeira</th>
-      <th class="text-right">Consumo (kWh)</th>
-      <th class="text-right">Consumo Anual (kWh)</th>
-      <th class="text-right">Total Pago (R$)</th>
-      <th class="text-right">Total Pago Anual (R$)</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr *ngFor="let r of registros">
-      <td>{{ r.ano }}</td>
-      <td>{{ r.mes }}</td>
-      <td>{{ r.estado_nome }}</td>
-      <td>{{ r.bandeira_cor }}</td>
-      <td class="text-right">{{ r.consumo_kwh | number:'1.2-2' }}</td>
-      <td class="text-right">{{ calcularConsumoAnual(r) | number:'1.2-2' }}</td>
-      <td class="text-right">{{ r.total_pagar | number:'1.2-2' }}</td>
-      <td class="text-right">{{ (r.total_pagar * 12) | number:'1.2-2' }}</td>
-    </tr>
+  <table mat-table [dataSource]="registros" class="mat-elevation-z1" *ngIf="registros.length > 0" style="width: 100%;">
+
+    <!-- Ano -->
+    <ng-container matColumnDef="ano">
+      <th mat-header-cell *matHeaderCellDef>Ano</th>
+      <td mat-cell *matCellDef="let r">{{ r.ano }}</td>
+    </ng-container>
+
+    <!-- Mês -->
+    <ng-container matColumnDef="mes">
+      <th mat-header-cell *matHeaderCellDef>Mês</th>
+      <td mat-cell *matCellDef="let r">{{ r.mes }}</td>
+    </ng-container>
+
+    <!-- Estado -->
+    <ng-container matColumnDef="estado">
+      <th mat-header-cell *matHeaderCellDef>Estado</th>
+      <td mat-cell *matCellDef="let r">{{ r.estado_nome }}</td>
+    </ng-container>
+
+    <!-- Bandeira -->
+    <ng-container matColumnDef="bandeira">
+      <th mat-header-cell *matHeaderCellDef>Bandeira</th>
+      <td mat-cell *matCellDef="let r">{{ r.bandeira_cor }}</td>
+    </ng-container>
+
+    <!-- Consumo (kWh) -->
+    <ng-container matColumnDef="consumo_kwh">
+      <th mat-header-cell *matHeaderCellDef class="text-right">Consumo (kWh)</th>
+      <td mat-cell *matCellDef="let r" class="text-right">{{ r.consumo_kwh | number:'1.2-2' }}</td>
+    </ng-container>
+
+    <!-- Consumo Anual (kWh) -->
+    <ng-container matColumnDef="consumo_anual">
+      <th mat-header-cell *matHeaderCellDef class="text-right">Consumo Anual (kWh)</th>
+      <td mat-cell *matCellDef="let r" class="text-right">{{ calcularConsumoAnual(r) | number:'1.2-2' }}</td>
+    </ng-container>
+
+    <!-- Total Pago (R$) -->
+    <ng-container matColumnDef="total_pagar">
+      <th mat-header-cell *matHeaderCellDef class="text-right">Total Pago (R$)</th>
+      <td mat-cell *matCellDef="let r" class="text-right">{{ r.total_pagar | number:'1.2-2' }}</td>
+    </ng-container>
+
+    <!-- Total Pago Anual (R$) -->
+    <ng-container matColumnDef="total_pago_anual">
+      <th mat-header-cell *matHeaderCellDef class="text-right">Total Pago Anual (R$)</th>
+      <td mat-cell *matCellDef="let r" class="text-right">{{ (r.total_pagar * 12) | number:'1.2-2' }}</td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="['ano','mes','estado','bandeira','consumo_kwh','consumo_anual','total_pagar','total_pago_anual']"></tr>
+    <tr mat-row *matRowDef="let row; columns: ['ano','mes','estado','bandeira','consumo_kwh','consumo_anual','total_pagar','total_pago_anual'];"></tr>
+
+    <!-- Linha TOTAL customizada -->
     <tr class="font-weight-bold">
-      <td colspan="4" class="text-right">TOTAL:</td>
+      <td colspan="4" class="text-right" style="font-weight: 600;">TOTAL:</td>
       <td class="text-right">{{ consumoTotal | number:'1.2-2' }}</td>
       <td class="text-right">{{ consumoAnualTotal | number:'1.2-2' }}</td>
       <td class="text-right">{{ custoTotal | number:'1.2-2' }}</td>
       <td class="text-right">{{ custoAnualTotal | number:'1.2-2' }}</td>
     </tr>
-    </tbody>
   </table>
 
-  <div class="mt-3 d-flex gap-2">
-    <button class="btn btn-primary" (click)="novo()">Novo Registro</button>
-    <button class="btn btn-info" (click)="irParaGrafico()">Gráfico</button>
-    <button class="btn btn-warning" (click)="gerarDica()" [disabled]="carregandoDica">
+  <div class="mt-3 d-flex gap-2" style="flex-wrap: wrap; gap: 10px;">
+    <button mat-raised-button color="primary" (click)="novo()">Novo Registro</button>
+    <button mat-raised-button color="accent" (click)="irParaGrafico()">Gráfico</button>
+    <button mat-raised-button color="warn" (click)="gerarDica()" [disabled]="carregandoDica">
       {{ carregandoDica ? 'Gerando dica...' : 'Gerar Dica' }}
     </button>
   </div>
@@ -61,7 +94,7 @@
     <div class="modal-conteudo">
       <h3>Dica de Economia de Energia</h3>
       <pre style="white-space: pre-wrap;">{{ dicaIA }}</pre>
-      <button class="btn btn-secondary" (click)="fecharModal()">Fechar</button>
+      <button mat-stroked-button color="primary" (click)="fecharModal()">Fechar</button>
     </div>
   </div>
 </div>
