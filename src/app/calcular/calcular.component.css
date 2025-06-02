@@ -1,29 +1,159 @@
-.card {
-  max-width: 700px;
-  margin: 20px auto;
-  padding: 20px;
-  background: white;
-  border-radius: 8px;
-  box-shadow: 0 0 10px #ccc;
+.calcular-container {
+  max-width: 960px;
+  margin: 3rem auto;
+  padding: 2rem;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #333;
+  background: #f9f9fb;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgb(0 0 0 / 0.1);
 }
 
-.form-group {
-  margin-bottom: 15px;
+/* Grid responsivo para o formulário */
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.8rem 2rem;
+  margin-top: 1rem;
 }
 
-.form-row {
+/* Campo que ocupa toda largura da grid */
+.full-width {
+  grid-column: 1 / -1;
+}
+
+/* Cartões com sombra e bordas arredondadas */
+.form-card,
+.lista-card {
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgb(0 0 0 / 0.08);
+  padding: 1.5rem 2rem;
+  margin-bottom: 2rem;
+  transition: box-shadow 0.3s ease;
+}
+
+.form-card:hover,
+.lista-card:hover {
+  box-shadow: 0 8px 32px rgb(0 0 0 / 0.12);
+}
+
+/* Título dos cartões */
+mat-card-title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #222;
+  margin-bottom: 1rem;
+}
+
+/* Estilo dos campos do formulário */
+.mat-form-field {
+  width: 100%;
+}
+
+.mat-form-field-appearance-outline .mat-form-field-outline {
+  border-color: #bbb;
+  transition: border-color 0.3s ease;
+}
+
+.mat-form-field-appearance-outline.mat-focused .mat-form-field-outline {
+  border-color: #4a90e2;
+  box-shadow: 0 0 8px #4a90e2aa;
+}
+
+/* Botões alinhados e com espaçamento */
+.actions {
   display: flex;
-  gap: 15px;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-top: 1rem;
 }
 
-.form-row .form-group {
-  flex: 1;
+/* Botões com sombras suaves */
+button.mat-flat-button, button.mat-stroked-button, button.mat-raised-button {
+  padding: 0.6rem 1.8rem;
+  font-weight: 600;
+  border-radius: 8px;
+  box-shadow: 0 3px 8px rgb(0 0 0 / 0.12);
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-.aparelhos-lista {
-  margin-top: 30px;
+button.mat-flat-button:hover, button.mat-raised-button:hover {
+  box-shadow: 0 6px 16px rgb(0 0 0 / 0.18);
 }
 
-.text-right {
+button.mat-stroked-button:hover {
+  background-color: #f0f0f0;
+}
+
+/* Filtros */
+.filtros-row {
+  display: flex;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+  margin-top: 1rem;
+}
+
+.filtro-field {
+  flex: 1 1 250px;
+  min-width: 250px;
+}
+
+/* Tabela estilizada */
+table.mat-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0 0.8rem;
+  font-size: 0.95rem;
+  color: #444;
+}
+
+/* Cabeçalho */
+.mat-header-row {
+  background-color: #4a90e2;
+  color: white;
+  font-weight: 700;
+  border-radius: 8px;
+  height: 48px;
+}
+
+/* Células do cabeçalho arredondadas */
+.mat-header-cell:first-child {
+  border-top-left-radius: 8px;
+  border-bottom-left-radius: 8px;
+}
+
+.mat-header-cell:last-child {
+  border-top-right-radius: 8px;
+  border-bottom-right-radius: 8px;
+}
+
+/* Linhas da tabela com sombra e espaçamento */
+.mat-row {
+  background-color: #fff;
+  box-shadow: 0 2px 8px rgb(0 0 0 / 0.05);
+  border-radius: 8px;
+  margin-bottom: 0.8rem;
+  display: table-row;
+}
+
+/* Células com padding confortável */
+.mat-cell, .mat-header-cell {
+  padding: 0.9rem 1.2rem;
+}
+
+/* Botões de ação na tabela */
+.mat-icon-button {
+  transition: transform 0.2s ease;
+}
+
+.mat-icon-button:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 6px #4a90e2aa;
+}
+
+/* Botão para ir para resultados alinhado */
+.btn-resultados {
+  margin-top: 1.8rem;
   text-align: right;
 }

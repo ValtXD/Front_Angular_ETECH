@@ -1,30 +1,193 @@
-.card {
-  max-width: 700px;
-  margin: 20px auto;
-  padding: 20px;
-  background: white;
-  border-radius: 8px;
-  box-shadow: 0 0 10px #ccc;
-}
-
-.form-group {
-  margin-bottom: 15px;
-}
-
-.form-row {
+.modal-fundo {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0,0,0,0.5);
   display: flex;
-  gap: 15px;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
 }
 
-.form-row .form-group {
-  flex: 1;
+.modal-conteudo {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  max-width: 600px;
+  max-height: 80vh;
+  overflow-y: auto;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.3);
 }
 
-.aparelhos-lista {
-  margin-top: 30px;
+
+
+
+.card-consumo,
+.card-filtros,
+.card-registros {
+  max-width: 900px;
+  margin: 2rem auto;
+  padding: 1.8rem 2rem;
+  border-radius: 12px;
+  box-shadow: 0 6px 18px rgb(0 0 0 / 0.12);
+  background-color: #fff;
+  transition: box-shadow 0.3s ease;
 }
 
-.text-right {
-  text-align: right;
+.card-consumo:hover,
+.card-filtros:hover,
+.card-registros:hover {
+  box-shadow: 0 10px 30px rgb(0 0 0 / 0.18);
 }
 
+/* =================== Titles =================== */
+mat-card-title {
+  font-weight: 700;
+  font-size: 1.75rem;
+  color: #1a237e; /* Azul escuro */
+  margin-bottom: 1.3rem;
+  letter-spacing: 0.02em;
+}
+
+/* =================== Form =================== */
+.form-consumo {
+  display: flex;
+  flex-direction: column;
+  gap: 1.4rem;
+}
+
+/* =================== Full Width Inputs/Selects =================== */
+.full-width {
+  width: 100%;
+}
+
+/* =================== Checkbox =================== */
+.checkbox-tarifa-social {
+  margin-top: 0.4rem;
+  font-weight: 600;
+  font-size: 1.05rem;
+  color: #333;
+}
+
+/* =================== Actions Buttons =================== */
+.actions {
+  display: flex;
+  gap: 1.2rem;
+  justify-content: flex-start;
+  margin-top: 1.8rem;
+}
+
+.btn-submit {
+  min-width: 150px;
+  font-weight: 700;
+  font-size: 1.1rem;
+  transition: background-color 0.3s ease;
+}
+
+.btn-submit:hover {
+  background-color: #3949ab;
+}
+
+.btn-secondary {
+  min-width: 150px;
+  font-weight: 600;
+  font-size: 1rem;
+  color: #3f51b5;
+  border-color: #3f51b5;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.btn-secondary:hover {
+  background-color: #3f51b5;
+  color: white;
+}
+
+/* =================== Filtros Container =================== */
+.filtros-container {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  margin-top: 0.5rem;
+}
+
+.filtro-field {
+  flex: 1 1 200px;
+  min-width: 200px;
+}
+
+/* =================== Tabela Estilizada =================== */
+table.mat-elevation-z8 {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0 12px;
+  font-family: 'Roboto', sans-serif;
+}
+
+th.mat-header-cell {
+  background-color: #3f51b5;
+  color: #fff;
+  font-weight: 700;
+  text-align: left;
+  padding: 14px 18px;
+  border-radius: 10px 10px 0 0;
+  letter-spacing: 0.03em;
+}
+
+td.mat-cell {
+  background-color: #f9fbff;
+  padding: 14px 18px;
+  font-size: 1rem;
+  border-bottom: 14px solid transparent;
+  vertical-align: middle;
+  color: #222;
+  transition: background-color 0.3s ease;
+}
+
+tr.mat-row:hover td.mat-cell {
+  background-color: #e8f0fe;
+  cursor: pointer;
+}
+
+/* =================== Ícones Ações =================== */
+button.mat-icon-button {
+  margin: 0 6px;
+  transition: background-color 0.2s ease;
+}
+
+button.mat-icon-button:hover {
+  background-color: rgba(63, 81, 181, 0.1);
+  border-radius: 6px;
+}
+
+/* =================== Mensagem alerta sem registros =================== */
+.alert-info {
+  color: #1565c0;
+  font-weight: 600;
+  font-size: 1.1rem;
+  text-align: center;
+  padding: 1.2rem;
+  background-color: #e3f2fd;
+  border-radius: 10px;
+  border: 1.5px solid #90caf9;
+  margin-top: 1.5rem;
+  user-select: none;
+}
+
+/* =================== Responsividade =================== */
+@media (max-width: 768px) {
+  .filtros-container {
+    flex-direction: column;
+  }
+
+  .actions {
+    flex-direction: column;
+  }
+
+  .btn-submit,
+  .btn-secondary {
+    width: 100%;
+  }
+}

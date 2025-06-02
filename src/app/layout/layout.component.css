@@ -1,0 +1,120 @@
+.top-toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 16px;
+  min-height: 100px;
+  background-color: #61a6ab;
+  transition: background-color 0.3s ease;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.top-toolbar:hover {
+  background-color: #337a81;
+}
+
+/* Container da logo e texto */
+.logo-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Imagem da logo */
+.logo-img {
+  height:   160px;  /* ajuste para o tamanho desejado */
+  width: auto;
+  user-select: none;
+  padding: 5px;
+  margin-top: 10px;
+}
+
+/* Texto do título */
+
+
+/* Menu horizontal de abas */
+.nav-tabs {
+  display: flex;
+  gap: 1rem;
+}
+
+/* Estilo para aba ativa */
+.active-tab {
+  border-bottom: 5px solid rgba(255, 156, 94, 0.67);
+  font-weight: 600;
+}
+
+/* Container principal do conteúdo */
+.content-container {
+  padding: 16px;
+  margin-top: 64px; /* altura aproximada da toolbar para evitar sobreposição */
+}
+
+/* RESPONSIVIDADE BÁSICA */
+@media (max-width: 900px) {
+  .logo-img {
+    height: 100px;
+    margin-top: 4px;
+  }
+
+  .nav-tabs {
+    gap: 1rem;
+    white-space: nowrap; /* Garante que os itens não quebrem linha */
+    overflow: hidden; /* Impede que o conteúdo transborde */
+    text-overflow: ellipsis; /* Adiciona '...' caso o conteúdo seja grande demais */
+    flex-wrap: nowrap; /* Impede que os itens quebrem linha */
+  }
+
+  .nav-tabs button.mat-button {
+    font-size: 1rem;
+    padding: 8px 12px;
+    white-space: nowrap; /* Impede que o texto quebre em várias linhas */
+    text-overflow: ellipsis; /* Garante que o texto excessivo seja truncado */
+    overflow: hidden;
+  }
+
+  .content-container {
+    padding: 16px 20px;
+    margin-top: 110px;
+  }
+}
+
+@media (max-width: 600px) {
+  .top-toolbar {
+    flex-wrap: nowrap; /* Impede que a logo e o menu quebrem linha */
+    padding: 8px 16px;
+    min-height: 80px;
+  }
+
+  .logo-img {
+    height: 80px;
+    margin-top: 0;
+  }
+
+  .nav-tabs {
+    justify-content: flex-start;
+    width: 100%;
+    gap: 0.8rem;
+    margin-top: 8px;
+    white-space: nowrap;
+    overflow: hidden; /* Impede que o conteúdo transborde */
+    text-overflow: ellipsis; /* Adiciona '...' caso o conteúdo seja grande demais */
+  }
+
+  .nav-tabs button.mat-button {
+    font-size: 0.9rem;
+    padding: 6px 10px;
+    white-space: nowrap; /* Evita quebra de linha nos botões */
+    text-overflow: ellipsis; /* Garante que o texto excessivo seja truncado */
+    overflow: hidden;
+  }
+
+  .content-container {
+    padding: 12px 16px;
+    margin-top: 90px;
+  }
+}

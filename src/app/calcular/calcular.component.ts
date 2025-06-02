@@ -7,8 +7,15 @@ import { Estado } from '../models/estado';
 import { Bandeira } from '../models/bandeira';
 import { Aparelho } from '../models/aparelho';
 import { CommonModule } from '@angular/common';
-import { HttpClientModule } from '@angular/common/http';
+import {HttpClientModule, HttpParams} from '@angular/common/http';
 import { Router } from '@angular/router';
+import {MatCard, MatCardContent, MatCardModule, MatCardTitle} from '@angular/material/card';
+import {MatFormField, MatInput, MatInputModule, MatLabel} from '@angular/material/input';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatSelectModule} from '@angular/material/select';
+import {MatButtonModule} from '@angular/material/button';
+import {MatIconModule} from '@angular/material/icon';
+import {MatTableModule} from '@angular/material/table';
 
 @Component({
   standalone: true,
@@ -20,6 +27,16 @@ import { Router } from '@angular/router';
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
+    MatCardModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatSelectModule,
+    MatButtonModule,
+    MatIconModule,
+    MatTableModule,
   ]
 })
 export class CalcularComponent implements OnInit {
@@ -29,7 +46,20 @@ export class CalcularComponent implements OnInit {
   bandeiras: Bandeira[] = [];
   aparelhos: Aparelho[] = [];
   editandoId: number | null = null;
-  filtros = { nome: '', data: '' };
+
+  filtros = {
+    nome: '',
+    data: '',
+    ambiente: '',
+  };
+
+  // Data hoje formatada para padrão YYYY-MM-DD
+  dataHoje: string = new Date().toISOString().slice(0, 10);
+
+  displayedColumns: string[] = [
+    'nome', 'data_cadastro', 'ambiente', 'estado', 'bandeira',
+    'potencia_watts', 'tempo_uso_diario_horas', 'quantidade', 'acoes'
+  ];
 
   constructor(
     private api: ApiService,
@@ -37,7 +67,7 @@ export class CalcularComponent implements OnInit {
     private router: Router
   ) {
     this.aparelhoForm = this.fb.group({
-      data_cadastro: [new Date().toISOString().slice(0, 10), Validators.required],
+      data_cadastro: [this.dataHoje, Validators.required],
       ambiente: ['', Validators.required],
       estado: ['', Validators.required],
       bandeira: ['', Validators.required],
@@ -52,19 +82,32 @@ export class CalcularComponent implements OnInit {
     this.api.getAmbientes().subscribe(data => this.ambientes = data);
     this.api.getEstados().subscribe(data => this.estados = data);
     this.api.getBandeiras().subscribe(data => this.bandeiras = data);
-    this.carregarAparelhos();
+    this.aplicarFiltrosBackend();
   }
 
-  carregarAparelhos() {
-    this.api.getAparelhos().subscribe(data => this.aparelhos = data);
-  }
 
-  get aparelhosFiltrados() {
-    return this.aparelhos.filter(a => {
-      const nomeOk = this.filtros.nome === '' || a.nome.toLowerCase().includes(this.filtros.nome.toLowerCase());
-      const dataOk = this.filtros.data === '' || a.data_cadastro === this.filtros.data;
-      return nomeOk && dataOk;
+  aplicarFiltrosBackend() {
+    let params = new HttpParams();
+
+    if (this.filtros.ambiente) {
+      params = params.set('ambiente', this.filtros.ambiente);
+    }
+    if (this.filtros.data) {
+      params = params.set('data_cadastro__gte', this.filtros.data);
+    }
+    if (this.filtros.nome) {
+      params = params.set('nome', this.filtros.nome.trim());
+    }
+
+    this.api.getAparelhos(params).subscribe({
+      next: dados => this.aparelhos = dados,
+      error: err => console.error('Erro ao buscar aparelhos filtrados:', err)
     });
+  }
+
+  // Retorna a lista já filtrada pelo backend (sem filtro local)
+  get aparelhosFiltrados() {
+    return this.aparelhos;
   }
 
   editar(aparelho: Aparelho) {
@@ -84,12 +127,11 @@ export class CalcularComponent implements OnInit {
     });
   }
 
-
   remover(id: number) {
     const confirmar = window.confirm('Tem certeza que deseja remover este aparelho?');
     if (!confirmar) return;
 
-    this.api.removerAparelho(id).subscribe(() => this.carregarAparelhos());
+    this.api.removerAparelho(id).subscribe(() => this.aplicarFiltrosBackend());
   }
 
   onSubmit() {
@@ -110,17 +152,22 @@ export class CalcularComponent implements OnInit {
     if (this.editandoId) {
       this.api.atualizarAparelho(this.editandoId, payload).subscribe(() => {
         this.editandoId = null;
-        this.aparelhoForm.reset({ quantidade: 1, data_cadastro: new Date().toISOString().slice(0, 10) });
-        this.carregarAparelhos();
+        this.resetForm();
+        this.aplicarFiltrosBackend(); // Atualiza lista com filtros atuais
         alert('Edição salva com sucesso!');
       });
     } else {
       this.api.criarAparelho(payload).subscribe(() => {
-        this.aparelhoForm.reset({ quantidade: 1, data_cadastro: new Date().toISOString().slice(0, 10) });
-        this.carregarAparelhos();
+        this.resetForm();
+        this.aplicarFiltrosBackend(); // Atualiza lista com filtros atuais
         alert('Cadastro feito com sucesso!');
       });
     }
+  }
+
+  resetForm() {
+    this.aparelhoForm.reset({ quantidade: 1, data_cadastro: this.dataHoje });
+    this.editandoId = null;
   }
 
   irParaResultados() {

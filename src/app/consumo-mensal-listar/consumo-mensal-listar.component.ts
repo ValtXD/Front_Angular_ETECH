@@ -3,12 +3,23 @@ import { ContadorService } from '../services/contador.service';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import {MatFormField} from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select';
+import { MatTableModule } from '@angular/material/table';
+import { MatButtonModule } from '@angular/material/button';
+
 
 @Component({
   selector: 'app-consumo-mensal-listar',
   templateUrl: './consumo-mensal-listar.component.html',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [  CommonModule,
+    FormsModule,
+    MatFormFieldModule,
+    MatSelectModule,
+    MatTableModule,
+    MatButtonModule,],
   styleUrls: ['./consumo-mensal-listar.component.css']
 })
 export class ConsumoMensalListarComponent implements OnInit {
@@ -49,7 +60,7 @@ export class ConsumoMensalListarComponent implements OnInit {
     if (this.anoSelecionado) params.ano = this.anoSelecionado.toString();
     if (this.mesSelecionado) params.mes = this.mesSelecionado.toString();
 
-    this.contadorService.listarConsumosComFiltro(params).subscribe(res => {
+    this.contadorService.listarConsumos(params).subscribe(res => {
       this.registros = res.registros;
 
       this.consumoTotal = res.consumo_total;

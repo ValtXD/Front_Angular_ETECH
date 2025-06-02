@@ -1,41 +1,42 @@
-<div class="menu">
-  <a routerLink="/">Início</a>
-
-  <div class="dropdown">
-    <div class="dropdown-btn">Dispositivo</div>
-    <div class="dropdown-content">
-      <a routerLink="/calcular">Aparelho </a>
-      <a routerLink="/resultados"> Resultados </a>
-      <a routerLink="/monitoramento"> Gráficos</a>
-    </div>
+<mat-toolbar color="primary" class="top-toolbar" fixedTop>
+  <!-- Logo ou título -->
+  <div class="logo-container">
+    <img src="/logo.png" alt="Logo Controla AI" class="logo-img" />
   </div>
 
-  <div class="dropdown">
-    <div class="dropdown-btn">Contador</div>
-    <div class="dropdown-content">
-      <a routerLink="/consumo-mensal-calcular">Cadastrar Consumo </a>
-      <a routerLink="/consumo-mensal-listar"> Resultados </a>
-      <a routerLink="/grafico-contador"> Gráficos</a>
-    </div>
-  </div>
+  <!-- Menu tipo abas (botões com routerLink) -->
+  <nav class="nav-tabs">
+    <button mat-button routerLink="/" routerLinkActive="active-tab" [routerLinkActiveOptions]="{ exact: true }">Início</button>
 
-  <div class="dropdown">
-    <div class="dropdown-btn">Leitor OCR</div>
-    <div class="dropdown-content">
-      <a routerLink="/upload" routerLinkActive="active">Upload Imagem </a>
-      <a routerLink="/leituras" routerLinkActive="active"> Lista Leituras</a>
-    </div>
-  </div>
+    <button mat-button [matMenuTriggerFor]="dispositivoMenu">Dispositivo</button>
+    <mat-menu #dispositivoMenu="matMenu">
+      <button mat-menu-item routerLink="/calcular">Aparelho</button>
+      <button mat-menu-item routerLink="/resultados">Resultados</button>
+      <button mat-menu-item routerLink="/monitoramento">Gráficos</button>
+    </mat-menu>
 
-  <div class="dropdown">
-    <div class="dropdown-btn">Leitor DOC</div>
-    <div class="dropdown-content">
-      <a routerLink="/upload-documento" routerLinkActive="active">Upload DOC </a>
-      <a routerLink="/resultados-documento" routerLinkActive="active"> Resultado DOC</a>
-    </div>
-  </div>
+    <button mat-button [matMenuTriggerFor]="contadorMenu">Contador</button>
+    <mat-menu #contadorMenu="matMenu">
+      <button mat-menu-item routerLink="/consumo-mensal-calcular">Cadastrar Consumo</button>
+      <button mat-menu-item routerLink="/consumo-mensal-listar">Resultados</button>
+      <button mat-menu-item routerLink="/grafico-contador">Gráficos</button>
+    </mat-menu>
 
-<div class="container">
+    <button mat-button [matMenuTriggerFor]="ocrMenu">Leitor OCR</button>
+    <mat-menu #ocrMenu="matMenu">
+      <button mat-menu-item routerLink="/upload">Upload Imagem</button>
+      <button mat-menu-item routerLink="/leituras">Lista Leituras</button>
+    </mat-menu>
+
+    <button mat-button [matMenuTriggerFor]="docMenu">Leitor DOC</button>
+    <mat-menu #docMenu="matMenu">
+      <button mat-menu-item routerLink="/upload-documento">Upload DOC</button>
+      <button mat-menu-item routerLink="/resultados-documento">Resultado DOC</button>
+    </mat-menu>
+  </nav>
+</mat-toolbar>
+
+<!-- Conteúdo principal -->
+<div class="content-container">
   <router-outlet></router-outlet>
-</div>
 </div>
