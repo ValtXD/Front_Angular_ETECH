@@ -1,41 +1,44 @@
 <div class="menu">
-  <a routerLink="/">Início</a>
+  <div class="top-menu">
+    <a routerLink="/app" routerLinkActive="active">Início</a>
+    <button (click)="logout()" class="logout-btn">Sair</button>
+  </div>
 
   <div class="dropdown">
     <div class="dropdown-btn">Dispositivo</div>
     <div class="dropdown-content">
-      <a routerLink="/calcular">Aparelho </a>
-      <a routerLink="/resultados"> Resultados </a>
-      <a routerLink="/monitoramento"> Gráficos</a>
+      <a routerLink="/app/calcular" routerLinkActive="active">Aparelho</a>
+      <a routerLink="/app/resultados" routerLinkActive="active">Resultados</a>
+      <a routerLink="/app/monitoramento" routerLinkActive="active">Gráficos</a>
     </div>
   </div>
 
   <div class="dropdown">
     <div class="dropdown-btn">Contador</div>
     <div class="dropdown-content">
-      <a routerLink="/consumo-mensal-calcular">Cadastrar Consumo </a>
-      <a routerLink="/consumo-mensal-listar"> Resultados </a>
-      <a routerLink="/grafico-contador"> Gráficos</a>
+      <a routerLink="/app/consumo-mensal-calcular" routerLinkActive="active">Cadastrar Consumo</a>
+      <a routerLink="/app/consumo-mensal-listar" routerLinkActive="active">Resultados</a>
+      <a routerLink="/app/grafico-contador" routerLinkActive="active">Gráficos</a>
     </div>
   </div>
 
   <div class="dropdown">
     <div class="dropdown-btn">Leitor OCR</div>
     <div class="dropdown-content">
-      <a routerLink="/upload" routerLinkActive="active">Upload Imagem </a>
-      <a routerLink="/leituras" routerLinkActive="active"> Lista Leituras</a>
+      <a routerLink="/app/upload" routerLinkActive="active">Upload Imagem</a>
+      <a routerLink="/app/leituras" routerLinkActive="active">Lista Leituras</a>
     </div>
   </div>
 
   <div class="dropdown">
     <div class="dropdown-btn">Leitor DOC</div>
     <div class="dropdown-content">
-      <a routerLink="/upload-documento" routerLinkActive="active">Upload DOC </a>
-      <a routerLink="/resultados-documento" routerLinkActive="active"> Resultado DOC</a>
+      <a routerLink="/app/upload-documento" routerLinkActive="active">Upload DOC</a>
+      <a routerLink="/app/resultados-documento" routerLinkActive="active">Resultado DOC</a>
     </div>
   </div>
 
-<div class="container">
-  <router-outlet></router-outlet>
-</div>
+  <div class="container">
+    <router-outlet></router-outlet>
+  </div>
 </div>
