@@ -1,0 +1,46 @@
+.login-card {
+  max-width: 400px;
+  margin: 40px auto;
+  padding: 24px;
+  background: linear-gradient(135deg, #f6d365, #fda085);
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(253, 160, 133, 0.5);
+  color: #222;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.error-message {
+  color: #d32f2f;
+  margin: 8px 0;
+  font-weight: 600;
+  text-align: center;
+}
+
+.buttons {
+  margin-top: 16px;
+  display: flex;
+  justify-content: center;
+}
+
+.register-link {
+  margin-top: 20px;
+  text-align: center;
+  font-size: 14px;
+  color: #555;
+  a {
+    color: #1976d2;
+    text-decoration: none;
+    font-weight: 600;
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
