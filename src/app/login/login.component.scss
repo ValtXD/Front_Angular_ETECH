@@ -1,46 +1,127 @@
-.login-card {
-  max-width: 400px;
-  margin: 40px auto;
-  padding: 24px;
-  background: linear-gradient(135deg, #f6d365, #fda085);
-  border-radius: 12px;
-  box-shadow: 0 8px 24px rgba(253, 160, 133, 0.5);
-  color: #222;
-}
-
-.login-form {
-  display: flex;
-  flex-direction: column;
-}
-
-.full-width {
-  width: 100%;
-}
-
-.error-message {
-  color: #d32f2f;
-  margin: 8px 0;
-  font-weight: 600;
-  text-align: center;
-}
-
-.buttons {
-  margin-top: 16px;
+.login-page {
   display: flex;
   justify-content: center;
+  align-items: center;
+  height: 110vh;
+  background-color: #349f81;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+
+  /* Container principal do formulário de login */
+  .login-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    max-width: 450px;
+    background-color: #3b7867;
+    padding: 24px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    border: 1px solid #d1d1d1;
+  }
+
+  .login-card-title {
+    text-align: center;
+    font-size: 1.8rem;
+    color: #61a6ab;
+    font-weight: 600;
+    margin-bottom: 24px;
+  }
+
+  .login-form {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+
+    /* Estilo dos campos de entrada */
+    mat-form-field {
+      margin-bottom: 16px;
+      width: 100%;
+
+      .mat-form-field-infix {
+        padding: 0 12px; /* Ajuste do padding para dar mais espaçamento */
+      }
+    }
+
+    /* Botão de login */
+    .buttons {
+      display: flex;
+      justify-content: center;
+
+      button {
+        padding: 12px;
+        font-size: 1rem;
+        color: white;
+        background-color: #61a6ab;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+
+        &:hover {
+          background-color: #337a81;
+        }
+
+        &[disabled] {
+          background-color: #d1d1d1;
+          cursor: not-allowed;
+        }
+      }
+    }
+
+    /* Mensagens de erro */
+    .error-message {
+      color: #ff4d4d;
+      font-size: 0.9rem;
+      text-align: center;
+      margin-top: 12px;
+    }
+  }
+
+  .register-link {
+    text-align: center;
+    font-size: 0.9rem;
+    color: #337a81;
+    margin-top: 16px;
+
+    a {
+      color: #337a81;
+      text-decoration: none;
+      font-weight: 600;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
 }
 
-.register-link {
-  margin-top: 20px;
-  text-align: center;
-  font-size: 14px;
-  color: #555;
-  a {
-    color: #1976d2;
-    text-decoration: none;
-    font-weight: 600;
-    &:hover {
-      text-decoration: underline;
-    }
+/* Responsividade para telas pequenas */
+@media (max-width: 600px) {
+  .login-page {
+    padding: 16px;
+  }
+
+  .login-card {
+    padding: 16px;
+    max-width: 90%;
+  }
+
+  .login-card-title {
+    font-size: 1.5rem;
+  }
+
+  .login-form .mat-form-field {
+    padding: 10px;
+  }
+
+  .login-form .buttons button {
+    padding: 10px;
+    font-size: 0.9rem;
+  }
+
+  .register-link {
+    font-size: 0.8rem;
   }
 }
