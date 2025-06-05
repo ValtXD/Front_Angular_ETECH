@@ -20,7 +20,7 @@ export interface ApplianceAiTip {
   providedIn: 'root',
 })
 export class ApiService {
-  private baseUrl = 'http://127.0.0.1:8000/api'; // ajuste conforme seu backend
+  private baseUrl = 'http://localhost:8000/api';
 
   constructor(private http: HttpClient) {}
 

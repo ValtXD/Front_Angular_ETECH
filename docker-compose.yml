@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  backend:
+    build: C:/Users/eliza.silva/PycharmProjects/Back_Django_ETECH
+    ports:
+      - "8000:8000"
+    networks:
+      - app-network
+
+  frontend:
+    build: C:/Front_Angular_ETECH
+    ports:
+      - "4200:80"
+    depends_on:
+      - backend
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge

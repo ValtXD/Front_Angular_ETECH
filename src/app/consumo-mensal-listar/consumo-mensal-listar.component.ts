@@ -20,7 +20,7 @@ import { MatButtonModule } from '@angular/material/button';
     MatSelectModule,
     MatTableModule,
     MatButtonModule,],
-  styleUrls: ['./consumo-mensal-listar.component.css']
+  styleUrls: ['./consumo-mensal-listar.component.scss']
 })
 export class ConsumoMensalListarComponent implements OnInit {
   registros: any[] = [];

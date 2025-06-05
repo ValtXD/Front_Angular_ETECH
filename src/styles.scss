@@ -1,21 +1,16 @@
-/* You can add global styles to this file, and also import other style files */
-
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
-/* Ajuste global para campos mat-form-field (outline) */
-.mat-form-field-appearance-outline .mat-form-field-flex {
-  min-height: 56px !important;
-  padding: 0 12px !important;
-  align-items: center !important;
+.mat-mdc-menu-panel {
+  background-color: rgb(95, 239, 251) !important;
+  border-radius: 8px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
 }
 
-.mat-form-field-appearance-outline .mat-form-field-label {
-  top: 1.2em !important;
+.mat-mdc-menu-item {
+  color: white;
 }
 
-.mat-form-field-appearance-outline input.mat-input-element {
-  padding: 12px 0 !important;
-  height: auto !important;
+.mat-mdc-menu-item:hover {
+  background-color: rgba(255, 255, 255, 0.15);
 }
-
