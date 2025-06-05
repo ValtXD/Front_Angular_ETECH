@@ -11,7 +11,7 @@ import { MatCardModule } from '@angular/material/card';
 import {
   MatTableModule
 }
-from '@angular/material/table';
+  from '@angular/material/table';
 import {MatButton, MatButtonModule, MatIconButton} from '@angular/material/button';
 import {MatIcon, MatIconModule} from '@angular/material/icon';
 import {MatSelect, MatSelectModule} from '@angular/material/select';
@@ -38,7 +38,7 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
     MatSelectModule,
     MatButtonModule,
     MatTableModule,],
-  styleUrls: ['./consumo-mensal-calcular.component.css']
+  styleUrls: ['./consumo-mensal-calcular.component.scss']
 })
 export class ConsumoMensalCalcularComponent implements OnInit {
   form!: FormGroup;
