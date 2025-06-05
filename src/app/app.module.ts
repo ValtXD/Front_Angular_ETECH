@@ -28,7 +28,7 @@ import {ResultadosDocumentoComponent} from './resultados-documento/resultados-do
 
 @NgModule({
   declarations: [
-    AppComponent,
+
 
 
   ],
@@ -53,10 +53,11 @@ import {ResultadosDocumentoComponent} from './resultados-documento/resultados-do
     MatTableModule,
     UploadDocumentoComponent,
     ResultadosDocumentoComponent,
+    AppComponent,
 
     // Certifique-se de ter adicionado o ChartsModule aqui
   ],
   providers: [provideCharts(withDefaultRegisterables())],
-  bootstrap: [AppComponent]
+  bootstrap: []
 })
 export class AppModule { }

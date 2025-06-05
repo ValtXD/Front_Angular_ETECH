@@ -1,0 +1,169 @@
+/* Cor de fundo do login, semelhante ao toolbar */
+.login-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #e6f7ff; /* Cor suave de fundo */
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Card do login */
+.login-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  max-width: 450px;
+  background-color: #ffffff;
+  padding: 24px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  border: 1px solid #d1d1d1;
+}
+
+/* Título do formulário */
+.login-card-title {
+  text-align: center;
+  font-size: 1.8rem;
+  color: #61a6ab; /* Cor similar ao topo */
+  font-weight: 600;
+  margin-bottom: 24px;
+}
+
+/* Formulário */
+.login-form {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+
+  mat-form-field {
+    margin-bottom: 16px;
+    width: 100%;
+
+    .mat-form-field-infix {
+      padding: 0 12px;
+    }
+
+    input {
+      background-color: #f0f8ff; /* Azul claro de fundo */
+      border: 1px solid #61a6ab; /* Cor do contorno similar ao topo */
+      padding: 10px;
+      border-radius: 4px;
+      font-size: 14px;
+      color: #333;
+
+      &:focus {
+        border-color: #337a81; /* Azul mais escuro no foco */
+        box-shadow: 0 0 5px rgba(51, 122, 129, 0.7);
+      }
+    }
+  }
+
+  /* Botão de Login */
+  .buttons {
+    display: flex;
+    justify-content: center;
+
+    button {
+      padding: 12px;
+      font-size: 1rem;
+      color: white;
+      background-color: #61a6ab; /* Cor de fundo do botão */
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+
+      &:hover {
+        background-color: #337a81; /* Azul mais escuro no hover */
+      }
+
+      &[disabled] {
+        background-color: #d1d1d1;
+        cursor: not-allowed;
+      }
+    }
+  }
+
+  /* Mensagens de erro */
+  .error-message {
+    color: #ff4d4d;
+    font-size: 0.9rem;
+    text-align: center;
+    margin-top: 12px;
+    font-weight: bold;
+  }
+}
+
+/* Link de Cadastro */
+.register-link {
+  text-align: center;
+  font-size: 0.9rem;
+  color: #337a81; /* Cor do link, semelhante ao hover do topo */
+  margin-top: 16px;
+
+  a {
+    color: #337a81;
+    text-decoration: none;
+    font-weight: 600;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
+/* Responsividade */
+@media (max-width: 900px) {
+  .login-card {
+    padding: 16px;
+    max-width: 90%;
+  }
+
+  .login-card-title {
+    font-size: 1.5rem;
+  }
+
+  .login-form .mat-form-field {
+    padding: 10px;
+  }
+
+  .login-form .buttons button {
+    padding: 10px;
+    font-size: 0.9rem;
+  }
+
+  .register-link {
+    font-size: 0.8rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .login-page {
+    padding: 16px;
+  }
+
+  .login-card {
+    padding: 16px;
+    max-width: 90%;
+  }
+
+  .login-card-title {
+    font-size: 1.5rem;
+  }
+
+  .login-form .mat-form-field {
+    padding: 8px;
+  }
+
+  .login-form .buttons button {
+    padding: 8px;
+    font-size: 0.8rem;
+  }
+
+  .register-link {
+    font-size: 0.7rem;
+  }
+}
