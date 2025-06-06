@@ -1,0 +1,58 @@
+.registration-form {
+  /* Basic layout for the form */
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem; /* Adds space between form fields and button */
+  max-width: 450px; /* Limits the form width for better readability */
+  margin: 3rem auto; /* Centers the form horizontally with some top/bottom margin */
+  padding: 2.5rem; /* Internal padding */
+  border: 1px solid #e0e0e0; /* Light border */
+  border-radius: 8px; /* Slightly rounded corners */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+  background-color: #ffffff; /* White background */
+}
+
+/* Style for the Angular Material form fields */
+.mat-mdc-form-field {
+  width: 100%; /* Makes form fields take full width of their container */
+}
+
+/* Style for the submit button */
+button[type="submit"] {
+  width: 100%; /* Makes the button span the full width */
+  padding: 0.8rem 0; /* Adjusts button padding */
+  font-size: 1.1rem; /* Slightly larger font for the button */
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  /* Angular Material buttons have their own styling, but you can override if needed */
+}
+
+/* Styles for messages (error/success) */
+.message {
+  padding: 1rem;
+  border-radius: 4px;
+  margin-top: 1rem;
+  font-size: 0.95rem;
+  font-weight: 500;
+  text-align: center;
+}
+
+.error-message {
+  color: #d32f2f; /* Material Design red for error */
+  background-color: #ffebee; /* Lighter red background */
+  border: 1px solid #ef9a9a; /* Red border */
+}
+
+.success-message {
+  color: #388e3c; /* Material Design green for success */
+  background-color: #e8f5e9; /* Lighter green background */
+  border: 1px solid #a5d6a7; /* Green border */
+}
+
+/* Responsive adjustments for smaller screens */
+@media (max-width: 600px) {
+  .registration-form {
+    margin: 1.5rem 1rem; /* Smaller margins on narrow screens */
+    padding: 1.5rem;
+  }
+}

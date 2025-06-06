@@ -1,15 +1,21 @@
-<form (ngSubmit)="onSubmit()">
-  <label>Usuário</label>
-  <input [(ngModel)]="username" name="username" required />
+<form (ngSubmit)="onSubmit()" class="registration-form">
+  <mat-form-field appearance="fill">
+    <mat-label>Usuário</mat-label>
+    <input matInput [(ngModel)]="username" name="username" required>
+  </mat-form-field>
 
-  <label>Email</label>
-  <input type="email" [(ngModel)]="email" name="email" required />
+  <mat-form-field appearance="fill">
+    <mat-label>Email</mat-label>
+    <input matInput type="email" [(ngModel)]="email" name="email" required>
+  </mat-form-field>
 
-  <label>Senha</label>
-  <input type="password" [(ngModel)]="password" name="password" required />
+  <mat-form-field appearance="fill">
+    <mat-label>Senha</mat-label>
+    <input matInput type="password" [(ngModel)]="password" name="password" required>
+  </mat-form-field>
 
-  <button type="submit">Cadastrar</button>
+  <button mat-raised-button color="primary" type="submit">Cadastrar</button>
 
-  <div *ngIf="errorMsg" style="color:red">{{ errorMsg }}</div>
-  <div *ngIf="successMsg" style="color:green">{{ successMsg }}</div>
+  <div *ngIf="errorMsg" class="message error-message">{{ errorMsg }}</div>
+  <div *ngIf="successMsg" class="message success-message">{{ successMsg }}</div>
 </form>
