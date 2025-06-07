@@ -7,13 +7,14 @@ import { RouterModule } from '@angular/router';
 import {MatFormField, MatInput} from '@angular/material/input';
 import {MatButton} from '@angular/material/button';
 import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatCard} from '@angular/material/card';
 
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.scss'],
   standalone: true,
-  imports: [FormsModule, CommonModule, RouterModule, MatFormField, MatFormField, MatFormField, MatFormField, MatInput, MatButton, MatFormFieldModule]
+  imports: [FormsModule, CommonModule, RouterModule, MatFormField, MatFormField, MatFormField, MatFormField, MatInput, MatButton, MatFormFieldModule, MatCard]
 })
 export class RegisterComponent {
   username = '';

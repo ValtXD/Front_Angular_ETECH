@@ -1,169 +1,239 @@
-/* Cor de fundo do login, semelhante ao toolbar */
-.login-page {
+$background-page: #5CA88CFF; // Verde-azulado do fundo da página
+$card-background: #ddfbee; // Branco do cartão de login
+$text-dark: #2E3440; // Preto/quase preto para títulos e textos principais
+$text-medium: #4C566A; // Cinza para descrições e labels
+$link-color: #3b7867; // Azul para links
+$button-background: #168e6d; // Cor principal dos botões
+$input-background-color: #3b7867; // Fundo cinza claro do input
+$input-border-color: #88349f; // Borda padrão do input
+$error-color: #E06C75; // Uma cor de erro padrão
+
+:host {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
-  background-color: #e6f7ff; /* Cor suave de fundo */
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  min-height: 100vh;
+  background-color: $background-page;
+  padding: 20px;
+  box-sizing: border-box;
+  font-family: 'Roboto', sans-serif;
 }
 
-/* Card do login */
 .login-card {
+  width: 400px;
+  max-width: 95%; /* Garante responsividade em telas menores */
+  background-color: $card-background;
+  border-radius: 16px; /* Borda mais arredondada como na imagem */
+  padding: 40px 30px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); /* Sombra mais suave e espalhada */
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  align-items: center;
+}
+
+.logo-section {
+  display: flex;
+  justify-content: center; /* Centraliza horizontalmente a imagem dentro da seção */
+  align-items: center;
+  margin-bottom: 50px; /* **Ajuste este valor** para o espaçamento desejado entre a logo e o primeiro campo do formulário */
+  width: 100%; /* Garante que a seção ocupe a largura total para centralização */
+}
+
+.app-logo {
+  width: 295px;
+  height: auto;
+}
+
+.login-form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 30px; /* Espaço entre os campos */
+}
+
+/* Angular Material Form Fields (mat-form-field) - Appearance Outline */
+.mat-form-field {
+  width: 100%;
+
+  .mat-form-field-wrapper {
+    padding-bottom: 0 !important;
+    margin: 0 !important;
+  }
+
+  .mat-form-field-flex {
+    background-color: $input-background-color;
+    border-radius: 8px; /* Bordas arredondadas do input */
+    padding: 0 20px; /* Padding interno para o conteúdo do input */
+    height: 90px; /* Altura fixa para o campo */
+    align-items: center; /* Centraliza verticalmente o conteúdo */
+  }
+
+  .mat-form-field-outline-start,
+  .mat-form-field-outline-gap,
+  .mat-form-field-outline-end {
+    border-width: 1px !important; /* Espessura da borda */
+    border-color: $input-border-color !important; /* Cor da borda padrão */
+    border-radius: 8px !important;
+  }
+
+  .mat-form-field-appearance-outline.mat-focused .mat-form-field-outline-start,
+  .mat-form-field-appearance-outline.mat-focused .mat-form-field-outline-gap,
+  .mat-form-field-appearance-outline.mat-focused .mat-form-field-outline-end {
+    border-color: $button-background !important; /* Cor da borda quando focado */
+  }
+
+  .mat-form-field-label {
+    color: $text-medium !important;
+    font-size: 15px !important;
+    top: 28px !important; /* Ajuste para centralizar verticalmente no estado não-flutuante */
+    left: 48px !important; /* Espaço para o ícone */
+  }
+
+  /* Ajuste para o label quando flutuante */
+  .mat-form-field-appearance-outline.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label {
+    transform: translateY(-70%) scale(0.75) !important; /* Leva o label mais para cima */
+    left: 16px !important; /* Ajuste para o label flutuante */
+  }
+
+  .mat-form-field-prefix, .mat-form-field-suffix {
+    display: flex;
+    align-items: center;
+  }
+
+  .mat-icon {
+    color: $text-medium; /* Cor dos ícones nos inputs */
+    font-size: 22px; /* Tamanho dos ícones */
+    width: 22px;
+    height: 22px;
+    margin-right: 8px; /* Espaçamento entre ícone e texto */
+  }
+
+  input.mat-input-element {
+    color: $text-dark;
+    font-size: 16px;
+    padding: 0;
+    height: 100%; /* Ocupa a altura do flex container */
+  }
+
+  .mat-form-field-invalid .mat-form-field-label {
+    color: $error-color !important;
+  }
+}
+
+
+.mat-error {
+  color: $error-color;
+  font-size: 12px;
+  margin-top: 5px;
+  text-align: left;
+}
+
+.error-message {
+  color: $error-color;
+  font-size: 14px;
+  text-align: center;
+  margin-top: -10px;
+  margin-bottom: 10px;
+}
+
+.remember-forgot {
+  display: flex;
+  justify-content: space-between;
   align-items: center;
   width: 100%;
-  max-width: 450px;
-  background-color: #ffffff;
-  padding: 24px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  border-radius: 8px;
-  border: 1px solid #d1d1d1;
+  font-size: 14px;
+  margin-top: -10px; /* Ajusta o espaçamento */
 }
 
-/* Título do formulário */
-.login-card-title {
-  text-align: center;
-  font-size: 1.8rem;
-  color: #61a6ab; /* Cor similar ao topo */
-  font-weight: 600;
-  margin-bottom: 24px;
+.remember-me-checkbox {
+  .mat-checkbox-inner-container {
+    width: 18px;
+    height: 18px;
+    border-radius: 4px;
+  }
+  .mat-checkbox-background {
+    background-color: $input-background-color;
+    border-color: $input-border-color;
+  }
+  .mat-checkbox-checkmark {
+    color: $button-background; /* Cor do checkmark */
+  }
+  .mat-checkbox-label {
+    color: $text-medium;
+  }
 }
 
-/* Formulário */
-.login-form {
+.forgot-password-link {
+  color: $link-color;
+  text-decoration: none;
+  font-weight: 500;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.login-button {
+  background-color: $button-background;
+  color: #126c52;
+  height: 52px; /* Altura do botão */
+  font-size: 18px;
+  font-weight: bold;
+  border-radius: 10px; /* Borda mais arredondada */
   display: flex;
-  flex-direction: column;
-  width: 100%;
+  justify-content: center;
+  align-items: center;
+  gap: 8px; /* Espaço entre texto e ícone */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Sombra para o botão */
 
-  mat-form-field {
-    margin-bottom: 16px;
-    width: 100%;
-
-    .mat-form-field-infix {
-      padding: 0 12px;
-    }
-
-    input {
-      background-color: #f0f8ff; /* Azul claro de fundo */
-      border: 1px solid #61a6ab; /* Cor do contorno similar ao topo */
-      padding: 10px;
-      border-radius: 4px;
-      font-size: 14px;
-      color: #333;
-
-      &:focus {
-        border-color: #337a81; /* Azul mais escuro no foco */
-        box-shadow: 0 0 5px rgba(51, 122, 129, 0.7);
-      }
-    }
+  .mat-icon {
+    font-size: 24px; /* Tamanho do ícone de seta */
+    width: 24px;
+    height: 24px;
+    color: #2f8a70;
   }
 
-  /* Botão de Login */
-  .buttons {
-    display: flex;
-    justify-content: center;
-
-    button {
-      padding: 12px;
-      font-size: 1rem;
-      color: white;
-      background-color: #61a6ab; /* Cor de fundo do botão */
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
-
-      &:hover {
-        background-color: #337a81; /* Azul mais escuro no hover */
-      }
-
-      &[disabled] {
-        background-color: #d1d1d1;
-        cursor: not-allowed;
-      }
-    }
+  &:disabled {
+    background-color: lighten($button-background, 20%);
+    color: rgb(59, 120, 103);
+    cursor: not-allowed;
+    box-shadow: none;
   }
 
-  /* Mensagens de erro */
-  .error-message {
-    color: #ff4d4d;
-    font-size: 0.9rem;
-    text-align: center;
-    margin-top: 12px;
-    font-weight: bold;
+  &:hover:not(:disabled) {
+    background-color: darken($button-background, 8%);
   }
 }
 
-/* Link de Cadastro */
-.register-link {
+.register-link,
+.terms-privacy-text {
+  font-size: 14px;
+  color: $text-medium;
   text-align: center;
-  font-size: 0.9rem;
-  color: #337a81; /* Cor do link, semelhante ao hover do topo */
-  margin-top: 16px;
+}
 
+.register-link {
+  margin-top: 25px;
   a {
-    color: #337a81;
+    color: $link-color;
     text-decoration: none;
-    font-weight: 600;
-
+    font-weight: 600; /* Mais negrito */
     &:hover {
       text-decoration: underline;
     }
   }
 }
 
-/* Responsividade */
-@media (max-width: 900px) {
-  .login-card {
-    padding: 16px;
-    max-width: 90%;
-  }
-
-  .login-card-title {
-    font-size: 1.5rem;
-  }
-
-  .login-form .mat-form-field {
-    padding: 10px;
-  }
-
-  .login-form .buttons button {
-    padding: 10px;
-    font-size: 0.9rem;
-  }
-
-  .register-link {
-    font-size: 0.8rem;
-  }
-}
-
-@media (max-width: 600px) {
-  .login-page {
-    padding: 16px;
-  }
-
-  .login-card {
-    padding: 16px;
-    max-width: 90%;
-  }
-
-  .login-card-title {
-    font-size: 1.5rem;
-  }
-
-  .login-form .mat-form-field {
-    padding: 8px;
-  }
-
-  .login-form .buttons button {
-    padding: 8px;
-    font-size: 0.8rem;
-  }
-
-  .register-link {
-    font-size: 0.7rem;
+.terms-privacy-text {
+  margin-top: 15px;
+  font-size: 12px;
+  line-height: 1.5; /* Espaçamento de linha */
+  a {
+    color: $link-color;
+    text-decoration: none;
+    font-weight: 500;
+    &:hover {
+      text-decoration: underline;
+    }
   }
 }

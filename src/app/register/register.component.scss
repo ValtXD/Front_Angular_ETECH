@@ -1,58 +1,226 @@
+/* Variáveis de cores fornecidas */
+$background-page: #5CA88CFF; // Verde-azulado do fundo da página
+$card-background: #ddfbee; // Cor de fundo do "card" do formulário de registro
+$text-dark: #2E3440; // Preto/quase preto para títulos e textos principais
+$text-medium: #4C566A; // Cinza para descrições e labels
+$link-color: #3b7867; // Azul para links
+$button-background: #168e6d; // Cor principal dos botões
+$input-background-color: #3b7867; // Fundo do input (agora um verde escuro)
+$input-border-color: #88349f; // Borda padrão do input (roxo)
+$error-color: #E06C75; // Uma cor de erro padrão
+$success-color: #168e6d; // Cor de sucesso (verde do botão)
+$success-background: lighten($success-color, 40%); // Fundo claro para mensagem de sucesso
+
+:host {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: $background-page; // Aplica a cor de fundo da página
+  padding: 20px;
+  box-sizing: border-box;
+  font-family: 'Roboto', sans-serif;
+}
+
+/* O formulário de registro agirá como um "card" */
 .registration-form {
-  /* Basic layout for the form */
+  width: 400px;
+  max-width: 95%; /* Garante responsividade em telas menores */
+  background-color: $card-background; // Aplica a cor de fundo do "card"
+  border-radius: 16px; /* Borda mais arredondada */
+  padding: 40px 30px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); /* Sombra suave e espalhada */
   display: flex;
   flex-direction: column;
-  gap: 1.5rem; /* Adds space between form fields and button */
-  max-width: 450px; /* Limits the form width for better readability */
-  margin: 3rem auto; /* Centers the form horizontally with some top/bottom margin */
-  padding: 2.5rem; /* Internal padding */
-  border: 1px solid #e0e0e0; /* Light border */
-  border-radius: 8px; /* Slightly rounded corners */
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
-  background-color: #ffffff; /* White background */
+  align-items: center;
+  gap: 25px; /* Espaço entre os campos (ajustado para melhor visual) */
+
+  // Estilo para o novo título "Cadastro" (assumindo que você usará <h2 class="form-title"> no HTML)
+  .form-title {
+    font-size: 2em;
+    font-weight: bold;
+    color: $text-dark;
+    margin-bottom: 10px; /* Espaço abaixo do título, antes do primeiro campo */
+    text-align: center;
+    width: 100%;
+  }
 }
 
-/* Style for the Angular Material form fields */
-.mat-mdc-form-field {
-  width: 100%; /* Makes form fields take full width of their container */
+/* Angular Material Form Fields (mat-form-field) - Appearance Fill */
+.mat-form-field {
+  width: 100%;
+
+  .mat-form-field-wrapper {
+    padding-bottom: 0 !important; // Remove padding extra na base
+    margin: 0 !important; // Remove margin extra
+  }
+
+  .mat-form-field-flex {
+    background-color: $input-background-color; // Fundo do input (verde escuro)
+    border-radius: 8px; /* Bordas arredondadas do input */
+    padding: 0 16px; // Padding interno para o conteúdo do input
+    height: 56px; // Altura fixa para o campo
+    align-items: center; // Centraliza verticalmente o conteúdo
+    display: flex; // Garante alinhamento dos itens internos
+    box-sizing: border-box; // Garante que padding e borda sejam incluídos na altura
+  }
+
+  /* Como appearance="fill" é usado, não há .mat-form-field-outline-* */
+  /* A cor da borda de foco será controlada pelo tema do Material ou
+     você pode sobrescrever o .mat-form-field-ripple. */
+  .mat-form-field-underline {
+    background-color: $input-border-color !important; // Cor da linha de baixo
+  }
+  .mat-form-field-ripple { // Cor da linha de foco
+    background-color: $button-background !important;
+  }
+
+  .mat-form-field-label {
+    color: $text-medium; // Cor do label padrão
+    font-size: 15px;
+    // REMOVIDOS os !important para top, left e transform.
+    // O Material lida com isso corretamente para appearance="fill".
+  }
+
+  .mat-form-field-appearance-fill.mat-form-field-label {
+    // Estilo para o label em estado normal (não flutuante) para appearance="fill"
+    // Isso é mais complexo com "fill" e prefixos. O padrão do Material geralmente é bom.
+    // Se precisar de ajuste fino:
+    // transform: translateY(18px) translateX(16px); // Ajuste de posição inicial
+    // color: $text-medium;
+  }
+
+  .mat-form-field-appearance-fill.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label {
+    // Estilo para o label quando flutuante para appearance="fill"
+    // O Material geralmente faz isso bem.
+    // Se precisar de ajuste fino:
+    // transform: translateY(-50%) scale(0.75);
+    // color: $link-color; // Ou outra cor para o label flutuante
+  }
+
+  .mat-form-field-prefix, .mat-form-field-suffix {
+    display: flex;
+    align-items: center;
+    // Ajuste o padding se o ícone estiver muito grudado
+    // padding-right: 8px; // Para prefix
+    // padding-left: 8px; // Para suffix
+  }
+
+  .mat-icon {
+    color: $text-medium; // Cor dos ícones nos inputs
+    font-size: 22px;
+    width: 22px;
+    height: 22px;
+    // margin-right: 8px; /* Ajuste se necessário, ou deixe o padding do prefix/suffix */
+  }
+
+  input.mat-input-element {
+    color: $text-dark; // Cor do texto digitado
+    font-size: 16px;
+    padding: 0;
+    height: 100%; // Ocupa a altura do flex container
+    caret-color: $button-background; // Cor do cursor de texto
+  }
+
+  .mat-form-field-invalid .mat-form-field-label {
+    color: $error-color !important; // Cor do label quando inválido
+  }
+  .mat-form-field-invalid .mat-form-field-ripple {
+    background-color: $error-color !important; // Cor da linha de foco quando inválido
+  }
 }
 
-/* Style for the submit button */
+.mat-error {
+  color: $error-color;
+  font-size: 12px;
+  margin-top: 5px;
+  text-align: left;
+  line-height: 1.2;
+}
+
+/* Botão de Cadastrar */
 button[type="submit"] {
-  width: 100%; /* Makes the button span the full width */
-  padding: 0.8rem 0; /* Adjusts button padding */
-  font-size: 1.1rem; /* Slightly larger font for the button */
-  font-weight: 500;
-  letter-spacing: 0.05em;
-  /* Angular Material buttons have their own styling, but you can override if needed */
+  background-color: $button-background; // Cor do botão principal
+  color: #FFFFFF; // Cor do texto do botão
+  height: 52px; /* Altura do botão */
+  font-size: 18px;
+  font-weight: bold;
+  border-radius: 10px; /* Borda mais arredondada */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px; /* Espaço entre texto e ícone (se houver) */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Sombra para o botão */
+  width: 100%; // Garante que o botão ocupe a largura total
+
+  // Cor do ícone no botão (se houver um no HTML)
+  .mat-icon {
+    font-size: 24px;
+    width: 24px;
+    height: 24px;
+    color: #FFFFFF;
+  }
+
+  &:disabled {
+    background-color: lighten($button-background, 20%);
+    color: rgba(255, 255, 255, 0.7);
+    cursor: not-allowed;
+    box-shadow: none;
+  }
+
+  &:hover:not(:disabled) {
+    background-color: darken($button-background, 8%);
+  }
 }
 
-/* Styles for messages (error/success) */
+/* Mensagens de sucesso e erro */
 .message {
-  padding: 1rem;
+  padding: 10px 15px;
   border-radius: 4px;
-  margin-top: 1rem;
-  font-size: 0.95rem;
-  font-weight: 500;
+  font-size: 0.9em;
   text-align: center;
+  width: 100%;
+  box-sizing: border-box;
+  margin-top: 10px; // Espaçamento acima da mensagem
 }
 
 .error-message {
-  color: #d32f2f; /* Material Design red for error */
-  background-color: #ffebee; /* Lighter red background */
-  border: 1px solid #ef9a9a; /* Red border */
+  color: $error-color;
+  background-color: lighten($error-color, 30%); // Fundo mais claro para erro
+  border: 1px solid $error-color;
 }
 
 .success-message {
-  color: #388e3c; /* Material Design green for success */
-  background-color: #e8f5e9; /* Lighter green background */
-  border: 1px solid #a5d6a7; /* Green border */
+  color: $success-color;
+  background-color: $success-background;
+  border: 1px solid $success-color;
 }
 
-/* Responsive adjustments for smaller screens */
+/* Link de registro (se você adicioná-lo no futuro) */
+.register-link {
+  font-size: 14px;
+  color: $text-medium;
+  text-align: center;
+  margin-top: 25px;
+
+  a {
+    color: $link-color;
+    text-decoration: none;
+    font-weight: 600;
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
+/* RESPONSIVIDADE BÁSICA */
 @media (max-width: 600px) {
   .registration-form {
-    margin: 1.5rem 1rem; /* Smaller margins on narrow screens */
-    padding: 1.5rem;
+    padding: 30px 20px;
+    gap: 20px;
+  }
+  button[type="submit"] {
+    height: 48px;
+    font-size: 16px;
   }
 }
