@@ -9,8 +9,8 @@ import { ApiService, ApplianceAiTip } from '../../services/api.service'; // Para
   standalone: true,
   selector: 'app-home',
   templateUrl: './home.component.html',
-  styleUrls: ['./home.component.css'],
-  imports: [CommonModule, DatePipe]
+  styleUrls: ['./home.component.scss'],
+  imports: [CommonModule]
 })
 export class HomeComponent implements OnInit {
   // Dicas do Contador (EXISTENTES)

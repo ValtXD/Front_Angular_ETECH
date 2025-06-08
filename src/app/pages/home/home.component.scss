@@ -1,0 +1,162 @@
+h1, h2, h3, h4, h5, h6 {
+  margin: 0;
+  line-height: 1.2;
+  color: #61a6ab; /* Roxo suave para os títulos, que se destacam no fundo claro */
+  text-align: center; /* Garante que o texto dentro do h1/h2 etc. esteja centralizado */
+}
+
+/* Estilos da seção principal do home */
+.main-content-home {
+  padding: 80px 20px; /* Mais padding para a seção principal */
+  background-color: #ffffff; /* Mantém o fundo claro da paleta */
+  color: #363C3F; /* Cor de texto padrão para esta seção */
+  min-height: calc(100vh - 70px); /* Ajusta a altura mínima considerando a navbar */
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Centraliza os itens filhos horizontalmente */
+  justify-content: flex-start; /* Alinha ao topo */
+  text-align: center; /* Centraliza o texto e inline-block elements dentro de main-content-home */
+}
+
+.hero-section {
+  display: flex;
+  flex-direction: column; /* Conteúdo em coluna */
+  align-items: center; /* Centraliza os itens filhos de hero-section horizontalmente */
+  justify-content: center;
+  max-width: 900px; /* Largura para o conteúdo principal */
+  margin: 0 auto; /* Centraliza o próprio hero-section dentro de seu pai */
+  background-color: transparent; /* Transparente para usar o fundo do .main-content-home */
+  border-radius: 0;
+  box-shadow: none;
+  padding: 0;
+  gap: 30px; /* Espaço entre elementos */
+}
+
+.hero-text {
+  text-align: center; /* Centraliza o texto dentro do hero-text (h1 e p) */
+  padding: 0 20px; /* Padding horizontal */
+}
+
+.hero-text h1 {
+  font-size: 4.5em; /* Título bem grande e impactante */
+  color: #264e51; /* Roxo suave para o título principal */
+  margin-bottom: 25px;
+  line-height: 1.1;
+  font-weight: 800; /* Super negrito */
+  letter-spacing: -0.04em; /* Espaçamento entre letras ajustado */
+  max-width: 750px; /* **NOVO:** Adicionado um max-width para tentar melhorar a quebra de linha visual */
+  margin-left: auto; /* Para garantir centralização com max-width */
+  margin-right: auto; /* Para garantir centralização com max-width */
+}
+
+.hero-text p {
+  font-size: 1.6em; /* Parágrafo grande e legível */
+  color: #4F8299; /* Azul acinzentado para o parágrafo */
+  line-height: 1.5;
+  margin-bottom: 60px;
+  max-width: 700px; /* Limita a largura do parágrafo */
+  margin-left: auto; /* Para garantir centralização com max-width */
+  margin-right: auto; /* Para garantir centralização com max-width */
+  text-align: center; /* Garante que o texto do parágrafo esteja centralizado */
+}
+
+.btn-action {
+  display: inline-block; /* Importante para que text-align: center do pai funcione */
+  background-color: #18CCC8; /* Ciano vibrante para o botão principal, chamativo e tecnológico */
+  color: #363C3F; /* Texto cinza escuro para contraste forte no botão */
+  padding: 20px 50px; /* Padding grande para um botão principal */
+  border-radius: 10px;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 1.3em;
+  transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+  box-shadow: 0 8px 20px rgba(24, 204, 200, 0.4); /* Sombra suave do ciano do botão */
+  letter-spacing: 0.05em;
+}
+
+.btn-action:hover {
+  background-color: #4F8299; /* Azul acinzentado no hover, um pouco mais sóbrio mas harmonioso */
+  transform: translateY(-4px); /* Efeito de elevação mais notável */
+  box-shadow: 0 12px 25px rgba(79, 130, 153, 0.5); /* Sombra mais intensa no hover */
+}
+
+.hero-image {
+  margin-top: 60px; /* Espaço entre o botão e a imagem */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.hero-image .logo-img {
+  max-width: 300px; /* Ajuste o tamanho da imagem da lâmpada/logo */
+  height: auto;
+  filter: drop-shadow(0 0 20px rgba(24, 204, 200, 0.4)); /* Brilho suave na imagem com o tom ciano */
+  animation: pulse 2s infinite alternate; /* Animação sutil de pulso */
+}
+
+@keyframes pulse {
+  from { transform: scale(1); opacity: 0.9; }
+  to { transform: scale(1.03); opacity: 1; }
+}
+
+/* -------------------- Responsividade da Home -------------------- */
+@media (max-width: 992px) {
+  .main-content-home {
+    padding: 60px 15px;
+  }
+  .hero-text h1 {
+    font-size: 3.5em;
+    max-width: 100%; /* Ajuste para responsividade */
+  }
+  .hero-text p {
+    font-size: 1.3em;
+    max-width: 100%; /* Ajuste para responsividade */
+  }
+  .btn-action {
+    padding: 18px 40px;
+    font-size: 1.2em;
+  }
+  .hero-image {
+    margin-top: 40px;
+  }
+}
+
+@media (max-width: 768px) {
+  .hero-text h1 {
+    font-size: 2.8em;
+  }
+  .hero-text p {
+    font-size: 1.1em;
+    margin-bottom: 40px;
+  }
+  .btn-action {
+    padding: 16px 35px;
+    font-size: 1.1em;
+  }
+  .hero-image .logo-img {
+    max-width: 250px;
+  }
+}
+
+@media (max-width: 600px) {
+  .main-content-home {
+    padding: 40px 10px;
+  }
+  .hero-text h1 {
+    font-size: 2em;
+  }
+  .hero-text p {
+    font-size: 0.95em;
+    margin-bottom: 30px;
+  }
+  .btn-action {
+    padding: 14px 30px;
+    font-size: 1em;
+  }
+  .hero-image {
+    margin-top: 30px;
+  }
+  .hero-image .logo-img {
+    max-width: 200px;
+  }
+}

@@ -1,65 +1,82 @@
-<div class="card">
-  <h1>Resultados</h1>
+<div class="results-page">
+  <mat-card class="filter-card">
+    <mat-card-header>
+      <mat-card-title>Resultados</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <mat-form-field appearance="fill" class="w-100">
+        <mat-label>Selecionar data</mat-label>
+        <mat-select [(ngModel)]="dataSelecionada" (selectionChange)="onDataChange()">
+          <mat-option *ngFor="let data of datasDisponiveis" [value]="data">
+            {{ data | date:'dd/MM/yyyy' }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </mat-card-content>
+  </mat-card>
 
-  <div class="form-group">
-    <label>Selecionar data</label>
-    <select [(ngModel)]="dataSelecionada" (change)="onDataChange()" class="form-control">
-      <option value="">Selecione uma data...</option>
-      <option *ngFor="let data of datasDisponiveis" [value]="data">{{ data | date:'dd/MM/yyyy' }}</option>
-    </select>
+  <div class="results-grid" *ngIf="aparelhosDia.length > 0">
+    <mat-card *ngFor="let ap of aparelhosDia" class="result-card">
+      <mat-card-header>
+        <mat-card-title>{{ ap.nome }}</mat-card-title>
+        <mat-card-subtitle>{{ ap.ambiente.nome }} | {{ ap.estado.nome }} | Bandeira: {{ ap.bandeira.cor }}</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <p><strong>Consumo Dia:</strong> {{ ap.consumo_diario_kwh | number:'1.2-2' }} kWh</p>
+        <p><strong>Custo Dia:</strong> R$ {{ ap.custo_diario | number:'1.2-2' }}</p>
+        <mat-divider></mat-divider>
+        <p class="projection"><strong>Estimativa Mês:</strong> R$ {{ (ap.custo_diario * 30) | number:'1.2-2' }}</p>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="total-card">
+      <mat-card-title>Resumo Total</mat-card-title>
+      <mat-card-content>
+        <div class="total-details">
+          <div>
+            <span>Custo Total Dia</span>
+            <strong>R$ {{ custoTotalNormal | number:'1.2-2' }}</strong>
+          </div>
+          <div class="total-projection">
+            <span>Custo Total Mês (Est.)</span>
+            <strong>R$ {{ (custoTotalNormal * 30) | number:'1.2-2' }}</strong>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
   </div>
 
-  <table class="table table-striped" *ngIf="aparelhosDia.length > 0">
-    <thead>
-    <tr>
-      <th>Ambiente</th>
-      <th>Aparelho</th>
-      <th>Estado</th>
-      <th>Bandeira</th>
-      <th class="text-right">Consumo Dia (kWh)</th>
-      <th class="text-right">Consumo Mês (kWh)</th>
-      <th class="text-right">Custo Dia (R$)</th>
-      <th class="text-right">Custo Mês (R$)</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr *ngFor="let ap of aparelhosDia">
-      <td>{{ ap.ambiente.nome }}</td>
-      <td>{{ ap.nome }}</td>
-      <td>{{ ap.estado.nome }}</td>
-      <td>{{ ap.bandeira.cor }}</td>
-      <td class="text-right">{{ ap.consumo_diario_kwh | number:'1.2-2' }}</td>
-      <td class="text-right">{{ (ap.consumo_diario_kwh * 30) | number:'1.2-2' }}</td>
-      <td class="text-right">{{ ap.custo_diario | number:'1.2-2' }}</td>
-      <td class="text-right">{{ (ap.custo_diario * 30) | number:'1.2-2' }}</td>
-    </tr>
-    <tr class="font-weight-bold">
-      <td colspan="4" class="text-right">TOTAL:</td>
-      <td class="text-right">{{ consumoTotalDia | number:'1.2-2' }}</td>
-      <td class="text-right">{{ (consumoTotalDia * 30) | number:'1.2-2' }}</td>
-      <td class="text-right">{{ custoTotalNormal | number:'1.2-2' }}</td>
-      <td class="text-right">{{ (custoTotalNormal * 30) | number:'1.2-2' }}</td>
-    </tr>
-    </tbody>
-  </table>
+  <div class="footer-actions">
+    <button mat-stroked-button (click)="voltar()">
+      <mat-icon>add_circle_outline</mat-icon>
+      Novo Registro
+    </button>
 
-  <div class="result-footer mt-4">
-    <div class="btn-group">
-      <button class="btn btn-secondary" (click)="voltar()">Novo Registro</button>
-      <button class="btn btn-info ml-2" (click)="irParaGrafico()">Gráfico</button>
-      <button class="btn btn-warning ml-2" (click)="gerarDica()">Gerar Dica</button>
-    </div>
+    <button mat-raised-button color="primary" (click)="irParaGrafico()">
+      <mat-icon>bar_chart</mat-icon>
+      Gráfico
+    </button>
+
+    <button mat-raised-button color="accent" (click)="gerarDica()">
+      <mat-icon>lightbulb</mat-icon>
+      Gerar Dica
+    </button>
   </div>
 </div>
 
-<!-- Modal de Dica -->
+
 <div class="modal-fundo" *ngIf="modalAberto">
-  <div class="modal-conteudo">
-    <h4>Dica de Economia de Energia</h4>
-    <div *ngIf="loadingDica">Gerando dica com IA...</div>
-    <div *ngIf="!loadingDica" [innerHTML]="dicaGerada"></div>
-    <div class="text-end mt-3">
+  <mat-card class="modal-conteudo">
+    <mat-card-title>Dica de Economia de Energia</mat-card-title>
+    <mat-card-content>
+      <div *ngIf="loadingDica" class="loading-container">
+        <mat-spinner diameter="40"></mat-spinner>
+        <p>Gerando dica com IA...</p>
+      </div>
+      <div *ngIf="!loadingDica" [innerHTML]="dicaGerada"></div>
+    </mat-card-content>
+    <mat-card-actions align="end">
       <button class="btn btn-sm btn-secondary" (click)="fecharModal()">Fechar</button>
-    </div>
-  </div>
+    </mat-card-actions>
+  </mat-card>
 </div>

@@ -1,5 +1,4 @@
 // src/app/services/api.service.ts
-
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
@@ -20,7 +19,7 @@ export interface ApplianceAiTip {
   providedIn: 'root',
 })
 export class ApiService {
-  private baseUrl = 'http://localhost:8000/api';
+  private baseUrl = 'http://localhost:8000/api'; // Sua URL base da API
 
   constructor(private http: HttpClient) {}
 
@@ -36,6 +35,12 @@ export class ApiService {
     return this.http.get<Bandeira[]>(`${this.baseUrl}/bandeiras/`);
   }
 
+  // Novo método para buscar um aparelho pelo ID
+  getAparelhoById(id: number): Observable<Aparelho> {
+    return this.http.get<Aparelho>(`${this.baseUrl}/aparelhos/${id}/`);
+  }
+
+  // Método para atualizar um aparelho existente
   atualizarAparelho(id: number, payload: any): Observable<any> {
     return this.http.put(`${this.baseUrl}/aparelhos/${id}/`, payload);
   }
@@ -52,6 +57,7 @@ export class ApiService {
     return this.http.delete(`${this.baseUrl}/aparelhos/${id}/`);
   }
 
+  // Único método para resultados, traz aparelhos, totais e datas
   getResultados(data?: string): Observable<any> {
     let params = new HttpParams();
     if (data) params = params.set('data', data);
@@ -60,6 +66,7 @@ export class ApiService {
 
   gerarDicaIA(mensagem: string): Observable<any> {
     const url = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=AIzaSyClP7PDzQR6AYg1hH7RZoNiZ-reoiQrNrs';
+
     const body = {
       contents: [{
         parts: [{ text: mensagem }]
@@ -76,6 +83,7 @@ export class ApiService {
         }
       ]
     };
+
     return this.http.post(url, body, {
       headers: { 'Content-Type': 'application/json' }
     });

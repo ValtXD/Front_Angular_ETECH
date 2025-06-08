@@ -1,103 +1,120 @@
 <div class="calcular-container">
 
-  <form [formGroup]="aparelhoForm" (ngSubmit)="onSubmit()" novalidate>
-    <mat-card class="form-card">
-      <mat-card-title>Cadastro / Edição de Aparelho</mat-card-title>
-      <mat-card-content>
-        <div class="form-grid">
-
-          <mat-form-field appearance="outline">
-            <mat-label>Data Cadastro</mat-label>
-            <input matInput type="date" formControlName="data_cadastro" />
-            <mat-error *ngIf="aparelhoForm.get('data_cadastro')?.hasError('required')">
-              Data é obrigatória
-            </mat-error>
-          </mat-form-field>
-
-          <mat-form-field appearance="outline">
-            <mat-label>Ambiente</mat-label>
-            <mat-select formControlName="ambiente">
-              <mat-option *ngFor="let a of ambientes" [value]="a.id">{{ a.nome }}</mat-option>
-            </mat-select>
-            <mat-error *ngIf="aparelhoForm.get('ambiente')?.hasError('required')">
-              Selecione um ambiente
-            </mat-error>
-          </mat-form-field>
-
-          <mat-form-field appearance="outline">
-            <mat-label>Estado</mat-label>
-            <mat-select formControlName="estado">
-              <mat-option *ngFor="let e of estados" [value]="e.id">{{ e.nome }}</mat-option>
-            </mat-select>
-            <mat-error *ngIf="aparelhoForm.get('estado')?.hasError('required')">
-              Selecione um estado
-            </mat-error>
-          </mat-form-field>
-
-          <mat-form-field appearance="outline">
-            <mat-label>Bandeira</mat-label>
-            <mat-select formControlName="bandeira">
-              <mat-option *ngFor="let b of bandeiras" [value]="b.id">{{ b.cor }}</mat-option>
-            </mat-select>
-            <mat-error *ngIf="aparelhoForm.get('bandeira')?.hasError('required')">
-              Selecione uma bandeira
-            </mat-error>
-          </mat-form-field>
-
-          <mat-form-field appearance="outline" class="full-width">
-            <mat-label>Nome do Aparelho</mat-label>
-            <input matInput formControlName="nome" placeholder="Ex: Ar Condicionado" />
-            <mat-error *ngIf="aparelhoForm.get('nome')?.hasError('required')">
-              Nome é obrigatório
-            </mat-error>
-          </mat-form-field>
-
-          <mat-form-field appearance="outline">
-            <mat-label>Potência (Watts)</mat-label>
-            <input matInput type="number" formControlName="potencia_watts" min="0" />
-            <mat-error *ngIf="aparelhoForm.get('potencia_watts')?.hasError('required')">
-              Potência é obrigatória
-            </mat-error>
-          </mat-form-field>
-
-          <mat-form-field appearance="outline">
-            <mat-label>Tempo de Uso Diário (horas)</mat-label>
-            <input matInput type="number" formControlName="tempo_uso_diario_horas" min="0" step="0.1" />
-            <mat-error *ngIf="aparelhoForm.get('tempo_uso_diario_horas')?.hasError('required')">
-              Tempo de uso é obrigatório
-            </mat-error>
-          </mat-form-field>
-
-          <mat-form-field appearance="outline">
-            <mat-label>Quantidade</mat-label>
-            <input matInput type="number" formControlName="quantidade" min="1" />
-            <mat-error *ngIf="aparelhoForm.get('quantidade')?.hasError('required')">
-              Quantidade é obrigatória
-            </mat-error>
-            <mat-error *ngIf="aparelhoForm.get('quantidade')?.hasError('min')">
-              Quantidade mínima é 1
-            </mat-error>
-          </mat-form-field>
-
-        </div>
-      </mat-card-content>
-      <mat-card-actions align="end" class="actions">
-        <button mat-flat-button color="primary" type="submit" [disabled]="aparelhoForm.invalid">
-          {{ editandoId ? 'Salvar Edição' : 'Cadastrar Aparelho' }}
+  <div class="modal-overlay" [class.active]="isModalOpen">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title">Cadastro / Edição de Aparelho</h2>
+        <button class="modal-close-button" (click)="closeModal()">
+          <mat-icon>close</mat-icon>
         </button>
-        <button mat-stroked-button type="button" (click)="resetForm()">Cancelar</button>
-      </mat-card-actions>
-    </mat-card>
-  </form>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="aparelhoForm" (ngSubmit)="onSubmit()" novalidate>
+          <div class="form-card-modal">
+            <div class="form-grid">
 
-  <mat-card class="lista-card">
-    <mat-card-title>Filtros</mat-card-title>
-    <mat-card-content>
+              <mat-form-field appearance="outline">
+                <mat-label>Data Cadastro</mat-label>
+                <input matInput type="date" formControlName="data_cadastro" />
+                <mat-error *ngIf="aparelhoForm.get('data_cadastro')?.hasError('required')">
+                  Data é obrigatória
+                </mat-error>
+              </mat-form-field>
+
+              <mat-form-field appearance="outline">
+                <mat-label>Ambiente</mat-label>
+                <mat-select formControlName="ambiente">
+                  <mat-option *ngFor="let a of ambientes" [value]="a.id">{{ a.nome }}</mat-option>
+                </mat-select>
+                <mat-error *ngIf="aparelhoForm.get('ambiente')?.hasError('required')">
+                  Selecione um ambiente
+                </mat-error>
+              </mat-form-field>
+
+              <mat-form-field appearance="outline">
+                <mat-label>Estado</mat-label>
+                <mat-select formControlName="estado">
+                  <mat-option *ngFor="let e of estados" [value]="e.id">{{ e.nome }}</mat-option>
+                </mat-select>
+                <mat-error *ngIf="aparelhoForm.get('estado')?.hasError('required')">
+                  Selecione um estado
+                </mat-error>
+              </mat-form-field>
+
+              <mat-form-field appearance="outline">
+                <mat-label>Bandeira</mat-label>
+                <mat-select formControlName="bandeira">
+                  <mat-option *ngFor="let b of bandeiras" [value]="b.id">{{ b.cor }}</mat-option>
+                </mat-select>
+                <mat-error *ngIf="aparelhoForm.get('bandeira')?.hasError('required')">
+                  Selecione uma bandeira
+                </mat-error>
+              </mat-form-field>
+
+              <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Nome do Aparelho</mat-label>
+                <input matInput formControlName="nome" placeholder="Ex: Ar Condicionado" />
+                <mat-error *ngIf="aparelhoForm.get('nome')?.hasError('required')">
+                  Nome é obrigatório
+                </mat-error>
+              </mat-form-field>
+
+              <mat-form-field appearance="outline">
+                <mat-label>Potência (Watts)</mat-label>
+                <input matInput type="number" formControlName="potencia_watts" min="0" />
+                <mat-error *ngIf="aparelhoForm.get('potencia_watts')?.hasError('required')">
+                  Potência é obrigatória
+                </mat-error>
+              </mat-form-field>
+
+              <mat-form-field appearance="outline">
+                <mat-label>Tempo de Uso Diário (horas)</mat-label>
+                <input matInput type="number" formControlName="tempo_uso_diario_horas" min="0" step="0.1" />
+                <mat-error *ngIf="aparelhoForm.get('tempo_uso_diario_horas')?.hasError('required')">
+                  Tempo de uso é obrigatório
+                </mat-error>
+              </mat-form-field>
+
+              <mat-form-field appearance="outline">
+                <mat-label>Quantidade</mat-label>
+                <input matInput type="number" formControlName="quantidade" min="1" />
+                <mat-error *ngIf="aparelhoForm.get('quantidade')?.hasError('required')">
+                  Quantidade é obrigatória
+                </mat-error>
+                <mat-error *ngIf="aparelhoForm.get('quantidade')?.hasError('min')">
+                  Quantidade mínima é 1
+                </mat-error>
+              </mat-form-field>
+
+            </div>
+          </div>
+          <mat-card-actions align="end" class="modal-actions">
+            <button mat-stroked-button type="button" (click)="closeModal()">Cancelar</button>
+            <button mat-flat-button color="primary" type="submit" [disabled]="aparelhoForm.invalid">
+              {{ editandoId ? 'Salvar Edição' : 'Cadastrar Aparelho' }}
+            </button>
+          </mat-card-actions>
+        </form>
+      </div>
+    </div>
+  </div>
+  <div class="add-aparelho-btn-container">
+    <button mat-raised-button color="primary" (click)="openModalForNew()">
+      <mat-icon>add</mat-icon> Novo Aparelho
+    </button>
+  </div>
+  <mat-card class="lista-card filters-card">
+    <div class="filters-header">
+      <h3 class="mat-card-title-small">Filtros de Aparelhos</h3>
+      <button class="filter-toggle-button" (click)="toggleFilters()">
+        <mat-icon>{{ showFilters ? 'search_off' : 'search' }}</mat-icon>
+      </button>
+    </div>
+    <mat-card-content [class.active]="showFilters" class="filters-content">
       <div class="filtros-row">
-
         <mat-form-field appearance="outline" class="filtro-field">
           <mat-label>Filtrar por Ambiente</mat-label>
-          <mat-select [(ngModel)]="filtros.ambiente" name="filtroAmbiente" (selectionChange)="aplicarFiltrosBackend()">
+          <mat-select [(ngModel)]="filtros.ambiente" name="filtroAmbiente">
             <mat-option value="">Todos</mat-option>
             <mat-option *ngFor="let a of ambientes" [value]="a.id">{{ a.nome }}</mat-option>
           </mat-select>
@@ -105,76 +122,66 @@
 
         <mat-form-field appearance="outline" class="filtro-field">
           <mat-label>Data Início</mat-label>
-          <input matInput type="date" [(ngModel)]="filtros.data" name="filtroDataInicio" (change)="aplicarFiltrosBackend()" />
+          <input matInput type="date" [(ngModel)]="filtros.data" name="filtroDataInicio" />
         </mat-form-field>
 
         <mat-form-field appearance="outline" class="filtro-field">
           <mat-label>Filtrar por Nome</mat-label>
-          <input matInput [(ngModel)]="filtros.nome" name="filtroNome" placeholder="Nome do aparelho" (ngModelChange)="aplicarFiltrosBackend()" />
+          <input matInput type="text" [(ngModel)]="filtros.nome" name="filtroNome" />
         </mat-form-field>
-
       </div>
-
+      <div class="apply-filters-actions">
+        <button mat-flat-button color="primary" (click)="aplicarFiltrosBackend()">Aplicar Filtros</button>
+        <button mat-stroked-button (click)="clearFilters()">Limpar Filtros</button>
+      </div>
     </mat-card-content>
   </mat-card>
-
   <mat-card class="lista-card">
     <mat-card-title>Lista de Aparelhos</mat-card-title>
-    <mat-card-content>
-      <table mat-table [dataSource]="aparelhosFiltrados" class="mat-elevation-z8">
+    <mat-card-content class="aparelhos-grid">
+      <mat-card *ngFor="let aparelho of aparelhosFiltrados" class="aparelho-card">
+        <mat-card-header>
+          <mat-card-title>{{ aparelho.nome }}</mat-card-title>
+          <mat-card-subtitle>Cadastro: {{ aparelho.data_cadastro | date:'dd/MM/yyyy' }}</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="card-detail-item">
+            <strong>Ambiente:</strong> {{ aparelho.ambiente.nome }}
+          </div>
+          <div class="card-detail-item">
+            <strong>Estado:</strong> {{ aparelho.estado.nome }}
+          </div>
+          <div class="card-detail-item">
+            <strong>Bandeira:</strong>
+            <span class="bandeira-color" [ngClass]="'bandeira-' + aparelho.bandeira.cor.toLowerCase()">
+              {{ aparelho.bandeira.cor }}
+            </span>
+          </div>
+          <div class="card-detail-item">
+            <strong>Potência:</strong> {{ aparelho.potencia_watts }} W
+          </div>
+          <div class="card-detail-item">
+            <strong>Uso Diário:</strong> {{ aparelho.tempo_uso_diario_horas }} h/dia
+          </div>
+          <div class="card-detail-item">
+            <strong>Quantidade:</strong> {{ aparelho.quantidade }}
+          </div>
+        </mat-card-content>
+        <mat-card-actions align="end">
+          <button mat-icon-button color="primary" aria-label="Editar" (click)="openModalForEdit(aparelho)">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button mat-icon-button color="warn" aria-label="Remover" (click)="remover(aparelho.id)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </mat-card-actions>
+      </mat-card>
 
-        <!-- Definição das colunas (nome, data, ambiente...) -->
-        <ng-container matColumnDef="nome">
-          <th mat-header-cell *matHeaderCellDef> Nome </th>
-          <td mat-cell *matCellDef="let aparelho"> {{ aparelho.nome }} </td>
-        </ng-container>
-        <ng-container matColumnDef="data_cadastro">
-          <th mat-header-cell *matHeaderCellDef> Data Cadastro </th>
-          <td mat-cell *matCellDef="let aparelho"> {{ aparelho.data_cadastro | date:'dd/MM/yyyy' }} </td>
-        </ng-container>
-        <ng-container matColumnDef="ambiente">
-          <th mat-header-cell *matHeaderCellDef> Ambiente </th>
-          <td mat-cell *matCellDef="let aparelho"> {{ aparelho.ambiente.nome }} </td>
-        </ng-container>
-        <ng-container matColumnDef="estado">
-          <th mat-header-cell *matHeaderCellDef> Estado </th>
-          <td mat-cell *matCellDef="let aparelho"> {{ aparelho.estado.nome }} </td>
-        </ng-container>
-        <ng-container matColumnDef="bandeira">
-          <th mat-header-cell *matHeaderCellDef> Bandeira </th>
-          <td mat-cell *matCellDef="let aparelho"> {{ aparelho.bandeira.nome }} </td>
-        </ng-container>
-        <ng-container matColumnDef="potencia_watts">
-          <th mat-header-cell *matHeaderCellDef> Potência (W) </th>
-          <td mat-cell *matCellDef="let aparelho"> {{ aparelho.potencia_watts }} </td>
-        </ng-container>
-        <ng-container matColumnDef="tempo_uso_diario_horas">
-          <th mat-header-cell *matHeaderCellDef> Tempo Uso (h/dia) </th>
-          <td mat-cell *matCellDef="let aparelho"> {{ aparelho.tempo_uso_diario_horas }} </td>
-        </ng-container>
-        <ng-container matColumnDef="quantidade">
-          <th mat-header-cell *matHeaderCellDef> Quantidade </th>
-          <td mat-cell *matCellDef="let aparelho"> {{ aparelho.quantidade }} </td>
-        </ng-container>
-
-        <ng-container matColumnDef="acoes">
-          <th mat-header-cell *matHeaderCellDef> Ações </th>
-          <td mat-cell *matCellDef="let aparelho">
-            <button mat-icon-button color="primary" aria-label="Editar" (click)="editar(aparelho)">
-              <mat-icon>edit</mat-icon>
-            </button>
-            <button mat-icon-button color="warn" aria-label="Remover" (click)="remover(aparelho.id)">
-              <mat-icon>delete</mat-icon>
-            </button>
-          </td>
-        </ng-container>
-
-        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-      </table>
+      <div *ngIf="aparelhosFiltrados.length === 0" class="no-aparelhos-message">
+        Nenhum aparelho encontrado.
+      </div>
     </mat-card-content>
   </mat-card>
-
   <div class="btn-resultados">
     <button mat-raised-button color="accent" (click)="irParaResultados()">Ir para Resultados</button>
   </div>
