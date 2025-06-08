@@ -1,192 +1,167 @@
-.modal-fundo {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background: rgba(0,0,0,0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
+.page-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 30px;
+  display: grid;
+  grid-template-columns: 1fr 1.5fr; /* Coluna do form | Coluna da tabela */
+  gap: 30px;
+  align-items: flex-start;
 }
 
-.modal-conteudo {
-  background: white;
-  padding: 20px;
-  border-radius: 8px;
-  max-width: 600px;
-  max-height: 80vh;
-  overflow-y: auto;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.3);
-}
-
-
-
-
-.card-consumo,
-.card-filtros,
-.card-registros {
-  max-width: 900px;
-  margin: 2rem auto;
-  padding: 1.8rem 2rem;
-  border-radius: 12px;
-  box-shadow: 0 6px 18px rgb(0 0 0 / 0.12);
+.card-consumo, .card-registros {
   background-color: #fff;
-  transition: box-shadow 0.3s ease;
+  border-radius: 12px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, .08);
+  padding: 35px;
 }
 
-.card-consumo:hover,
-.card-filtros:hover,
-.card-registros:hover {
-  box-shadow: 0 10px 30px rgb(0 0 0 / 0.18);
-}
-
-/* =================== Titles =================== */
 mat-card-title {
+  font-size: 26px;
   font-weight: 700;
-  font-size: 1.75rem;
-  color: #1a237e; /* Azul escuro */
-  margin-bottom: 1.3rem;
-  letter-spacing: 0.02em;
+  color: #002b59;
+  margin-bottom: 25px;
 }
 
-/* =================== Form =================== */
+
 .form-consumo {
-  display: flex;
-  flex-direction: column;
-  gap: 1.4rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
 }
 
-/* =================== Full Width Inputs/Selects =================== */
-.full-width {
-  width: 100%;
+.form-consumo .full-width {
+  grid-column: 1 / -1;
 }
 
-/* =================== Checkbox =================== */
 .checkbox-tarifa-social {
-  margin-top: 0.4rem;
-  font-weight: 600;
-  font-size: 1.05rem;
-  color: #333;
+  grid-column: 1 / -1;
+  margin: 10px 0;
 }
 
-/* =================== Actions Buttons =================== */
+
 .actions {
+  grid-column: 1 / -1;
   display: flex;
-  gap: 1.2rem;
-  justify-content: flex-start;
-  margin-top: 1.8rem;
+  justify-content: flex-end;
+  gap: 15px;
+  margin-top: 30px;
+  padding-top: 20px;
+  border-top: 1px solid #eee;
 }
 
-.btn-submit {
-  min-width: 150px;
-  font-weight: 700;
-  font-size: 1.1rem;
-  transition: background-color 0.3s ease;
+/* Card de filtros dentro do form */
+.card-filtros {
+  grid-column: 1 / -1;
+  margin-top: 30px;
+  padding: 20px;
+  background-color: #f9fafb;
+  border: 1px solid #eef2f7;
+  box-shadow: none !important;
 }
-
-.btn-submit:hover {
-  background-color: #3949ab;
+.card-filtros mat-card-title {
+  font-size: 18px;
+  margin-bottom: 15px;
 }
-
-.btn-secondary {
-  min-width: 150px;
-  font-weight: 600;
-  font-size: 1rem;
-  color: #3f51b5;
-  border-color: #3f51b5;
-  transition: background-color 0.3s ease, color 0.3s ease;
-}
-
-.btn-secondary:hover {
-  background-color: #3f51b5;
-  color: white;
-}
-
-/* =================== Filtros Container =================== */
 .filtros-container {
-  display: flex;
-  gap: 1rem;
-  flex-wrap: wrap;
-  justify-content: flex-start;
-  margin-top: 0.5rem;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px;
 }
 
-.filtro-field {
-  flex: 1 1 200px;
-  min-width: 200px;
+
+.card-registros .mat-card-title {
+  margin-bottom: 20px;
 }
 
-/* =================== Tabela Estilizada =================== */
-table.mat-elevation-z8 {
+.card-registros mat-card-content {
+  overflow-x: auto; /* Permite rolagem horizontal em telas pequenas */
+}
+
+table.mat-table {
   width: 100%;
-  border-collapse: separate;
-  border-spacing: 0 12px;
-  font-family: 'Roboto', sans-serif;
+  background-color: transparent;
 }
 
-th.mat-header-cell {
-  background-color: #3f51b5;
-  color: #fff;
-  font-weight: 700;
-  text-align: left;
-  padding: 14px 18px;
-  border-radius: 10px 10px 0 0;
-  letter-spacing: 0.03em;
+.mat-header-row {
+  background-color: #f5f8fb;
 }
 
-td.mat-cell {
-  background-color: #f9fbff;
-  padding: 14px 18px;
-  font-size: 1rem;
-  vertical-align: middle;
-  color: #222;
-  transition: background-color 0.3s ease;
-}
-
-tr.mat-row:hover td.mat-cell {
-  background-color: #e8f0fe;
-  cursor: pointer;
-}
-
-/* =================== Ícones Ações =================== */
-button.mat-icon-button {
-  margin: 0 6px;
-  transition: background-color 0.2s ease;
-}
-
-button.mat-icon-button:hover {
-  background-color: rgba(63, 81, 181, 0.1);
-  border-radius: 6px;
-}
-
-/* =================== Mensagem alerta sem registros =================== */
-.alert-info {
-  color: #1565c0;
+.mat-header-cell {
+  color: #002b59;
+  font-size: 14px;
   font-weight: 600;
-  font-size: 1.1rem;
-  text-align: center;
-  padding: 1.2rem;
-  background-color: #e3f2fd;
-  border-radius: 10px;
-  border: 1.5px solid #90caf9;
-  margin-top: 1.5rem;
-  user-select: none;
 }
 
-/* =================== Responsividade =================== */
+.mat-cell {
+  color: #334155;
+  border-bottom-color: #eef2f7;
+}
+
+tr.mat-row:hover {
+  background-color: #f5f8fb;
+}
+
+.alert-info {
+  text-align: center;
+  font-size: 1.1em;
+  color: #667085;
+  padding: 30px;
+  background-color: #f9fafb;
+  border-radius: 8px;
+}
+
+
+button[mat-flat-button].mat-primary {
+  background-color: #00b9be; /* Ciano Vibrante */
+  color: #fff;
+  padding: 10px 22px;
+  font-size: 16px;
+  font-weight: 600;
+  border-radius: 8px;
+  transition: all .3s ease;
+  box-shadow: 0 4px 12px rgba(0, 185, 190, .3);
+}
+
+button[mat-flat-button].mat-primary:hover:not(:disabled) {
+  background-color: #005f8c; /* Azul mais escuro */
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(0, 95, 140, .4);
+}
+
+button[mat-stroked-button] {
+  border: 2px solid #005f8c;
+  color: #005f8c;
+  padding: 10px 22px;
+  font-size: 16px;
+  font-weight: 600;
+  border-radius: 8px;
+  transition: all .3s ease;
+}
+
+button[mat-stroked-button]:hover {
+  background-color: #005f8c;
+  color: #fff;
+}
+
+
+@media (max-width: 1200px) {
+  .page-container {
+    grid-template-columns: 1fr; /* Coluna única */
+  }
+}
+
 @media (max-width: 768px) {
-  .filtros-container {
-    flex-direction: column;
+  .page-container {
+    padding: 20px 15px;
   }
-
-  .actions {
-    flex-direction: column;
+  .form-consumo, .filtros-container {
+    grid-template-columns: 1fr; /* Coluna única para campos */
+    gap: 15px 0;
   }
-
-  .btn-submit,
-  .btn-secondary {
-    width: 100%;
+  .card-consumo, .card-registros {
+    padding: 25px;
+  }
+  mat-card-title {
+    font-size: 22px;
   }
 }
