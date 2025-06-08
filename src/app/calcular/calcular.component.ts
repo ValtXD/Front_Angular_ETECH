@@ -36,10 +36,11 @@ import {MatTableModule} from '@angular/material/table';
     MatButtonModule,
     MatIconModule,
     MatTableModule,
+
   ]
 })
 export class CalcularComponent implements OnInit {
-  aparelhoForm: FormGroup;
+  aparelhoForm!: FormGroup;
   ambientes: Ambiente[] = [];
   estados: Estado[] = [];
   bandeiras: Bandeira[] = [];
@@ -52,13 +53,12 @@ export class CalcularComponent implements OnInit {
     ambiente: '',
   };
 
-  // Data hoje formatada para padrão YYYY-MM-DD
   dataHoje: string = new Date().toISOString().slice(0, 10);
 
-  displayedColumns: string[] = [
-    'nome', 'data_cadastro', 'ambiente', 'estado', 'bandeira',
-    'potencia_watts', 'tempo_uso_diario_horas', 'quantidade', 'acoes'
-  ];
+
+
+  isModalOpen: boolean = false;
+  showFilters: boolean = false;
 
   constructor(
     private api: ApiService,
@@ -71,21 +71,29 @@ export class CalcularComponent implements OnInit {
       estado: ['', Validators.required],
       bandeira: ['', Validators.required],
       nome: ['', Validators.required],
-      potencia_watts: [null, Validators.required],
-      tempo_uso_diario_horas: [null, Validators.required],
+      potencia_watts: [null, [Validators.required, Validators.min(0)]],
+      tempo_uso_diario_horas: [null, [Validators.required, Validators.min(0)]],
       quantidade: [1, [Validators.required, Validators.min(1)]],
     });
   }
 
   ngOnInit(): void {
-    this.api.getAmbientes().subscribe(data => this.ambientes = data);
-    this.api.getEstados().subscribe(data => this.estados = data);
-    this.api.getBandeiras().subscribe(data => this.bandeiras = data);
+    this.api.getAmbientes().subscribe({
+      next: data => this.ambientes = data,
+      error: err => console.error('Erro ao carregar ambientes:', err)
+    });
+    this.api.getEstados().subscribe({
+      next: data => this.estados = data,
+      error: err => console.error('Erro ao carregar estados:', err)
+    });
+    this.api.getBandeiras().subscribe({
+      next: data => this.bandeiras = data,
+      error: err => console.error('Erro ao carregar bandeiras:', err)
+    });
     this.aplicarFiltrosBackend();
   }
 
-
-  aplicarFiltrosBackend() {
+  aplicarFiltrosBackend(): void {
     let params = new HttpParams();
 
     if (this.filtros.ambiente) {
@@ -104,37 +112,113 @@ export class CalcularComponent implements OnInit {
     });
   }
 
-  // Retorna a lista já filtrada pelo backend (sem filtro local)
-  get aparelhosFiltrados() {
+  get aparelhosFiltrados(): Aparelho[] {
     return this.aparelhos;
   }
 
-  editar(aparelho: Aparelho) {
-    const confirmar = window.confirm(`Deseja editar o aparelho "${aparelho.nome}"?`);
-    if (!confirmar) return;
+  /**
+   * Abre o modal de edição e busca os dados completos do aparelho pelo ID.
+   * @param aparelho O objeto aparelho com o ID para edição.
+   */
+  openModalForEdit(aparelho: Aparelho): void {
+    if (aparelho.id !== undefined && aparelho.id !== null) {
+      this.editandoId = aparelho.id;
+      this.isModalOpen = true; // Abre o modal imediatamente
 
-    this.editandoId = aparelho.id;
-    this.aparelhoForm.patchValue({
-      data_cadastro: aparelho.data_cadastro,
-      ambiente: aparelho.ambiente.id,
-      estado: aparelho.estado.id,
-      bandeira: aparelho.bandeira.id,
-      nome: aparelho.nome,
-      potencia_watts: aparelho.potencia_watts,
-      tempo_uso_diario_horas: aparelho.tempo_uso_diario_horas,
-      quantidade: aparelho.quantidade,
-    });
+      // Faz a requisição para buscar os detalhes completos do aparelho pelo ID
+      this.api.getAparelhoById(aparelho.id).subscribe({
+        next: (aparelhoCompleto: Aparelho) => {
+          // Preenche o formulário com os dados completos da API
+          this.aparelhoForm.patchValue({
+            data_cadastro: aparelhoCompleto.data_cadastro,
+            ambiente: aparelhoCompleto.ambiente?.id,
+            estado: aparelhoCompleto.estado?.id,
+            bandeira: aparelhoCompleto.bandeira?.id,
+            nome: aparelhoCompleto.nome,
+            potencia_watts: aparelhoCompleto.potencia_watts,
+            tempo_uso_diario_horas: aparelhoCompleto.tempo_uso_diario_horas,
+            quantidade: aparelhoCompleto.quantidade,
+          });
+        },
+        error: (err) => {
+          console.error('Erro ao buscar aparelho para edição:', err);
+          this.closeModal();
+        }
+      });
+    } else {
+      console.error('ID do aparelho não fornecido para edição.');
+    }
   }
 
-  remover(id: number) {
-    const confirmar = window.confirm('Tem certeza que deseja remover este aparelho?');
-    if (!confirmar) return;
-
-    this.api.removerAparelho(id).subscribe(() => this.aplicarFiltrosBackend());
+  /**
+   * Abre o modal para um novo cadastro.
+   */
+  openModalForNew(): void {
+    this.editandoId = null;
+    this.resetForm();
+    this.isModalOpen = true;
   }
 
-  onSubmit() {
-    if (this.aparelhoForm.invalid) return;
+  /**
+   * Fecha o modal e reseta o formulário.
+   */
+  closeModal(): void {
+    this.isModalOpen = false;
+    this.resetForm();
+    this.editandoId = null;
+  }
+
+  /**
+   * Alterna a visibilidade dos campos de filtro.
+   */
+  toggleFilters(): void {
+    this.showFilters = !this.showFilters;
+  }
+
+  /**
+   * Limpa os filtros e recarrega todos os aparelhos.
+   */
+  clearFilters(): void {
+    this.filtros = {
+      nome: '',
+      data: '',
+      ambiente: '',
+    };
+    this.aplicarFiltrosBackend();
+  }
+
+  /**
+   * Remove um aparelho.
+   * @param id O ID do aparelho a ser removido.
+   */
+  remover(id: number | undefined): void {
+    if (id === undefined) {
+      console.error('ID do aparelho é indefinido para remoção.');
+      return;
+    }
+
+    // Em um app real, use um modal de confirmação customizado aqui (ex: MatDialog)
+    console.log('Solicitação de remoção para o ID:', id);
+    if (confirm('Tem certeza que deseja remover este aparelho? (Em um app real, use um modal customizado)')) {
+      this.api.removerAparelho(id).subscribe({
+        next: () => {
+          console.log('Aparelho removido com sucesso!');
+          this.aplicarFiltrosBackend();
+        },
+        error: err => console.error('Erro ao remover aparelho:', err)
+      });
+    }
+  }
+
+  /**
+   * Envia o formulário para criar ou atualizar um aparelho.
+   */
+  onSubmit(): void {
+    if (this.aparelhoForm.invalid) {
+      this.aparelhoForm.markAllAsTouched();
+      console.log('Formulário inválido.');
+      return;
+    }
 
     const formValue = this.aparelhoForm.value;
     const payload = {
@@ -149,27 +233,40 @@ export class CalcularComponent implements OnInit {
     };
 
     if (this.editandoId) {
-      this.api.atualizarAparelho(this.editandoId, payload).subscribe(() => {
-        this.editandoId = null;
-        this.resetForm();
-        this.aplicarFiltrosBackend(); // Atualiza lista com filtros atuais
-        alert('Edição salva com sucesso!');
+      this.api.atualizarAparelho(this.editandoId, payload).subscribe({
+        next: () => {
+          console.log('Edição salva com sucesso!');
+          this.closeModal();
+          this.aplicarFiltrosBackend();
+        },
+        error: err => console.error('Erro ao atualizar aparelho:', err)
       });
     } else {
-      this.api.criarAparelho(payload).subscribe(() => {
-        this.resetForm();
-        this.aplicarFiltrosBackend(); // Atualiza lista com filtros atuais
-        alert('Cadastro feito com sucesso!');
+      this.api.criarAparelho(payload).subscribe({
+        next: () => {
+          console.log('Cadastro feito com sucesso!');
+          this.closeModal();
+          this.aplicarFiltrosBackend();
+        },
+        error: err => console.error('Erro ao cadastrar aparelho:', err)
       });
     }
   }
 
-  resetForm() {
+  /**
+   * Reseta o formulário para os valores padrão.
+   */
+  resetForm(): void {
     this.aparelhoForm.reset({ quantidade: 1, data_cadastro: this.dataHoje });
-    this.editandoId = null;
+    Object.keys(this.aparelhoForm.controls).forEach(key => {
+      this.aparelhoForm.get(key)?.setErrors(null);
+    });
   }
 
-  irParaResultados() {
+  /**
+   * Navega para a página de resultados com a data selecionada.
+   */
+  irParaResultados(): void {
     const dataSelecionada = this.aparelhoForm.get('data_cadastro')?.value;
     this.router.navigate(['/resultados'], { queryParams: { data: dataSelecionada } });
   }

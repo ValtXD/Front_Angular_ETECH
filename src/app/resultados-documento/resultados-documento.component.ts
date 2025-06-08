@@ -3,11 +3,14 @@ import { DocumentoService, CalculoResponse } from '../services/documento.service
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import {MatButton} from '@angular/material/button';
+import {MatCard, MatCardContent, MatCardHeader, MatCardModule} from '@angular/material/card';
+import {MatSelectModule} from '@angular/material/select';
 
 @Component({
   selector: 'app-resultados-documento',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, MatButton, MatCardHeader, MatCardContent, MatCard, MatCardModule, MatSelectModule,],
   templateUrl: './resultados-documento.component.html',
   styleUrls: ['./resultados-documento.component.css']
 })
@@ -48,8 +51,19 @@ export class ResultadosDocumentoComponent implements OnInit {
     if (!this.resultadosCalculo || !this.resultadosCalculo.resultados) return null;
 
     const resultado = this.resultadosCalculo.resultados.find(r => r.data === data);
-    return resultado ? resultado.consumo : null;
+    // Para 'aparelho', 'consumo' não existe diretamente para data, precisamos calcular.
+    // Considerando que `item.consumo_mensal_kwh` é para aparelho, e `item.consumo` para contador.
+    // Se o tipo for 'aparelho', você já tem os valores diários/mensais calculados no display.
+    // Se for 'contador', o 'consumo' já vem no item do resultado.
+    if (this.tipoDocumento === 'aparelho' && resultado) {
+      // Se for aparelho, o consumo diário é o consumo mensal dividido por 30 (ou o número de dias no mês, se for mais preciso)
+      return resultado.consumo_mensal_kwh / 30;
+    } else if (this.tipoDocumento === 'contador' && resultado) {
+      return resultado.consumo;
+    }
+    return null;
   }
+
 
   calcularCustos() {
     if (!this.estadoSelecionado || !this.bandeiraSelecionada) {

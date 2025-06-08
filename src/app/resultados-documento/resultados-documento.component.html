@@ -6,8 +6,7 @@
 
 <div *ngIf="dados.length > 0">
 
-  <!-- Preview simples dos dados carregados -->
-  <h4>Preview dos Dados</h4>
+  <h4>Pré-visualização dos Dados Carregados</h4>
   <div *ngIf="tipoDocumento === 'aparelho'">
     <table border="1" cellspacing="0" cellpadding="5" style="width: 100%;">
       <thead>
@@ -74,74 +73,57 @@
 
   <br /><br />
 
-  <button (click)="calcularCustos()">Calcular Custos</button>
+  <button (click)="calcularCustos()" mat-raised-button>Calcular Custos</button>
 
   <div *ngIf="carregando" style="margin-top: 1rem;">Calculando custos...</div>
 
-  <div *ngIf="!carregando && resultadosCalculo">
+  <div *ngIf="!carregando && resultadosCalculo" class="resultados-cards-container">
 
-    <!-- Aparelho -->
-    <div *ngIf="tipoDocumento === 'aparelho'" style="margin-top: 1rem;">
-      <h4>Resultados de Aparelhos</h4>
-      <table border="1" cellspacing="0" cellpadding="5" style="width: 100%;">
-        <thead>
-        <tr>
-          <th>Aparelho</th>
-          <th>Consumo Diário (kWh)</th>
-          <th>Consumo Mensal (kWh)</th>
-          <th>Custo Normal (R$)</th>
-          <th>Custo com Tarifa Social (R$)</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr *ngFor="let item of resultadosCalculo.resultados">
-          <td>{{ item.aparelho }}</td>
-          <td>{{ (item.consumo_mensal_kwh / 30) | number:'1.2-2' }}</td>
-          <td>{{ item.consumo_mensal_kwh | number:'1.2-2' }}</td>
-          <td>{{ item.custo_normal | currency:'BRL' }}</td>
-          <td>{{ item.custo_social | currency:'BRL' }}</td>
-        </tr>
-        </tbody>
-      </table>
+    <div *ngIf="tipoDocumento === 'aparelho'" class="aparelho-cards-grid">
+      <h4>Resultados Detalhados (Aparelhos)</h4>
+      <mat-card *ngFor="let item of resultadosCalculo.resultados" class="resultado-card">
+        <mat-card-header>
+          <mat-card-title>{{ item.aparelho }}</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <p><strong>Consumo Dia (kWh):</strong> {{ (item.consumo_mensal_kwh / 30) | number:'1.2-2' }}</p>
+          <p><strong>Consumo Mês (kWh):</strong> {{ item.consumo_mensal_kwh | number:'1.2-2' }}</p>
+          <p><strong>Custo Dia (R$):</strong> {{ (item.custo_normal / 30) | currency:'BRL' }}</p>
+          <p><strong>Custo Mês (R$):</strong> {{ item.custo_normal | currency:'BRL' }}</p>
+        </mat-card-content>
+      </mat-card>
     </div>
 
-    <!-- Contador -->
-    <div *ngIf="tipoDocumento === 'contador'" style="margin-top: 1rem;">
-      <h4>Resultados de Contador</h4>
-      <table border="1" cellspacing="0" cellpadding="5" style="width: 100%;">
-        <thead>
-        <tr>
-          <th>Data</th>
-          <th>Leitura (kWh)</th>
-          <th>Consumo (kWh)</th>
-          <th>Custo Normal (R$)</th>
-          <th>Custo com Tarifa Social (R$)</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr *ngFor="let item of resultadosCalculo.resultados">
-          <td>{{ item.data }}</td>
-          <td>{{ item.leitura_kwh | number:'1.2-2' }}</td>
-          <td>{{ item.consumo | number:'1.2-2' }}</td>
-          <td>{{ item.custo_normal | currency:'BRL' }}</td>
-          <td>{{ item.custo_social | currency:'BRL' }}</td>
-        </tr>
-        </tbody>
-      </table>
+    <div *ngIf="tipoDocumento === 'contador'" class="contador-cards-grid">
+      <h4>Resultados Detalhados (Contador)</h4>
+      <mat-card *ngFor="let item of resultadosCalculo.resultados" class="resultado-card">
+        <mat-card-header>
+          <mat-card-title>Data: {{ item.data }}</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <p><strong>Consumo Dia (kWh):</strong> {{ item.consumo | number:'1.2-2' }}</p>
+          <p><strong>Consumo Mês (kWh):</strong> {{ item.consumo | number:'1.2-2' }}</p> <p><strong>Custo Dia (R$):</strong> {{ item.custo_normal | currency:'BRL' }}</p>
+          <p><strong>Custo Mês (R$):</strong> {{ item.custo_normal | currency:'BRL' }}</p> </mat-card-content>
+      </mat-card>
     </div>
 
-    <div style="margin-top: 1rem; font-weight: bold;">
-      <p>Total Consumo: {{ resultadosCalculo.total_consumo | number:'1.2-2' }} kWh</p>
-      <p>Total Custo Normal: {{ resultadosCalculo.total_custo_normal | currency:'BRL' }}</p>
-      <p>Total Custo com Tarifa Social: {{ resultadosCalculo.total_custo_social | currency:'BRL' }}</p>
-    </div>
+    <mat-card class="total-card">
+      <mat-card-header>
+        <mat-card-title>Total Geral</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <p><strong>Total Consumo Mês (kWh):</strong> {{ resultadosCalculo.total_consumo | number:'1.2-2' }}</p>
+        <p><strong>Total Custo Normal Mês (R$):</strong> {{ resultadosCalculo.total_custo_normal | currency:'BRL' }}</p>
+        <p><strong>Total Custo Social Mês (R$):</strong> {{ resultadosCalculo.total_custo_social | currency:'BRL' }}</p>
+      </mat-card-content>
+    </mat-card>
+
   </div>
 
-  <button (click)="gerarDica()" [disabled]="carregando || carregandoDica || !resultadosCalculo" style="margin-top: 1rem;">
+  <button (click)="gerarDica()" [disabled]="carregando || carregandoDica || !resultadosCalculo" mat-raised-button style="margin-top: 1rem;">
     {{ carregandoDica ? 'Gerando dica...' : 'Gerar Dica' }}
   </button>
 
-  <!-- Modal simples para exibir dica -->
   <div *ngIf="mostrarDica" class="modal-dica">
     <div class="modal-content">
       <button class="close-btn" (click)="fecharDica()" aria-label="Fechar dica">Fechar</button>
@@ -165,7 +147,7 @@
     align-items: center;
   }
   .modal-content {
-    position: relative; /* importante para o posicionamento absoluto do botão */
+    position: relative;
     background: white;
     border-radius: 8px;
     max-width: 600px;
@@ -181,7 +163,7 @@
     word-wrap: break-word;
     max-height: 70vh;
     overflow-y: auto;
-    flex-grow: 1; /* para ocupar espaço vertical antes do botão -> pode tirar*/
+    flex-grow: 1;
   }
   .close-btn {
     position: absolute;
@@ -189,4 +171,3 @@
     left: 10px;
   }
 </style>
-

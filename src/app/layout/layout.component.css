@@ -1,120 +1,166 @@
-.top-toolbar {
-  position: sticky;
-  top: 0;
-  z-index: 1000;
+
+body {
+  font-family: 'Inter', 'Roboto', 'Arial', sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f5f8fb;
+  overflow: hidden;
+}
+
+/* Container principal do Sidenav (ocupa 100% da viewport height) */
+.sidenav-container-main-area {
+  height: calc(100vh - 70px); /* Altura restante após a toolbar */
+  margin-top: 70px; /* Empurra o container para baixo da toolbar */
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0 16px;
-  min-height: 100px;
+  flex-grow: 1;
+  background-color: #f5f8fb;
+}
+
+/* O SIDENAV (o painel lateral) */
+.custom-sidenav {
+  width: 250px; /* Largura padrão quando aberto */
   background-color: #61a6ab;
-  transition: background-color 0.3s ease;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  box-shadow: 3px 0 10px rgba(0, 0, 0, 0.2);
+  color: #9ff4e5;
+  transition: width 0.3s ease; /* Adiciona transição para a largura */
+  overflow: hidden; /* Garante que o conteúdo que excede a largura é cortado */
 }
 
-.top-toolbar:hover {
-  background-color: #337a81;
+/* ESTADO MINI-SIDENAV */
+.custom-sidenav.is-mini-sidenav {
+  width: 80px !important; /* <--- MANTIDO !important PARA TESTE DE DEBUG */
 }
 
-/* Container da logo e texto */
-.logo-container {
+/* Conteúdo principal da página (mat-sidenav-content) */
+.main-content-area-below-toolbar {
   display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  background-color: #ffffff;
+  overflow: auto;
+}
+
+/* BARRA SUPERIOR (NAVBAR) */
+.top-toolbar {
+  background-color: #61a6ab;
+  color: #9ff4e5;
+  height: 70px;
+  display: flex;
+  justify-content: flex-start;
   align-items: center;
-  gap: 8px;
+  padding: 0 40px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 2000;
+  font-family: 'Inter', 'Roboto', sans-serif;
 }
 
-/* Imagem da logo */
+/* Logo agora é clicável */
+.logo-container.logo-clickable {
+  cursor: pointer;
+  padding-right: 15px; /* Ajusta o padding para um melhor espaçamento após a logo */
+}
+.logo-container.logo-clickable:hover .logo-img {
+  filter: brightness(1.5) drop-shadow(0 0 10px rgba(159, 244, 229, 0.5));
+}
+
 .logo-img {
-  height:   160px;  /* ajuste para o tamanho desejado */
-  width: auto;
-  user-select: none;
-  padding: 5px;
-  margin-top: 10px;
+  height: 100px;
+  filter: brightness(1.2) drop-shadow(0 0 8px rgba(159, 244, 229, 0.3));
 }
 
-/* Texto do título */
-
-
-/* Menu horizontal de abas */
-.nav-tabs {
-  display: flex;
-  gap: 1rem;
+.toolbar-spacer {
+  flex: 1 1 auto;
 }
 
-/* Estilo para aba ativa */
-.active-tab {
-  border-bottom: 5px solid rgba(255, 156, 94, 0.67);
-  font-weight: 600;
+/* REMOVIDO: Estilos para .menu-toggle-button (ele não existe mais) */
+
+.logout-button {
+  color: #9ff4e5;
+  font-weight: 500;
+  padding: 0 15px;
+  height: 70px;
+  border-radius: 0;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-/* Container principal do conteúdo */
-.content-container {
-  padding: 16px;
-  margin-top: 64px; /* altura aproximada da toolbar para evitar sobreposição */
+.logout-button:hover {
+  background-color: rgba(255, 255, 255, 0.08);
+  color: #FFFFFF;
+}
+.logout-button .mat-icon {
+  margin-right: 8px;
 }
 
-/* RESPONSIVIDADE BÁSICA */
-@media (max-width: 900px) {
-  .logo-img {
-    height: 100px;
-    margin-top: 4px;
-  }
 
-  .nav-tabs {
-    gap: 1rem;
-    white-space: nowrap; /* Garante que os itens não quebrem linha */
-    overflow: hidden; /* Impede que o conteúdo transborde */
-    text-overflow: ellipsis; /* Adiciona '...' caso o conteúdo seja grande demais */
-    flex-wrap: nowrap; /* Impede que os itens quebrem linha */
-  }
-
-  .nav-tabs button.mat-button {
-    font-size: 1rem;
-    padding: 8px 12px;
-    white-space: nowrap; /* Impede que o texto quebre em várias linhas */
-    text-overflow: ellipsis; /* Garante que o texto excessivo seja truncado */
-    overflow: hidden;
-  }
-
-  .content-container {
-    padding: 16px 20px;
-    margin-top: 110px;
-  }
+/* Wrapper para o router-outlet e o conteúdo principal */
+.main-router-outlet-wrapper {
+  flex-grow: 1;
+  padding: 30px; /* MAIS ESPAÇAMENTO: Aumentado de 20px para 30px */
+  overflow: auto;
 }
 
-@media (max-width: 600px) {
+@media (max-width: 768px) {
   .top-toolbar {
-    flex-wrap: nowrap; /* Impede que a logo e o menu quebrem linha */
-    padding: 8px 16px;
-    min-height: 80px;
+    padding: 0 15px;
+    height: 56px;
   }
-
+  .logo-container {
+    padding-right: 0;
+    margin-left: 0;
+  }
   .logo-img {
-    height: 80px;
-    margin-top: 0;
+    height: 38px;
   }
 
-  .nav-tabs {
-    justify-content: flex-start;
-    width: 100%;
-    gap: 0.8rem;
-    margin-top: 8px;
-    white-space: nowrap;
-    overflow: hidden; /* Impede que o conteúdo transborde */
-    text-overflow: ellipsis; /* Adiciona '...' caso o conteúdo seja grande demais */
+  .top-toolbar {
+    justify-content: space-between;
+  }
+  .toolbar-spacer {
+    /* Em mobile, o spacer pode empurrar o logout para a extrema direita */
   }
 
-  .nav-tabs button.mat-button {
-    font-size: 0.9rem;
-    padding: 6px 10px;
-    white-space: nowrap; /* Evita quebra de linha nos botões */
-    text-overflow: ellipsis; /* Garante que o texto excessivo seja truncado */
-    overflow: hidden;
+  .logout-button {
+    height: 56px;
+    padding: 0 10px;
   }
 
-  .content-container {
-    padding: 12px 16px;
-    margin-top: 90px;
+  .sidenav-container-main-area {
+    height: calc(100vh - 56px);
+    margin-top: 56px;
   }
+
+  .custom-sidenav {
+    width: 280px; /* Largura do menu lateral em mobile (modo 'over') */
+  }
+  .custom-sidenav.is-mini-sidenav { /* Garante que não aplica largura mini em mobile */
+    width: 280px !important; /* MANTIDO !important PARA TESTE */
+  }
+
+  .main-router-outlet-wrapper {
+    padding: 20px; /* Ajuste para mobile se precisar de menos espaçamento */
+  }
+}
+
+@media (min-width: 769px) {
+  /* Em desktop, a logo é o toggle */
+}
+
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb {
+  background: #bbbbbb;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #888888;
 }

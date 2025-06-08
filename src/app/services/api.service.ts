@@ -11,7 +11,7 @@ import { Aparelho } from '../models/aparelho';
   providedIn: 'root',
 })
 export class ApiService {
-  private baseUrl = 'http://localhost:8000/api';
+  private baseUrl = 'http://localhost:8000/api'; // Sua URL base da API
 
   constructor(private http: HttpClient) {}
 
@@ -27,18 +27,27 @@ export class ApiService {
     return this.http.get<Bandeira[]>(`${this.baseUrl}/bandeiras/`);
   }
 
+  // Novo método para buscar um aparelho pelo ID
+  getAparelhoById(id: number): Observable<Aparelho> {
+    return this.http.get<Aparelho>(`${this.baseUrl}/aparelhos/${id}/`);
+  }
+
+  // Método para atualizar um aparelho existente
   atualizarAparelho(id: number, payload: any): Observable<any> {
     return this.http.put(`${this.baseUrl}/aparelhos/${id}/`, payload);
   }
 
+  // Método para buscar todos os aparelhos ou aparelhos filtrados
   getAparelhos(params?: HttpParams): Observable<Aparelho[]> {
     return this.http.get<Aparelho[]>(`${this.baseUrl}/aparelhos/`, { params });
   }
 
+  // Método para criar um novo aparelho
   criarAparelho(payload: any) {
     return this.http.post(`${this.baseUrl}/aparelhos/`, payload);
   }
 
+  // Método para remover um aparelho
   removerAparelho(id: number) {
     return this.http.delete(`${this.baseUrl}/aparelhos/${id}/`);
   }
@@ -50,8 +59,9 @@ export class ApiService {
     return this.http.get<any>(`${this.baseUrl}/resultados/`, { params });
   }
 
+  // Método para gerar dicas de IA
   gerarDicaIA(mensagem: string): Observable<any> {
-    const url = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=AIzaSyClP7PDzQR6AYg1hH7RZoNiZ-reoiQrNrs';
+    const url = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=AIzaSyClP7PDzQR6AYg1hH7RZoNiZ-reoiQrNrs'; // Não inclua chaves de API reais em código que será compartilhado publicamente
 
     const body = {
       contents: [{
@@ -75,6 +85,7 @@ export class ApiService {
     });
   }
 
+  // Método para monitoramento (com suporte a parâmetros de busca)
   getMonitoramento(params?: any) {
     let httpParams = new HttpParams();
     if (params) {

@@ -37,7 +37,8 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
     MatFormFieldModule,
     MatSelectModule,
     MatButtonModule,
-    MatTableModule,],
+    MatTableModule,
+  ],
   styleUrls: ['./consumo-mensal-calcular.component.scss']
 })
 export class ConsumoMensalCalcularComponent implements OnInit {
