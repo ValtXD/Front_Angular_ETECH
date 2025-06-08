@@ -1,127 +1,308 @@
-.login-page {
+@use "sass:color";
+$background-page: #5ca88c;
+$card-background: #c6f1e1; // Fundo do card branco
+$text-dark: #333; // Texto escuro
+$text-medium: #666; // Texto médio
+$link-color: #42a5f5; // Azul claro para links
+$button-background: #26a69a; // Cor do botão principal (verde-água)
+$button-text-color: #ffffff; // Cor do texto do botão
+$input-background-color: #ffffff; // Fundo dos campos de input
+$input-border-color: #e0e0e0; // Borda padrão dos inputs
+$input-focus-border: #26a69a; // Borda ao focar (verde-água)
+$error-color: #d32f2f; // Vermelho para erro
+$error-background: #ffebee; // Fundo levemente vermelho para erro
+$error-text-color: #d32f2f; // Texto de erro
+
+:host {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 110vh;
-  background-color: #349f81;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  min-height: 100vh;
+  background-color: $background-page;
+  padding: 20px;
+  box-sizing: border-box;
+  font-family: 'Roboto', sans-serif;
+}
 
-  /* Container principal do formulário de login */
-  .login-card {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+.login-card {
+  width: 420px; // Largura do card
+  max-width: 95%;
+  padding: 40px 30px;
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  background-color: $card-background;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.logo-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 30px; // Espaço abaixo da logo
+  width: 100%;
+}
+
+.app-logo {
+  height: auto; // Altura automática
+  width: 250px; // Largura da logo (ajustar conforme sua logo)
+  max-width: 80%; // Garante que a logo não seja muito grande em telas pequenas
+  user-select: none;
+  padding: 5px;
+}
+
+.login-form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+/* Angular Material Form Fields (mat-form-field) - Appearance Outline */
+.mat-form-field {
+  width: 100%;
+
+  .mat-form-field-wrapper {
+    padding-bottom: 0 !important;
+    margin: 0 !important;
+  }
+
+  .mat-form-field-flex {
+    background-color: $input-background-color;
+    border-radius: 4px;
+    padding: 0 12px;
+    height: 50px;
     align-items: center;
-    width: 100%;
-    max-width: 450px;
-    background-color: #3b7867;
-    padding: 24px;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
-    border: 1px solid #d1d1d1;
-  }
-
-  .login-card-title {
-    text-align: center;
-    font-size: 1.8rem;
-    color: #61a6ab;
-    font-weight: 600;
-    margin-bottom: 24px;
-  }
-
-  .login-form {
     display: flex;
-    flex-direction: column;
-    width: 100%;
+    box-sizing: border-box;
+  }
 
-    /* Estilo dos campos de entrada */
-    mat-form-field {
-      margin-bottom: 16px;
-      width: 100%;
+  .mat-form-field-outline-start,
+  .mat-form-field-outline-gap,
+  .mat-form-field-outline-end {
+    border-width: 1px !important;
+    border-color: $input-border-color !important;
+    border-radius: 4px !important;
+  }
 
-      .mat-form-field-infix {
-        padding: 0 12px; /* Ajuste do padding para dar mais espaçamento */
-      }
-    }
+  .mat-form-field-appearance-outline.mat-focused .mat-form-field-outline-start,
+  .mat-form-field-appearance-outline.mat-focused .mat-form-field-outline-gap,
+  .mat-form-field-appearance-outline.mat-focused .mat-form-field-outline-end {
+    border-color: $input-focus-border !important;
+  }
 
-    /* Botão de login */
-    .buttons {
-      display: flex;
-      justify-content: center;
+  .mat-form-field-label {
+    color: $text-medium;
+    font-size: 1em;
+  }
 
-      button {
-        padding: 12px;
-        font-size: 1rem;
-        color: white;
-        background-color: #61a6ab;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
-        transition: background-color 0.3s ease;
+  .mat-form-field-prefix {
+    padding-right: 8px;
+    display: flex;
+    align-items: center;
+  }
 
-        &:hover {
-          background-color: #337a81;
-        }
+  .mat-form-field-suffix {
+    padding-left: 8px;
+    display: flex;
+    align-items: center;
+  }
 
-        &[disabled] {
-          background-color: #d1d1d1;
-          cursor: not-allowed;
-        }
-      }
-    }
+  .mat-icon {
+    color: $text-medium;
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+  }
 
-    /* Mensagens de erro */
-    .error-message {
-      color: #ff4d4d;
-      font-size: 0.9rem;
-      text-align: center;
-      margin-top: 12px;
+  input.mat-input-element {
+    color: $text-dark;
+    font-size: 1em;
+    padding: 0;
+    height: 100%;
+    caret-color: $button-background;
+    flex-grow: 1; /* Faz o input preencher o espaço restante */
+
+    &::placeholder {
+      color: $text-medium;
+      opacity: 0.8;
     }
   }
 
-  .register-link {
-    text-align: center;
-    font-size: 0.9rem;
-    color: #337a81;
-    margin-top: 16px;
+  .mat-form-field-invalid .mat-form-field-label {
+    color: $error-color !important;
+  }
+  .mat-form-field-invalid .mat-form-field-outline-start,
+  .mat-form-field-invalid .mat-form-field-outline-gap,
+  .mat-form-field-invalid .mat-form-field-outline-end {
+    border-color: $error-color !important;
+  }
+}
 
-    a {
-      color: #337a81;
-      text-decoration: none;
-      font-weight: 600;
+/* Estilo para a mensagem de erro (mat-error) */
+.mat-error {
+  font-size: 0.8em;
+  color: $error-text-color;
+  background-color: $error-background;
+  padding: 8px 12px;
+  border-radius: 4px;
+  text-align: center;
+  position: relative;
+  margin-top: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  max-width: max-content;
+  align-self: flex-start;
+  left: 0;
+  transform: translateY(-10px);
 
-      &:hover {
-        text-decoration: underline;
-      }
+  &::before {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 15px;
+    width: 0;
+    height: 0;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-top: 8px solid $error-background;
+  }
+}
+
+/* Linha com checkbox "Lembrar-me" e link "Esqueceu a senha?" */
+.options-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 5px;
+  margin-bottom: 10px;
+
+  mat-checkbox {
+    .mdc-form-field__label {
+      font-size: 0.9em;
+      color: $text-medium;
+    }
+  }
+
+  .forgot-password-link {
+    color: $link-color;
+    text-decoration: none;
+    font-size: 0.9em;
+    font-weight: 500;
+    transition: color 0.2s ease;
+
+    &:hover {
+      color: darken($link-color, 8%);
+      text-decoration: underline;
     }
   }
 }
 
-/* Responsividade para telas pequenas */
+/* Mensagem de erro geral (div.error-message) */
+.error-message {
+  padding: 10px 15px;
+  border-radius: 4px;
+  font-size: 0.9em;
+  text-align: center;
+  width: 100%;
+  box-sizing: border-box;
+  margin-top: 10px;
+  color: $error-color;
+  background-color: color.adjust($error-color, $lightness: 30%);
+  border: 1px solid $error-color;
+}
+
+/* Botão Entrar */
+button[type="submit"] {
+  background-color: $button-background;
+  color: $button-text-color;
+  height: 50px;
+  font-size: 1.1em;
+  font-weight: 600;
+  border-radius: 8px;
+  width: 100%;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+  &:disabled {
+    background-color: color.adjust($button-background, $lightness: 20%);
+    color: rgba($button-text-color, 0.6);
+    cursor: not-allowed;
+    box-shadow: none;
+  }
+
+  &:hover:not(:disabled) {
+    background-color: color.adjust($button-background, $lightness: -10%); // Escurece no hover
+  }
+
+  mat-icon {
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+    color: $button-text-color;
+  }
+}
+
+/* Link de registro "Não tem uma conta?" */
+.register-link {
+  font-size: 0.9em;
+  color: $text-medium;
+  margin-top: 25px;
+
+  a {
+    color: $link-color;
+    text-decoration: none;
+    font-weight: 500;
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
+/* Links de rodapé (Termos de Serviço, Política de Privacidade) */
+.footer-links {
+  font-size: 0.8em;
+  color: $text-medium;
+  margin-top: 30px;
+  line-height: 1.5;
+
+  a {
+    color: $link-color;
+    text-decoration: none;
+    transition: color 0.2s ease;
+
+    &:hover {
+      color: darken($link-color, 8%);
+      text-decoration: underline;
+    }
+  }
+}
+
+/* Responsividade básica */
 @media (max-width: 600px) {
-  .login-page {
-    padding: 16px;
-  }
-
   .login-card {
-    padding: 16px;
-    max-width: 90%;
+    padding: 30px 20px;
   }
-
-  .login-card-title {
-    font-size: 1.5rem;
+  .logo-section {
+    margin-bottom: 20px;
   }
-
-  .login-form .mat-form-field {
-    padding: 10px;
+  .app-logo {
+    width: 200px;
   }
-
-  .login-form .buttons button {
-    padding: 10px;
-    font-size: 0.9rem;
+  .options-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
   }
-
-  .register-link {
-    font-size: 0.8rem;
+  .forgot-password-link {
+    align-self: flex-end;
+  }
+  button[type="submit"] {
+    height: 45px;
+    font-size: 1em;
+  }
+  .footer-links {
+    font-size: 0.75em;
+    margin-top: 20px;
   }
 }
