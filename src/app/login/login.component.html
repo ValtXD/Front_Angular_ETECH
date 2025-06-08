@@ -1,28 +1,44 @@
-<mat-card class="login-card">
-  <mat-card-title>Login</mat-card-title>
-  <form (ngSubmit)="onSubmit()" class="login-form" #loginForm="ngForm">
-
-    <mat-form-field appearance="fill" class="full-width">
-      <mat-label>Usuário</mat-label>
-      <input matInput name="username" [(ngModel)]="username" required #usernameInput="ngModel" />
-      <mat-error *ngIf="usernameInput.invalid && usernameInput.touched">Usuário é obrigatório</mat-error>
-    </mat-form-field>
-
-    <mat-form-field appearance="fill" class="full-width">
-      <mat-label>Senha</mat-label>
-      <input matInput type="password" name="password" [(ngModel)]="password" required #passwordInput="ngModel" />
-      <mat-error *ngIf="passwordInput.invalid && passwordInput.touched">Senha é obrigatória</mat-error>
-    </mat-form-field>
-
-    <div class="error-message" *ngIf="errorMsg">{{ errorMsg }}</div>
-
-    <div class="buttons">
-      <button mat-raised-button color="primary" type="submit" [disabled]="loginForm.invalid">Entrar</button>
+<div class="login-page-container">
+  <mat-card class="login-card">
+    <div class="logo-section">
+      <img src="logo.png" alt="Controla AI Logo" class="app-logo">
     </div>
 
-    <p class="register-link">
-      Não tem uma conta?
-      <a routerLink="/register">Cadastre-se aqui</a>
-    </p>
-  </form>
-</mat-card>
+    <form (ngSubmit)="onSubmit()" class="login-form" #loginForm="ngForm">
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>E-mail</mat-label>
+        <mat-icon matPrefix>email</mat-icon>
+        <input matInput name="email" [(ngModel)]="email" required email #emailInput="ngModel" placeholder="seu@email.com" />
+        <mat-error *ngIf="emailInput.invalid && (emailInput.dirty || emailInput.touched)">
+          <span *ngIf="emailInput.errors?.['required']">E-mail é obrigatório.</span>
+          <span *ngIf="emailInput.errors?.['email']">E-mail inválido.</span>
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Senha</mat-label>
+        <mat-icon matPrefix>lock</mat-icon>
+        <input matInput [type]="hidePassword ? 'password' : 'text'" name="password" [(ngModel)]="password" required #passwordInput="ngModel" placeholder="********" />
+        <button mat-icon-button matSuffix (click)="hidePassword = !hidePassword" type="button" aria-label="Toggle password visibility">
+          <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+        </button>
+        <mat-error *ngIf="passwordInput.invalid && (passwordInput.dirty || passwordInput.touched)">
+          Senha é obrigatória.
+        </mat-error>
+      </mat-form-field>
+
+      <div class="error-message" *ngIf="errorMsg">{{ errorMsg }}</div>
+
+      <button mat-raised-button color="primary" type="submit" [disabled]="loginForm.invalid" class="login-button">
+        Entrar
+        <mat-icon>arrow_forward</mat-icon>
+      </button>
+
+      <p class="register-link">
+        Não tem uma conta? <a routerLink="/register">Registre-se</a>
+      </p>
+
+    </form>
+  </mat-card>
+</div>
