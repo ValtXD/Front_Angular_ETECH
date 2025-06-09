@@ -1,20 +1,19 @@
 import { Component } from '@angular/core';
-import { FormsModule } from '@angular/forms'; // Necessário para [(ngModel)]
-import { CommonModule } from '@angular/common'; // Necessário para *ngIf
-import { RouterModule } from '@angular/router'; // Necessário para routerLink
-
-// Módulos do Angular Material
+import { FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+import { RouterModule, Router } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon'; // Caso você adicione ícones (não usado no HTML atual, mas bom ter)
+import { MatIconModule } from '@angular/material/icon';
+import { AuthService } from '../services/auth.service'; // ✅ importado
 
 @Component({
-  selector: 'app-register', // Verifique se o seletor está correto para seu componente
+  selector: 'app-register',
   templateUrl: './register.component.html',
-  styleUrls: ['./register.component.scss'], // Use .scss
-  standalone: true, // Se o seu componente for standalone
+  styleUrls: ['./register.component.scss'],
+  standalone: true,
   imports: [
     FormsModule,
     CommonModule,
@@ -30,33 +29,33 @@ export class RegisterComponent {
   username: string = '';
   email: string = '';
   password: string = '';
-  errorMsg: string = ''; // Mensagem de erro geral
-  successMsg: string = ''; // Mensagem de sucesso geral
+  errorMsg: string = '';
+  successMsg: string = '';
 
-  constructor() {
-    // Se você tiver serviços para backend, injete-os aqui
-    // Ex: private authService: AuthService
-  }
+  constructor(private authService: AuthService, private router: Router) {}
 
   onSubmit() {
-    // Lógica de submissão do formulário de cadastro
-    console.log('Dados de Cadastro:', {
-      username: this.username,
-      email: this.email,
-      password: this.password
-    });
-
-    // Exemplo de validação simples (substitua pela sua lógica de backend)
     if (this.username && this.email && this.password) {
-      this.successMsg = 'Cadastro realizado com sucesso!';
-      this.errorMsg = ''; // Limpa a mensagem de erro
-      // Resetar os campos do formulário (opcional)
-      this.username = '';
-      this.email = '';
-      this.password = '';
+      this.authService.register(this.username, this.email, this.password).subscribe({
+        next: () => {
+          this.successMsg = 'Cadastro realizado com sucesso!';
+          this.errorMsg = '';
+          // Limpa os campos
+          this.username = '';
+          this.email = '';
+          this.password = '';
+          // Redireciona para o login
+          setTimeout(() => this.router.navigate(['/login']), 1500);
+        },
+        error: (err) => {
+          this.errorMsg = 'Erro ao cadastrar. Verifique os dados ou tente novamente.';
+          this.successMsg = '';
+          console.error(err);
+        },
+      });
     } else {
       this.errorMsg = 'Por favor, preencha todos os campos corretamente.';
-      this.successMsg = ''; // Limpa a mensagem de sucesso
+      this.successMsg = '';
     }
   }
 }

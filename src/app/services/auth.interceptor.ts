@@ -3,7 +3,10 @@ import { HttpInterceptorFn, HttpRequest, HttpHandlerFn } from '@angular/common/h
 export const authInterceptor: HttpInterceptorFn = (req: HttpRequest<any>, next: HttpHandlerFn) => {
   const token = localStorage.getItem('access_token');
 
-  if (token) {
+  // Não injeta o token nas rotas públicas
+  const isPublic = req.url.includes('/api/login') || req.url.includes('/api/register');
+
+  if (token && !isPublic) {
     const authReq = req.clone({
       setHeaders: { Authorization: `Bearer ${token}` }
     });
