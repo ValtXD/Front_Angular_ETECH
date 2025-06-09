@@ -2,3 +2,20 @@
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+/* Ajuste global para campos mat-form-field (outline) */
+.mat-form-field-appearance-outline .mat-form-field-flex {
+  min-height: 56px !important;
+  padding: 0 12px !important;
+  align-items: center !important;
+}
+
+.mat-form-field-appearance-outline .mat-form-field-label {
+  top: 1.2em !important;
+}
+
+.mat-form-field-appearance-outline input.mat-input-element {
+  padding: 12px 0 !important;
+  height: auto !important;
+}
+

@@ -1,24 +1,21 @@
 import { Component } from '@angular/core';
-import { FormsModule } from '@angular/forms'; // Necessário para [(ngModel)]
-import { CommonModule } from '@angular/common'; // Necessário para *ngIf
-import { RouterModule } from '@angular/router'; // Necessário para routerLink
-
-// Módulos do Angular Material
+import { AuthService } from '../services/auth.service';
+import { Router } from '@angular/router';
+import { FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon'; // Para ícones
-import { MatCheckboxModule } from '@angular/material/checkbox'; // Para checkbox
-
-// Se você tiver um AuthService, importe-o aqui
-// import { AuthService } from '../services/auth.service';
+import { MatIconModule } from '@angular/material/icon';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 @Component({
-  selector: 'app-login', // Verifique se o seletor está correto para seu componente de login
+  selector: 'app-login',
+  standalone: true,
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
-  standalone: true, // Se o seu componente for standalone
   imports: [
     FormsModule,
     CommonModule,
@@ -28,35 +25,28 @@ import { MatCheckboxModule } from '@angular/material/checkbox'; // Para checkbox
     MatInputModule,
     MatButtonModule,
     MatIconModule,
-    MatCheckboxModule
+    MatCheckboxModule,
   ],
 })
 export class LoginComponent {
-  email: string = '';
+  username: string = ''; // ✅ AJUSTADO: substituído o "email" por "username"
   password: string = '';
-  hidePassword: boolean = true; // Para o toggle de visibilidade da senha
-  rememberMe: boolean = false; // Para o checkbox "Lembrar-me"
-  errorMsg: string = ''; // Mensagem de erro geral
+  hidePassword: boolean = true;
+  rememberMe: boolean = false;
+  errorMsg: string = ''; // ✅ MANTIDO: mensagem de erro exibida no template
 
-  // Se usar AuthService, descomente e ajuste:
-  // constructor(private authService: AuthService, private router: Router) {}
-  constructor() {} // Construtor básico se não tiver serviços
+  constructor(private authService: AuthService, private router: Router) {}
 
   onSubmit() {
     console.log('Dados de login:', {
-      email: this.email,
+      username: this.username,
       password: this.password,
-      rememberMe: this.rememberMe
+      rememberMe: this.rememberMe,
     });
 
-    // Lógica de autenticação (substitua pela sua lógica de backend)
-    if (this.email === 'test@example.com' && this.password === 'password') {
-      this.errorMsg = '';
-      console.log('Login bem-sucedido!');
-      // Se usar router, descomente e ajuste:
-      // this.router.navigate(['/app']);
-    } else {
-      this.errorMsg = 'E-mail ou senha inválidos.';
-    }
+    this.authService.login(this.username, this.password).subscribe({
+      next: () => this.router.navigate(['/app']), // ✅ FUNCIONAL: redireciona após login
+      error: () => (this.errorMsg = 'Usuário ou senha inválidos.'), // ✅ mensagem clara no front
+    });
   }
 }

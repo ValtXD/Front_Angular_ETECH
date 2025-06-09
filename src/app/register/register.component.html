@@ -6,11 +6,9 @@
     <form (ngSubmit)="onSubmit()" class="registration-form" #registrationForm="ngForm">
 
       <mat-form-field appearance="outline" class="full-width">
-        <mat-label>Nome</mat-label>
-        <input matInput [(ngModel)]="username" name="username" required #usernameInput="ngModel" placeholder="Seu nome">
-        <mat-error *ngIf="usernameInput.invalid && (usernameInput.dirty || usernameInput.touched)">
-          Nome é obrigatório.
-        </mat-error>
+        <mat-label>Usuário</mat-label> <input matInput [(ngModel)]="username" name="username" required #usernameInput="ngModel" placeholder="Seu nome de usuário"> <mat-error *ngIf="usernameInput.invalid && (usernameInput.dirty || usernameInput.touched)">
+        Usuário é obrigatório.
+      </mat-error>
       </mat-form-field>
 
       <mat-form-field appearance="outline" class="full-width">

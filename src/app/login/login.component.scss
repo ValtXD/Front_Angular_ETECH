@@ -1,17 +1,18 @@
 @use "sass:color";
+
 $background-page: #5ca88c;
-$card-background: #c6f1e1; // Fundo do card branco
-$text-dark: #333; // Texto escuro
-$text-medium: #666; // Texto médio
-$link-color: #42a5f5; // Azul claro para links
-$button-background: #26a69a; // Cor do botão principal (verde-água)
-$button-text-color: #ffffff; // Cor do texto do botão
-$input-background-color: #ffffff; // Fundo dos campos de input
-$input-border-color: #e0e0e0; // Borda padrão dos inputs
-$input-focus-border: #26a69a; // Borda ao focar (verde-água)
-$error-color: #d32f2f; // Vermelho para erro
-$error-background: #ffebee; // Fundo levemente vermelho para erro
-$error-text-color: #d32f2f; // Texto de erro
+$card-background: #c6f1e1;
+$text-dark: #333;
+$text-medium: #666;
+$link-color: #42a5f5;
+$button-background: #044e2d;
+$button-text-color: #05251c;
+$input-background-color: #ffffff;
+$input-border-color: #e0e0e0;
+$input-focus-border: #26a69a;
+$error-color: #d32f2f;
+$error-background: #ffebee;
+$error-text-color: #d32f2f;
 
 :host {
   display: flex;
@@ -25,7 +26,7 @@ $error-text-color: #d32f2f; // Texto de erro
 }
 
 .login-card {
-  width: 420px; // Largura do card
+  width: 450px;
   max-width: 95%;
   padding: 40px 30px;
   border-radius: 15px;
@@ -41,14 +42,14 @@ $error-text-color: #d32f2f; // Texto de erro
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-bottom: 30px; // Espaço abaixo da logo
+  margin-bottom: 20px;
   width: 100%;
 }
 
 .app-logo {
-  height: auto; // Altura automática
-  width: 250px; // Largura da logo (ajustar conforme sua logo)
-  max-width: 80%; // Garante que a logo não seja muito grande em telas pequenas
+  height: auto;
+  width: 450px;
+  max-width: 80%;
   user-select: none;
   padding: 5px;
 }
@@ -60,88 +61,10 @@ $error-text-color: #d32f2f; // Texto de erro
   gap: 18px;
 }
 
-/* Angular Material Form Fields (mat-form-field) - Appearance Outline */
 .mat-form-field {
   width: 100%;
-
-  .mat-form-field-wrapper {
-    padding-bottom: 0 !important;
-    margin: 0 !important;
-  }
-
-  .mat-form-field-flex {
-    background-color: $input-background-color;
-    border-radius: 4px;
-    padding: 0 12px;
-    height: 50px;
-    align-items: center;
-    display: flex;
-    box-sizing: border-box;
-  }
-
-  .mat-form-field-outline-start,
-  .mat-form-field-outline-gap,
-  .mat-form-field-outline-end {
-    border-width: 1px !important;
-    border-color: $input-border-color !important;
-    border-radius: 4px !important;
-  }
-
-  .mat-form-field-appearance-outline.mat-focused .mat-form-field-outline-start,
-  .mat-form-field-appearance-outline.mat-focused .mat-form-field-outline-gap,
-  .mat-form-field-appearance-outline.mat-focused .mat-form-field-outline-end {
-    border-color: $input-focus-border !important;
-  }
-
-  .mat-form-field-label {
-    color: $text-medium;
-    font-size: 1em;
-  }
-
-  .mat-form-field-prefix {
-    padding-right: 8px;
-    display: flex;
-    align-items: center;
-  }
-
-  .mat-form-field-suffix {
-    padding-left: 8px;
-    display: flex;
-    align-items: center;
-  }
-
-  .mat-icon {
-    color: $text-medium;
-    font-size: 20px;
-    width: 20px;
-    height: 20px;
-  }
-
-  input.mat-input-element {
-    color: $text-dark;
-    font-size: 1em;
-    padding: 0;
-    height: 100%;
-    caret-color: $button-background;
-    flex-grow: 1; /* Faz o input preencher o espaço restante */
-
-    &::placeholder {
-      color: $text-medium;
-      opacity: 0.8;
-    }
-  }
-
-  .mat-form-field-invalid .mat-form-field-label {
-    color: $error-color !important;
-  }
-  .mat-form-field-invalid .mat-form-field-outline-start,
-  .mat-form-field-invalid .mat-form-field-outline-gap,
-  .mat-form-field-invalid .mat-form-field-outline-end {
-    border-color: $error-color !important;
-  }
 }
 
-/* Estilo para a mensagem de erro (mat-error) */
 .mat-error {
   font-size: 0.8em;
   color: $error-text-color;
@@ -170,7 +93,6 @@ $error-text-color: #d32f2f; // Texto de erro
   }
 }
 
-/* Linha com checkbox "Lembrar-me" e link "Esqueceu a senha?" */
 .options-row {
   display: flex;
   justify-content: space-between;
@@ -199,7 +121,6 @@ $error-text-color: #d32f2f; // Texto de erro
   }
 }
 
-/* Mensagem de erro geral (div.error-message) */
 .error-message {
   padding: 10px 15px;
   border-radius: 4px;
@@ -213,7 +134,6 @@ $error-text-color: #d32f2f; // Texto de erro
   border: 1px solid $error-color;
 }
 
-/* Botão Entrar */
 button[type="submit"] {
   background-color: $button-background;
   color: $button-text-color;
@@ -232,7 +152,7 @@ button[type="submit"] {
   }
 
   &:hover:not(:disabled) {
-    background-color: color.adjust($button-background, $lightness: -10%); // Escurece no hover
+    background-color: color.adjust($button-background, $lightness: -10%);
   }
 
   mat-icon {
@@ -243,7 +163,6 @@ button[type="submit"] {
   }
 }
 
-/* Link de registro "Não tem uma conta?" */
 .register-link {
   font-size: 0.9em;
   color: $text-medium;
@@ -259,7 +178,6 @@ button[type="submit"] {
   }
 }
 
-/* Links de rodapé (Termos de Serviço, Política de Privacidade) */
 .footer-links {
   font-size: 0.8em;
   color: $text-medium;
@@ -278,7 +196,6 @@ button[type="submit"] {
   }
 }
 
-/* Responsividade básica */
 @media (max-width: 600px) {
   .login-card {
     padding: 30px 20px;

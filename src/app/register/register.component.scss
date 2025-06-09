@@ -1,22 +1,19 @@
-// Importação do módulo Sass para funções de cor
 @use "sass:color";
-
-/* Variáveis de Cores (Baseadas nas últimas imagens e suas definições) */
 $background-page: #5CA88CFF; // Fundo verde-azulado da página
-$card-background: #ffffff; // Fundo do cartão branco
-$text-dark: #333; // Texto escuro para títulos e inputs
-$text-medium: #666; // Texto médio para subtítulos, labels e placeholders
+$card-background: #c6f1e1; // Fundo do cartão branco
+$text-dark: #063c2c; // Texto escuro para títulos e inputs
+$text-medium: #031510; // Texto médio para subtítulos, labels e placeholders
 $link-color: #3b7867; // Cor dos links (verde escuro)
-$button-background: #3ac0a4; // Cor do botão "Cadastrar" (verde vibrante)
-$button-text-color: #ffffff; // Cor do texto do botão (branco)
+$button-background: #0e4338; // Cor do botão "Cadastrar" (verde vibrante)
+$button-text-color: #031e12; // Cor do texto do botão (branco)
 $input-background-color: #ffffff; // Fundo dos campos de input (branco)
-$input-border-color: #e0e0e0; // Borda padrão dos inputs (cinza claro)
+$input-border-color: #144538; // Borda padrão dos inputs (cinza claro)
 $input-focus-border: #4d90fe; // Borda ao focar (azul vibrante) - Mantido para contraste, pode ser ajustado
 $error-color: #e53935; // Cor do texto de erro (vermelho)
 $error-background: #fff3e0; // Fundo do balão de erro (laranja claro)
 $error-text-color: #ff9800; // Texto no balão de erro (laranja escuro)
 $success-color: #168e6d; // Cor de sucesso (verde)
-$success-background: color.adjust($success-color, $lightness: 30%); // Fundo claro para mensagem de sucesso
+$success-background: color.adjust($success-color, $lightness: 30%);
 
 :host {
   display: flex;
@@ -26,7 +23,7 @@ $success-background: color.adjust($success-color, $lightness: 30%); // Fundo cla
   background-color: $background-page; // Fundo da página verde-azulado
   padding: 20px;
   box-sizing: border-box;
-  font-family: 'Roboto', sans-serif; // Fonte padrão do Material Design
+  font-family: 'Roboto', sans-serif;
 }
 
 .registration-card {
@@ -157,7 +154,6 @@ $success-background: color.adjust($success-color, $lightness: 30%); // Fundo cla
   }
 }
 
-/* Mensagens de sucesso e erro gerais (fora do balão, se ainda usar) */
 .message {
   padding: 10px 15px;
   border-radius: 6px;
@@ -199,7 +195,7 @@ button[type="submit"] {
   }
 
   &:hover:not(:disabled) {
-    background-color: color.adjust($button-background, $lightness: -10%); // Escurece no hover
+    background-color: color.adjust($button-background, $lightness: -10%);
   }
 }
 
