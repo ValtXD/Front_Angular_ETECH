@@ -81,43 +81,18 @@ export class ResultadosComponent implements OnInit {
     this.loadingDica = true;
     this.dicaGerada = '';
 
-    const dadosParaIA = this.aparelhosDia.map(ap => ({
-      nome: ap.nome,
-      ambiente: ap.ambiente?.nome,
-      estado: ap.estado?.nome,
-      bandeira: ap.bandeira?.cor,
-      consumo_diario_kwh: ap.consumo_diario_kwh,
-      custo_diario: ap.custo_diario
-    }));
-
-    const mensagem = `
-  Aqui estão os dados de consumo energético atuais para análise:
-
-  Aparelhos cadastrados:
-  ${JSON.stringify(dadosParaIA, null, 2)}
-
-  TOTAL consumo diário: ${this.consumoTotalDia.toFixed(2)} kWh
-  TOTAL custo normal diário: R$ ${this.custoTotalNormal.toFixed(2)}
-
-  Gere de 3 a 5 DICAS de economia de energia, considerando:
-  - Quais aparelhos mais consomem
-  - Sugestões de substituição por modelos mais eficientes ou econômicos
-  - Tecnologias inteligentes que ajudam na economia (como timers, sensores, etc.)
-  - Alertas sobre bandeiras tarifárias
-  - Dicas práticas para reduzir o custo e consumo
-
-  Escreva de forma clara e objetiva, em português, para usuários comuns.
-  `;
-
-    this.api.gerarDicaIA(mensagem).subscribe({
+    // Envie os dados diretamente para o backend.
+    // O backend será responsável por formatar a mensagem para a IA.
+    this.api.gerarDicaIA(this.aparelhosDia, this.consumoTotalDia, this.custoTotalNormal).subscribe({
       next: res => {
         this.loadingDica = false;
-        const texto = res?.candidates?.[0]?.content?.parts?.[0]?.text || 'Nenhuma dica gerada.';
+        // A resposta do backend já deve vir com a dica formatada em 'dica'
+        const texto = res?.dica || 'Nenhuma dica gerada.';
         this.dicaGerada = texto.split('\n').map((p: string) => `<p>${p}</p>`).join('');
       },
       error: err => {
         this.loadingDica = false;
-        this.dicaGerada = `<p>Erro ao gerar dica: ${err.message || err.statusText}</p>`;
+        this.dicaGerada = `<p>Erro ao gerar dica: ${err.error?.error || err.statusText}</p>`;
         console.error('Erro na dica IA:', err);
       }
     });

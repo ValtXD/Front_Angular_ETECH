@@ -20,7 +20,7 @@ export interface CalculoResponse {
   providedIn: 'root'
 })
 export class DocumentoService {
-  private baseUrl = 'http://localhost:8000/api';
+  private baseUrl = 'http://localhost:8000/api'; // ajuste conforme seu backend
 
   constructor(private http: HttpClient) {}
 
@@ -54,32 +54,16 @@ export class DocumentoService {
     return this.http.get<any[]>(`${this.baseUrl}/bandeiras/`);
   }
 
-  gerarDicaIA(mensagem: string): Observable<any> {
-    const url = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=AIzaSyClP7PDzQR6AYg1hH7RZoNiZ-reoiQrNrs';
-
-    const body = {
-      contents: [{
-        parts: [{
-          text: mensagem
-        }]
-      }],
-      generationConfig: {
-        temperature: 0.7,
-        candidateCount: 1,
-        maxOutputTokens: 2000,
-        topP: 0.9,
-        topK: 40
-      },
-      safetySettings: [
-        {
-          category: "HARM_CATEGORY_DANGEROUS_CONTENT",
-          threshold: "BLOCK_ONLY_HIGH"
-        }
-      ]
-    };
-
-    return this.http.post(url, body, {
-      headers: {'Content-Type': 'application/json'}
-    });
+  // --- NOVO MÉTODO: Chama o endpoint do seu backend para gerar a dica de IA ---
+  gerarDicaIA(payload: {
+    tipo_documento: string;
+    dados_originais: any[];
+    resultados_calculo: CalculoResponse;
+    estado_id: number | null;
+    bandeira_id: number | null;
+    tarifa_social_ativa: boolean;
+  }): Observable<any> {
+    // Este payload é enviado para o seu backend, que por sua vez se comunica com a API Gemini
+    return this.http.post(`${this.baseUrl}/gerar-dica-documento/`, payload);
   }
 }
