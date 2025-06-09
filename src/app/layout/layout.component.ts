@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { RouterModule, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { AuthService } from '../services/auth.service'; // ajuste o caminho se necessário
+import { AuthService } from '../services/auth.service';
 
 @Component({
   standalone: true,

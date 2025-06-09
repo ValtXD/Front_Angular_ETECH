@@ -6,7 +6,6 @@
   <form (ngSubmit)="onSubmit()" class="login-form" #loginForm="ngForm">
     <mat-form-field appearance="outline" class="full-width">
       <mat-label>Usuário</mat-label>
-      <mat-icon matPrefix>person</mat-icon>
       <input matInput name="username" [(ngModel)]="username" required #usernameInput="ngModel" placeholder="Digite seu nome de usuário" />
       <mat-error *ngIf="usernameInput.invalid && (usernameInput.dirty || usernameInput.touched)">
         Usuário é obrigatório.
@@ -15,7 +14,6 @@
 
     <mat-form-field appearance="outline" class="full-width">
       <mat-label>Senha</mat-label>
-      <mat-icon matPrefix>lock</mat-icon>
       <input matInput [type]="hidePassword ? 'password' : 'text'" name="password" [(ngModel)]="password" required #passwordInput="ngModel" placeholder="Digite sua senha" />
       <button mat-icon-button matSuffix (click)="hidePassword = !hidePassword" type="button" aria-label="Alternar visibilidade da senha">
 
@@ -27,7 +25,7 @@
 
     <button mat-raised-button color="primary" type="submit" [disabled]="loginForm.invalid" class="login-button">
       <span>Entrar</span>
-      <mat-icon>arrow_forward</mat-icon>
+
     </button>
 
     <div *ngIf="errorMsg" class="error-message">
