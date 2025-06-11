@@ -1,92 +1,132 @@
-<h2>Leituras Registradas com Consumo e Custo</h2>
+<div class="min-h-screen px-4 py-8">
+  <div class="max-w-6xl mx-auto">
+    <!-- Header Section -->
+    <div class="flex justify-between items-center mb-8">
+      <div>
+        <h2 class="text-3xl font-bold text-dark-green">Leituras Registradas com Consumo e Custo</h2>
+        <p class="text-muted">Visualize e gerencie suas leituras de energia</p>
+      </div>
+      <button id="voltarBtn" class="btn-orange text-white py-2 px-4 rounded-lg flex items-center font-medium">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clip-rule="evenodd" />
+        </svg>
+        Voltar para Upload
+      </button>
+    </div>
 
-<button (click)="voltarParaUpload()" style="margin-bottom: 15px;">
-  ← Voltar para Upload
-</button>
+    <!-- Card Container -->
+    <div class="card-beige p-6 mb-8">
+      <!-- Filter Form -->
+      <form id="filtroForm" class="flex flex-col md:flex-row items-center gap-4 mb-6">
+        <div class="w-full md:w-auto">
+          <label for="mes" class="block text-sm font-medium text-dark-green mb-1">Mês:</label>
+          <select id="mes" class="select-custom">
+            <option value="1">Janeiro</option>
+            <option value="2">Fevereiro</option>
+            <option value="3">Março</option>
+            <option value="4">Abril</option>
+            <option value="5">Maio</option>
+            <option value="6">Junho</option>
+            <option value="7">Julho</option>
+            <option value="8">Agosto</option>
+            <option value="9">Setembro</option>
+            <option value="10">Outubro</option>
+            <option value="11">Novembro</option>
+            <option value="12">Dezembro</option>
+          </select>
+        </div>
 
-<!-- Form principal filtro Mês e Ano -->
-<form (ngSubmit)="aplicarFiltro()" style="margin-bottom: 1rem;">
-  <label for="mes">Mês:</label>
-  <select id="mes" [(ngModel)]="filtroMes" name="mes">
-    <option *ngFor="let mes of meses" [value]="mes.value">{{ mes.label }}</option>
-  </select>
+        <div class="w-full md:w-auto">
+          <label for="ano" class="block text-sm font-medium text-dark-green mb-1">Ano:</label>
+          <select id="ano" class="select-custom">
+            <option value="">Todos</option>
+            <option value="2023">2023</option>
+            <option value="2022">2022</option>
+            <option value="2021">2021</option>
+          </select>
+        </div>
 
-  <label for="ano" style="margin-left: 1rem;">Ano:</label>
-  <select id="ano" [(ngModel)]="filtroAno" name="ano">
-    <option value="">Todos</option>
-    <option *ngFor="let ano of anos" [value]="ano">{{ ano }}</option>
-  </select>
+        <button type="submit" class="btn-dark-green text-white py-2 px-6 rounded-lg font-medium mt-6 md:mt-6 self-end md:self-center">
+          Filtrar
+        </button>
+      </form>
 
-  <button type="submit" style="margin-left: 1rem;">Filtrar</button>
-</form>
+      <!-- Main Table -->
+      <div class="overflow-x-auto">
+        <table class="min-w-full bg-white rounded-lg overflow-hidden">
+          <thead class="header-dark-green">
+          <tr>
+            <th class="th">Data</th>
+            <th class="th">Valor Extraído (kWh)</th>
+            <th class="th">Valor Corrigido (kWh)</th>
+            <th class="th">Estado</th>
+            <th class="th">Tarifa (R$/kWh)</th>
+            <th class="th">Custo Estimado (R$)</th>
+            <th class="th">Bandeira</th>
+            <th class="th">Tarifa Social</th>
+            <th class="th">Imagem</th>
+            <th class="th">Ações</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr class="table-row-hover border-b border-[#e0e0e0]">
+            <td class="td">15/10/2023 14:30</td>
+            <td class="td">325.45</td>
+            <td class="td">318.94</td>
+            <td class="td">São Paulo</td>
+            <td class="td">0.759</td>
+            <td class="td">R$ 242.07</td>
+            <td class="td">Verde - Condições favoráveis</td>
+            <td class="td">Não</td>
+            <td class="td">
+              <div class="img-placeholder">Foto</div>
+            </td>
+            <td class="td">
+              <button class="btn-remove">Remover</button>
+            </td>
+          </tr>
+          <!-- + outras linhas como quiser -->
+          </tbody>
+        </table>
+      </div>
+    </div>
 
-<!-- Tabela principal das leituras -->
-<table border="1" cellspacing="0" cellpadding="5" style="width: 100%;">
-  <thead>
-  <tr>
-    <th>Data</th>
-    <th>Valor Extraído (kWh)</th>
-    <th>Valor Corrigido (kWh)</th>
-    <th>Estado</th>
-    <th>Tarifa (R$/kWh)</th>
-    <th>Custo Estimado Total (R$)</th>
-    <th>Bandeira</th>
-    <th>Tarifa Social</th>
-    <th>Imagem</th>
-    <th>Ações</th>
-  </tr>
-  </thead>
-  <tbody>
-  <tr *ngFor="let leitura of leituras">
-    <td>{{ leitura.data_registro | date: 'dd/MM/yyyy HH:mm' }}</td>
-    <td>{{ leitura.valor_extraido }}</td>
-    <td>{{ leitura.valor_corrigido }}</td>
-    <td>{{ leitura.estado.nome || 'N/A' }}</td>
-    <td>
-      {{ leitura.tarifa_valor_kwh !== undefined && leitura.tarifa_valor_kwh !== null
-      ? (leitura.tarifa_valor_kwh | number:'1.3-3')
-      : 'N/A' }}
-    </td>
-    <td>
-      {{ leitura.custo_total !== null && leitura.custo_total !== undefined
-      ? (leitura.custo_total | currency:'BRL')
-      : 'N/A' }}
-    </td>
-    <td>{{ leitura.bandeira.cor || 'N/A' }} - {{ leitura.bandeira.descricao || 'N/A' }}</td>
-    <td>{{ leitura.tarifa_social ? 'Sim' : 'Não' }}</td>
-    <td>
-      <img *ngIf="leitura.imagem_url; else semImagem" [src]="getImagemUrl(leitura.imagem_url)" alt="Foto leitura" width="120" />
-      <ng-template #semImagem>N/A</ng-template>
-    </td>
-    <td>
-      <button (click)="confirmarRemocao(leitura.id)">Remover</button>
-    </td>
-  </tr>
-  </tbody>
-</table>
+    <!-- Averages Section -->
+    <div class="card-beige p-6 mb-8 max-w-3xl">
+      <h3 class="text-xl font-bold text-dark-green mb-4">Média para o Estado Selecionado</h3>
 
-<!-- Seção de médias filtrada por Estado -->
-<div style="margin-top: 30px; font-weight: bold; max-width: 700px;">
-  <h3>Média para o Estado Selecionado</h3>
+      <div class="flex flex-col md:flex-row md:items-end gap-4 mb-6">
+        <div class="w-full md:w-64">
+          <label for="estado-media" class="block text-sm font-medium text-dark-green mb-1">Filtrar por Estado:</label>
+          <select id="estado-media" class="select-custom">
+            <option value="">-- Selecionar --</option>
+            <option value="SP">São Paulo</option>
+            <option value="RJ">Rio de Janeiro</option>
+            <option value="MG">Minas Gerais</option>
+          </select>
+        </div>
 
-  <label for="estado-media">Filtrar por Estado:</label>
-  <select id="estado-media" [(ngModel)]="filtroEstadoId" name="estadoMedia" (change)="calcularMediasPorEstado()" style="margin-bottom: 1rem;">
-    <option [ngValue]="null">-- Selecionar --</option>
-    <option *ngFor="let estado of estados" [ngValue]="estado.id">{{ estado.nome }}</option>
-  </select>
+        <button id="calcularMediaBtn" class="btn-orange text-white py-2 px-6 rounded-lg font-medium mt-2 md:mt-0">
+          Calcular Médias
+        </button>
+      </div>
 
-  <table border="1" cellspacing="0" cellpadding="5" style="width: 100%;">
-    <thead>
-    <tr>
-      <th>Diferença Valor Corrigido (kWh)</th>
-      <th>Diferença Custo Estimado (R$)</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr>
-      <td>{{ medias.diferencaValorCorrigidoMedia !== null ? (medias.diferencaValorCorrigidoMedia | number:'1.3-3') : 'N/A' }}</td>
-      <td>{{ medias.diferencaCustoEstimadoMedia !== null ? (medias.diferencaCustoEstimadoMedia | currency:'BRL') : 'N/A' }}</td>
-    </tr>
-    </tbody>
-  </table>
+      <div class="overflow-x-auto">
+        <table class="min-w-full bg-white rounded-lg overflow-hidden">
+          <thead class="header-dark-green">
+          <tr>
+            <th class="th">Diferença Valor Corrigido (kWh)</th>
+            <th class="th">Diferença Custo Estimado (R$)</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <td class="td">+12.34</td>
+            <td class="td">R$ 9.37</td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
 </div>

@@ -10,7 +10,7 @@ import { CommonModule } from '@angular/common';
 @Component({
   selector: 'app-lista-leituras',
   templateUrl: './lista-leituras.component.html',
-  styleUrls: ['./lista-leituras.component.css'],
+  styleUrls: ['./lista-leituras.component.scss'],
   standalone: true,
   imports: [FormsModule, DecimalPipe, CurrencyPipe, DatePipe, CommonModule]
 })

@@ -8,7 +8,7 @@ import { Router } from '@angular/router';
   standalone: true,
   imports: [CommonModule],
   templateUrl: './upload-documento.component.html',
-  styleUrls: ['./upload-documento.component.css']
+  styleUrls: ['./upload-documento.component.scss']
 })
 export class UploadDocumentoComponent {
   arquivo?: File;

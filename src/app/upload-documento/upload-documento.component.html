@@ -1,70 +1,108 @@
-<h3>Upload do Documento</h3>
+<div class="upload-wrapper">
+  <h1 class="title">Upload do Documento</h1>
 
-<p>
-  Envie arquivo Excel (.xlsx, .xls) ou Word (.docx) com colunas certas.<br />
-  Aparelhos: "Aparelho", "Potencia(W)", "HorasPorDia".<br />
-  Contador: "Data" (YYYY-MM) e "LeituraDoMes(kWh)".
-</p>
+  <div class="info-box">
+    <p>
+      Envie um arquivo Excel (.xlsx, .xls) ou Word (.docx) com colunas corretas.<br />
+      <strong>Aparelhos:</strong> "Aparelho", "Potencia(W)", "HorasPorDia".<br />
+      <strong>Contador:</strong> "Data" (YYYY-MM) e "LeituraDoMes(kWh)".
+    </p>
+  </div>
 
-<h5>Download de Templates</h5>
+  <!-- Templates -->
+  <div class="template-section">
+    <h2 class="subtitle">Download de Templates</h2>
+    <div class="template-grid">
+      <div class="template-card">
+        <h3><i class="fas fa-file-invoice"></i> Template de Contador</h3>
+        <button (click)="baixarTemplate('contador', 'xlsx')">
+          <i class="fas fa-file-excel"></i> Excel
+        </button>
+        <button (click)="baixarTemplate('contador', 'docx')">
+          <i class="fas fa-file-word"></i> Word
+        </button>
+      </div>
 
-<!-- Botões para baixar os templates -->
-<div>
-  <h4>Template de Contador</h4>
-  <button (click)="baixarTemplate('contador', 'excel')" class="btn btn-primary">Baixar Contador Excel</button>
-  <button (click)="baixarTemplate('contador', 'word')" class="btn btn-secondary">Baixar Contador Word</button>
+      <div class="template-card">
+        <h3><i class="fas fa-plug"></i> Template de Aparelhos</h3>
+        <button (click)="baixarTemplate('aparelho', 'xlsx')">
+          <i class="fas fa-file-excel"></i> Excel
+        </button>
+        <button (click)="baixarTemplate('aparelho', 'docx')">
+          <i class="fas fa-file-word"></i> Word
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Upload -->
+  <div class="upload-box">
+    <label class="upload-button">
+      <i class="fas fa-cloud-upload-alt"></i> Selecione o Arquivo
+      <input type="file" (change)="onArquivoChange($event)" accept=".xlsx,.xls,.docx" />
+    </label>
+    <span class="file-name">{{ arquivo?.name || 'Nenhum arquivo selecionado' }}</span>
+  </div>
+
+  <!-- Carregando -->
+  <div *ngIf="carregando" class="loading">
+    <i class="fas fa-circle-notch fa-spin"></i> Processando arquivo...
+  </div>
+
+  <!-- Erros -->
+  <div *ngIf="erros.length" class="error-box">
+    <h4><i class="fas fa-exclamation-circle"></i> Erros:</h4>
+    <ul>
+      <li *ngFor="let erro of erros">{{ erro }}</li>
+    </ul>
+  </div>
+
+  <!-- Preview Aparelhos -->
+  <div *ngIf="tipoDocumento === 'aparelho' && dados.length" class="preview">
+    <h4><i class="fas fa-eye"></i> Preview Aparelhos</h4>
+    <table>
+      <thead>
+      <tr>
+        <th>Aparelho</th>
+        <th>Potência (W)</th>
+        <th>Horas por Dia</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let item of dados">
+        <td>{{ item.aparelho }}</td>
+        <td>{{ item.potencia_w }}</td>
+        <td>{{ item.horas_por_dia }}</td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Preview Contador -->
+  <div *ngIf="tipoDocumento === 'contador' && dados.length" class="preview">
+    <h4><i class="fas fa-eye"></i> Preview Contador</h4>
+    <table>
+      <thead>
+      <tr>
+        <th>Data</th>
+        <th>Leitura (kWh)</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let item of dados">
+        <td>{{ item.data }}</td>
+        <td>{{ item.leitura_kwh }}</td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Botão de Resultado -->
+  <button
+    [disabled]="!dados.length || erros.length > 0"
+    [ngClass]="{ 'disabled': !dados.length || erros.length > 0 }"
+    (click)="irParaResultados()"
+  >
+    <i class="fas fa-arrow-right"></i> Ir para Resultados
+  </button>
 </div>
-
-<div>
-  <h4>Template de Aparelhos</h4>
-  <button (click)="baixarTemplate('aparelho', 'excel')" class="btn btn-primary">Baixar Aparelho Excel</button>
-  <button (click)="baixarTemplate('aparelho', 'word')" class="btn btn-secondary">Baixar Aparelho Word</button>
-</div><br>
-<hr><br>
-<input type="file" (change)="onArquivoChange($event)" />
-
-<div *ngIf="carregando" style="margin-top: 1rem;">Processando arquivo...</div>
-
-<div *ngIf="erros.length > 0" style="color: red; margin-top: 1rem;">
-  <h4>Erros:</h4>
-  <ul><li *ngFor="let erro of erros">{{ erro }}</li></ul>
-</div>
-
-<div *ngIf="tipoDocumento === 'aparelho' && erros.length === 0 && dados.length > 0" style="margin-top: 2rem;">
-  <h4>Preview Aparelhos</h4>
-  <table border="1" cellspacing="0" cellpadding="5" style="width: 100%;">
-    <thead>
-    <tr><th>Aparelho</th><th>Potência (W)</th><th>Horas por Dia</th></tr>
-    </thead>
-    <tbody>
-    <tr *ngFor="let item of dados">
-      <td>{{ item.aparelho }}</td>
-      <td>{{ item.potencia_w }}</td>
-      <td>{{ item.horas_por_dia }}</td>
-    </tr>
-    </tbody>
-  </table>
-</div>
-
-<div *ngIf="tipoDocumento === 'contador' && erros.length === 0 && dados.length > 0" style="margin-top: 2rem;">
-  <h4>Preview Contador</h4>
-  <table border="1" cellspacing="0" cellpadding="5" style="width: 100%;">
-    <thead>
-    <tr><th>Data</th><th>Leitura (kWh)</th></tr>
-    </thead>
-    <tbody>
-    <tr *ngFor="let item of dados">
-      <td>{{ item.data }}</td>
-      <td>{{ item.leitura_kwh }}</td>
-    </tr>
-    </tbody>
-  </table>
-</div>
-
-<button
-  (click)="irParaResultados()"
-  [disabled]="dados.length === 0 || erros.length > 0"
-  style="margin-top: 1rem;"
->
-  Ir para Resultados
-</button>

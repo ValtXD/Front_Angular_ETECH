@@ -7,7 +7,7 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-upload-imagem',
   templateUrl: './upload-imagem.component.html',
-  styleUrls: ['./upload-imagem.component.css'],
+  styleUrls: ['./upload-imagem.component.scss'],
   standalone: true,
   imports: [FormsModule, CommonModule],
 })
