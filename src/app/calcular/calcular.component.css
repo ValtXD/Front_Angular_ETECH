@@ -1,7 +1,7 @@
 body {
   font-family: 'Inter', 'Roboto', 'Arial', sans-serif;
-  background-color: #f5f8fb;
-  color: #002b59;
+  background-color: #678760;
+  color: #fcc15d;
   display: flex;
   flex-direction: column;
   min-height: 100vh;
@@ -27,7 +27,7 @@ body {
 .mat-card-title {
   font-size: 28px;
   font-weight: 700;
-  color: #002b59;
+  color: #000000;
   margin-bottom: 25px;
   text-align: center
 }
@@ -50,43 +50,40 @@ mat-form-field {
 }
 
 button[mat-flat-button] {
-  background-color: #00b9be;
+  background-color: #678760;
   color: #fff;
   padding: 12px 25px;
   font-size: 17px;
   font-weight: 600;
-  border-radius: 8px;
   transition: background-color .3s ease, transform .2s ease, box-shadow .3s ease;
-  box-shadow: 0 4px 12px rgba(0, 185, 190, .3);
+  box-shadow: 0 4px 12px rgb(52, 69, 46);
   cursor: pointer
 }
 
 button[mat-flat-button]:disabled {
-  background-color: rgba(0, 185, 190, .4);
+  background-color: rgb(66, 101, 58);
   color: rgba(255, 255, 255, .7);
   box-shadow: none;
   cursor: not-allowed
 }
 
 button[mat-flat-button]:hover:not(:disabled) {
-  background-color: #005f8c;
+  background-color: #678760;
   transform: translateY(-2px);
-  box-shadow: 0 6px 15px rgba(0, 95, 140, .4)
+  box-shadow: 0 4px 12px rgb(52, 69, 46);
 }
 
 button[mat-stroked-button] {
-  border: 2px solid #005f8c;
-  color: #005f8c;
+  color: #678760;
   padding: 12px 25px;
   font-size: 17px;
   font-weight: 600;
-  border-radius: 8px;
   transition: background-color .3s ease, color .3s ease;
   cursor: pointer
 }
 
 button[mat-stroked-button]:hover {
-  background-color: #005f8c;
+  background-color: #678760;
   color: #fff
 }
 
@@ -120,7 +117,7 @@ button[mat-stroked-button]:hover {
 .aparelho-card mat-card-title {
   font-size: 22px;
   font-weight: 700;
-  color: #002b59;
+  color: #000000;
   margin-bottom: 5px;
   text-align: left
 }
@@ -142,7 +139,7 @@ button[mat-stroked-button]:hover {
 }
 
 .card-detail-item strong {
-  color: #002b59;
+  color: #000000;
   margin-right: 5px
 }
 
@@ -208,21 +205,20 @@ button[mat-stroked-button]:hover {
 }
 
 button[mat-raised-button] {
-  background-color: #00b9be;
+  background-color: #678760;
   color: #fff;
   font-size: 18px;
   font-weight: 700;
-  border-radius: 8px;
   padding: 14px 30px;
   transition: background-color .3s ease, transform .2s ease, box-shadow .3s ease;
-  box-shadow: 0 6px 15px rgba(0, 185, 190, .4);
+  box-shadow: 0 4px 12px rgb(18, 90, 0);
   cursor: pointer
 }
 
 button[mat-raised-button]:hover {
-  background-color: #005f8c;
+  background-color: #678760;
   transform: translateY(-2px);
-  box-shadow: 0 8px 18px rgba(0, 95, 140, .5)
+  box-shadow: 0 4px 12px rgb(18, 90, 0);
 }
 
 .add-aparelho-btn-container {
@@ -236,19 +232,17 @@ button[mat-raised-button]:hover {
   padding: 12px 24px;
   font-size: 16px;
   font-weight: 600;
-  background-color: #005f8c;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 95, 140, 0.25);
+  background-color: #678760;
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgb(18, 90, 0);
   display: flex;
   align-items: center;
   transition: 0.3s ease;
 }
 
 .add-aparelho-btn-container button:hover {
-  background-color: #002b59;
-  box-shadow: 0 6px 14px rgba(0, 43, 89, 0.3);
+  background-color: #678760;
+  box-shadow: 0 4px 12px rgb(18, 90, 0);
 }
 
 .add-aparelho-btn-container mat-icon {
@@ -271,17 +265,15 @@ button[mat-raised-button]:hover {
 .filters-header .mat-card-title-small {
   font-size: 24px;
   font-weight: 700;
-  color: #002b59;
+  color: #000000;
   margin: 0;
 }
 
 .filter-toggle-button {
   background: transparent;
-  border: none;
   padding: 8px;
-  border-radius: 50%;
   font-size: 26px;
-  color: #005f8c;
+  color: #678760;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -290,7 +282,7 @@ button[mat-raised-button]:hover {
 
 .filter-toggle-button:hover {
   background-color: rgba(0, 95, 140, 0.1);
-  color: #00b9be;
+  color: #125a00;
   transform: scale(1.1);
 }
 
@@ -334,23 +326,23 @@ button[mat-raised-button]:hover {
   font-size: 15px;
   padding: 10px 22px;
   font-weight: 600;
-  border-radius: 6px;
+
   transition: 0.3s ease;
 }
 
 .apply-filters-actions button.mat-flat-button.mat-primary {
-  background-color: #00b9be;
+  background-color: #fcc15d;
   color: white;
-  box-shadow: 0 3px 8px rgba(0, 185, 190, 0.25);
+  box-shadow: 0 3px 8px rgb(251, 155, 39);
 }
 
 .apply-filters-actions button.mat-flat-button.mat-primary:hover {
-  background-color: #005f8c;
+  background-color: #fb9b27;
 }
 
 .apply-filters-actions button.mat-stroked-button {
-  color: #005f8c;
-  border: 2px solid #005f8c;
+  color: #fcc15d;
+  border: 2px solid #fcc15d;
 }
 
 .apply-filters-actions button.mat-stroked-button:hover {
@@ -363,7 +355,7 @@ button[mat-raised-button]:hover {
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, .6);
+  background-color: rgba(251, 155, 39, 0.04);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -398,7 +390,7 @@ button[mat-raised-button]:hover {
   justify-content: space-between;
   align-items: center;
   padding: 20px 30px;
-  background-color: #002b59;
+  background-color: #fb9b27;
   color: #fff;
   border-radius: 12px 12px 0 0
 }
@@ -406,7 +398,7 @@ button[mat-raised-button]:hover {
 .modal-title {
   font-size: 26px;
   font-weight: 700;
-  color: #fff;
+  color: #000000;
   margin: 0
 }
 
@@ -417,7 +409,7 @@ button[mat-raised-button]:hover {
   padding: 8px;
   border-radius: 50%;
   transition: background-color .3s ease, color .3s ease;
-  color: #fff;
+  color: #040404;
   font-size: 24px;
   display: flex;
   align-items: center;
@@ -426,7 +418,7 @@ button[mat-raised-button]:hover {
 
 .modal-close-button:hover {
   background-color: rgba(255, 255, 255, .1);
-  color: #00b9be
+  color: #fcc15d
 }
 
 .modal-body {
@@ -441,7 +433,6 @@ button[mat-raised-button]:hover {
 }
 
 .modal-actions {
-  padding: 20px 30px 0;
   justify-content: flex-end;
   gap: 15px
 }
@@ -452,7 +443,7 @@ button[mat-raised-button]:hover {
   }
 
   .add-aparelho-btn-container {
-    top: 20px;
+    top: 50px;
     right: 15px;
     padding: 0
   }

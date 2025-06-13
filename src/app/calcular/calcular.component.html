@@ -1,5 +1,9 @@
 <div class="calcular-container">
-
+  <div class="add-aparelho-btn-container">
+    <button mat-flat-button color="primary" (click)="openModalForNew()">
+      <mat-icon>add</mat-icon> Novo Aparelho
+    </button>
+  </div>
   <div class="modal-overlay" [class.active]="isModalOpen">
     <div class="modal-content">
       <div class="modal-header">
@@ -98,11 +102,6 @@
       </div>
     </div>
   </div>
-  <div class="add-aparelho-btn-container">
-    <button mat-raised-button color="primary" (click)="openModalForNew()">
-      <mat-icon>add</mat-icon> Novo Aparelho
-    </button>
-  </div>
   <mat-card class="lista-card filters-card">
     <div class="filters-header">
       <h3 class="mat-card-title-small">Filtros de Aparelhos</h3>
@@ -132,7 +131,7 @@
       </div>
       <div class="apply-filters-actions">
         <button mat-flat-button color="primary" (click)="aplicarFiltrosBackend()">Aplicar Filtros</button>
-        <button mat-stroked-button (click)="clearFilters()">Limpar Filtros</button>
+        <button mat-raised-button (click)="clearFilters()">Limpar Filtros</button>
       </div>
     </mat-card-content>
   </mat-card>
@@ -183,6 +182,6 @@
     </mat-card-content>
   </mat-card>
   <div class="btn-resultados">
-    <button mat-raised-button color="accent" (click)="irParaResultados()">Ir para Resultados</button>
+    <button mat-flat-button color="accent" (click)="irParaResultados()">Ir para Resultados</button>
   </div>
 </div>

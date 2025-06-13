@@ -1,23 +1,69 @@
-@import "@angular/material/prebuilt-themes/indigo-pink.css";
+@import "@angular/material/prebuilt-themes/azure-blue.css";
+
 body {
   font-family: 'Inter', 'Roboto', 'Arial', sans-serif;
   margin: 0;
   padding: 0;
-  background-color: #ffffff; /* Azul Marinho Profundo para o fundo geral do site */
-  color: #4bf3ff; /* Turquesa Claríssimo para o texto padrão do body, garantindo excelente legibilidade */
-  overflow-x: hidden; /* Evita scroll horizontal indesejado */
+  background-color: #ffffff; /* Fundo branco (ou use #f1f4f1 se quiser mais suave) */
+  color: #2d3a29; /* Tom escuro da paleta primária para texto geral */
+  overflow-x: hidden;
 }
 
 h1, h2, h3, h4, h5, h6 {
   margin: 0;
   line-height: 1.2;
-  color: #00b9be; /* Ciano Vibrante para os títulos, um destaque moderno e chamativo */
+  color: #ffffff; /* Cor de destaque para títulos */
 }
 
-/* Estilos globais para todos os parágrafos */
+/* Parágrafos */
 p {
   margin: 0;
-  color: #338c00; /* Azul Médio Escuro para os parágrafos, uma cor suave que complementa o fundo escuro */
-  text-align: center; /* Centraliza o texto de todos os parágrafos */
+  color: #4e6949; /* Tom médio da paleta primária */
+  text-align: center;
 }
+
+/* Estilo para botões */
+button {
+  background-color: #678760; /* Cor primária */
+  color: white;
+  border: none;
+  padding: 0.6em 1.2em;
+  font-weight: bold;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #5d7b56; /* Tom mais escuro ao passar o mouse */
+}
+
+/* Estilo para spans destacados */
+span.destaque {
+  color: #ffffff; /* Laranja */
+  font-weight: bold;
+}
+
+/* Span neutro, tipo para subtítulo ou info */
+span.neutro {
+  color: #678760; /* Verde primário suave */
+}
+
+/* Span para valores numéricos ou destaques suaves */
+span.valor {
+  color: #2d3a29; /* Verde escuro para contrastar com fundo claro */
+  font-weight: 600;
+}
+
+/* Evita estilizar spans globais */
+span {
+  font-weight: normal;
+}
+
+/* Para spans menores que aparecem como detalhe */
+span.small {
+  color: #678760;
+  font-weight: normal;
+}
+
 

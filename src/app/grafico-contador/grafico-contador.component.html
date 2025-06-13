@@ -1,37 +1,21 @@
-<div class="card p-3">
-  <h1 style="text-align: center;">Monitoramento de Consumo/Contador</h1>
+<mat-card class="monitoring-card">
+  <mat-card-title class="card-title">Monitoramento de Consumo/Contador</mat-card-title>
+  <mat-card-content>
+    <div class="mode-selection">
+      <!-- mat-radio-group para agrupar os botões de rádio do Material -->
+      <mat-radio-group [(ngModel)]="modo" (change)="onModoChange($event)" color="primary">
+        <mat-radio-button value="mensal">Mensal</mat-radio-button>
+        <mat-radio-button value="anual">Anual</mat-radio-button>
+      </mat-radio-group>
+    </div>
 
-  <div class="form-check form-check-inline mb-3">
-    <input
-      class="form-check-input"
-      type="radio"
-      name="modoGrafico"
-      id="modoMensal"
-      value="mensal"
-      [checked]="modo === 'mensal'"
-      (change)="onModoChange($event)"
-    />
-    <label class="form-check-label" for="modoMensal">Mensal</label>
-  </div>
-
-  <div class="form-check form-check-inline mb-3">
-    <input
-      class="form-check-input"
-      type="radio"
-      name="modoGrafico"
-      id="modoAnual"
-      value="anual"
-      [checked]="modo === 'anual'"
-      (change)="onModoChange($event)"
-    />
-    <label class="form-check-label" for="modoAnual">Anual</label>
-  </div>
-
-  <div class="grafico-container">
-    <canvas id="graficoConsumo"></canvas>
-  </div>
-
-  <div class="botoes-acoes" style="text-align: left; margin-top: 20px;">
-    <button class="btn btn-secondary me-2" (click)="voltar()">Voltar</button>
-  </div>
-</div>
+    <div class="graph-container">
+      <!-- O canvas do gráfico permanece o mesmo, usando a ID e a referência local para o TS -->
+      <canvas id="graficoConsumo" #graficoConsumo></canvas>
+    </div>
+  </mat-card-content>
+  <mat-card-actions class="card-actions">
+    <!-- Botão Angular Material elevado com a cor de destaque do tema -->
+    <button mat-raised-button color="primary" (click)="voltar()">Voltar</button>
+  </mat-card-actions>
+</mat-card>

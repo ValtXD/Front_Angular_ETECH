@@ -47,17 +47,17 @@
   </div>
 
   <div class="footer-actions">
-    <button mat-stroked-button (click)="voltar()">
-      <mat-icon>add_circle_outline</mat-icon>
+    <button mat-stroked-button class="btn-novo-registro" (click)="voltar()">
+      <mat-icon>add</mat-icon>
       Novo Registro
     </button>
 
-    <button mat-raised-button color="primary" (click)="irParaGrafico()">
+    <button mat-stroked-button class="btn-grafico" (click)="irParaGrafico()">
       <mat-icon>bar_chart</mat-icon>
       Gráfico
     </button>
 
-    <button mat-raised-button color="accent" (click)="gerarDica()">
+    <button mat-flat-button color="primary" (click)="gerarDica()">
       <mat-icon>lightbulb</mat-icon>
       Gerar Dica
     </button>

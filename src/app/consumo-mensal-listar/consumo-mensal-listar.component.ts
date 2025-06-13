@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import { ContadorService } from '../services/contador.service';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
@@ -8,37 +8,43 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTableModule } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
+import {MatIcon} from '@angular/material/icon';
+import {MatCard, MatCardContent, MatCardTitle} from '@angular/material/card';
+import {MatDivider} from '@angular/material/divider';
 
+export interface ResultadosEvent {
+  consumo: number;
+  custo: number;
+}
 
 @Component({
   selector: 'app-consumo-mensal-listar',
   templateUrl: './consumo-mensal-listar.component.html',
   standalone: true,
-  imports: [  CommonModule,
+  imports: [CommonModule,
     FormsModule,
     MatFormFieldModule,
     MatSelectModule,
     MatTableModule,
-    MatButtonModule,],
+    MatButtonModule, MatIcon, MatCard, MatCardTitle, MatCardContent, MatDivider,],
   styleUrls: ['./consumo-mensal-listar.component.scss']
 })
 export class ConsumoMensalListarComponent implements OnInit {
+  @Output() resultadosProntos = new EventEmitter<ResultadosEvent>();
+
+  // Suas propriedades originais (sem alterações)
   registros: any[] = [];
   consumoTotal = 0;
   custoTotal = 0;
   consumoAnualTotal = 0;
   custoAnualTotal = 0;
-
   anosDisponiveis: number[] = [];
   mesesDisponiveis = Array.from({ length: 12 }, (_, i) => i + 1);
-
   anoSelecionado: number | null = null;
   mesSelecionado: number | null = null;
-
   dicaIA: string = '';
   carregandoDica = false;
-
-  modalAberto = false;  // controle do modal
+  modalAberto = false;
 
   constructor(private contadorService: ContadorService, private router: Router) {}
 
@@ -61,13 +67,15 @@ export class ConsumoMensalListarComponent implements OnInit {
     if (this.mesSelecionado) params.mes = this.mesSelecionado.toString();
 
     this.contadorService.listarConsumos(params).subscribe(res => {
+      // A SUA LÓGICA DE NEGÓCIO CONTINUA EXATAMENTE IGUAL
       this.registros = res.registros;
-
       this.consumoTotal = res.consumo_total;
       this.custoTotal = res.custo_total;
-
       this.consumoAnualTotal = this.registros.reduce((acc, r) => acc + this.calcularConsumoAnual(r), 0);
       this.custoAnualTotal = this.registros.reduce((acc, r) => acc + ((r.total_pagar ?? 0) * 12), 0);
+
+      // 3. NO FINAL, AVISE O PAI COM OS RESULTADOS
+      this.resultadosProntos.emit({ consumo: this.consumoTotal, custo: this.custoTotal });
     });
   }
 

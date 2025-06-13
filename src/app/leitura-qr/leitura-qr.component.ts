@@ -12,7 +12,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./leitura-qr.component.css'],
 })
 export class LeituraQrComponent implements OnInit {
-  qrData = 'http://192.168.0.4:4200/leitura-qr'; // Ajuste para seu IP
+  qrData = 'http://172.23.80.1:4200/leitura-qr'; // Ajuste para seu IP
 
   estados: Estado[] = [];
   bandeiras: Bandeira[] = [];

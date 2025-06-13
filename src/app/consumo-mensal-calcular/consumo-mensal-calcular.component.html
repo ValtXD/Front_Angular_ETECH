@@ -1,143 +1,148 @@
-<mat-card class="card-consumo">
-  <mat-card-title>{{ editandoId ? 'Editar Consumo' : 'Cadastrar Consumo' }}</mat-card-title>
-  <mat-card-content>
-    <form [formGroup]="form" (ngSubmit)="onSubmit()" class="form-consumo">
+<div class="page-container">
+  <!-- CABEÇALHO DA PÁGINA -->
+  <div class="page-header">
+    <h1>Visão Geral de Consumo</h1>
+    <button mat-flat-button class="btn-novo" (click)="abrirFormulario()">
+      <mat-icon>add</mat-icon>
+      Novo Consumo
+    </button>
+  </div>
 
-      <mat-form-field appearance="outline" class="full-width">
+  <!-- CARD DE FILTROS -->
+  <mat-card class="card-filtros">
+    <div class="filtros-header">
+      <h2>Filtros de Consumo</h2>
+      <button mat-mini-fab class="filtro-toggle-btn" (click)="toggleFiltros()" aria-label="Alternar visibilidade dos filtros">
+        <mat-icon>search</mat-icon>
+      </button>
+    </div>
+    <div class="filtros-content" [class.visivel]="filtrosVisiveis">
+      <div [formGroup]="filtroForm" class="filtros-form-grid">
+        <mat-form-field appearance="outline" class="filtro-field">
+          <mat-label>Mês/Ano</mat-label>
+          <input matInput type="month" formControlName="filtroMesAno" />
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="filtro-field">
+          <mat-label>Estado</mat-label>
+          <mat-select formControlName="filtroEstado">
+            <mat-option [value]="null">Todos</mat-option>
+            <mat-option *ngFor="let est of estados" [value]="est.id">{{ est.nome }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="filtro-field">
+          <mat-label>Bandeira</mat-label>
+          <mat-select formControlName="filtroBandeira">
+            <mat-option [value]="null">Todos</mat-option>
+            <mat-option *ngFor="let ban of bandeiras" [value]="ban.id">{{ ban.cor }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="filtros-actions">
+        <button mat-flat-button class="btn-limpar-filtros" (click)="limparFiltros()">Limpar Filtros</button>
+        <button mat-flat-button class="btn-aplicar-filtros" (click)="aplicarFiltrosBackend()">Aplicar Filtros</button>
+      </div>
+    </div>
+  </mat-card>
+
+  <!-- CARD UNIFICADO PARA ANÁLISE E LISTA DE CONSUMOS -->
+  <mat-card class="card-lista-consumo">
+
+    <div class="lista-section">
+      <mat-card-title class="lista-card-title">Consumos Cadastrados</mat-card-title>
+      <div class="cards-grid" *ngIf="registros.length > 0; else noRecords">
+        <mat-card *ngFor="let r of registros" class="consumo-card">
+          <mat-card-header>
+            <mat-card-title>{{ getEstadoNome(r.estado) }}</mat-card-title>
+            <mat-card-subtitle>Referência: {{ r.ano }}-{{ r.mes < 10 ? ('0' + r.mes) : r.mes }}</mat-card-subtitle>
+          </mat-card-header>
+          <mat-card-content class="consumo-card-content">
+            <div class="card-detail-item">
+              <span>Leitura Inicial:</span>
+              <strong>{{ r.leitura_inicial | number:'1.2-2' }} kWh</strong>
+            </div>
+            <div class="card-detail-item">
+              <span>Leitura Final:</span>
+              <strong>{{ r.leitura_final | number:'1.2-2' }} kWh</strong>
+            </div>
+            <div class="card-detail-item">
+              <span>Bandeira:</span>
+              <strong>
+                <span class="bandeira-tag" [ngClass]="'bandeira-' + getBandeiraCor(r.bandeira).toLowerCase()">
+                  {{ getBandeiraCor(r.bandeira) }}
+                </span>
+              </strong>
+            </div>
+            <div *ngIf="r.tarifa_social" class="card-detail-item">
+              <span>Tarifa Social:</span>
+              <strong>Sim</strong>
+            </div>
+          </mat-card-content>
+          <mat-card-actions class="consumo-card-actions">
+            <button mat-icon-button (click)="abrirFormulario(r)" aria-label="Editar registro">
+              <mat-icon>edit</mat-icon>
+            </button>
+            <button mat-icon-button color="warn" (click)="removerRegistro(r.id)" aria-label="Remover registro">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </mat-card-actions>
+        </mat-card>
+      </div>
+    </div>
+    <ng-template #noRecords>
+      <div class="no-records">
+        <mat-icon>info_outline</mat-icon>
+        <p>Nenhum registo encontrado para os filtros selecionados.</p>
+      </div>
+    </ng-template>
+
+    <app-consumo-mensal-listar
+      (resultadosProntos)="onResultadosDoFilho($event)">
+    </app-consumo-mensal-listar>
+  </mat-card>
+
+</div>
+
+<!-- TEMPLATE PARA O DIÁLOGO DE FORMULÁRIO (localizado no final para melhor prática) -->
+<ng-template #formDialogTemplate>
+  <h2 mat-dialog-title>{{ editandoId ? 'Editar Consumo' : 'Cadastrar Novo Consumo' }}</h2>
+  <mat-dialog-content>
+    <form [formGroup]="form" class="form-consumo-dialog">
+      <mat-form-field appearance="outline">
         <mat-label>Data (Mês/Ano)</mat-label>
         <input matInput type="month" formControlName="data" />
         <mat-error *ngIf="form.get('data')?.hasError('required')">Data é obrigatória</mat-error>
       </mat-form-field>
-
-      <mat-form-field appearance="outline" class="full-width">
+      <mat-form-field appearance="outline">
         <mat-label>Estado</mat-label>
         <mat-select formControlName="estado">
           <mat-option *ngFor="let est of estados" [value]="est.id">{{ est.nome }}</mat-option>
         </mat-select>
         <mat-error *ngIf="form.get('estado')?.hasError('required')">Estado é obrigatório</mat-error>
       </mat-form-field>
-
-      <mat-form-field appearance="outline" class="full-width">
+      <mat-form-field appearance="outline">
         <mat-label>Bandeira</mat-label>
         <mat-select formControlName="bandeira">
           <mat-option *ngFor="let ban of bandeiras" [value]="ban.id">{{ ban.cor }}</mat-option>
         </mat-select>
         <mat-error *ngIf="form.get('bandeira')?.hasError('required')">Bandeira é obrigatória</mat-error>
       </mat-form-field>
-
-      <mat-checkbox formControlName="tarifa_social" color="primary" class="checkbox-tarifa-social">
-        Tarifa Social
-      </mat-checkbox>
-
-      <mat-form-field appearance="outline" class="full-width">
+      <mat-checkbox formControlName="tarifa_social" color="primary">Tarifa Social</mat-checkbox>
+      <mat-form-field appearance="outline">
         <mat-label>Leitura Inicial (kWh)</mat-label>
         <input matInput type="number" formControlName="leitura_inicial" min="0" />
         <mat-error *ngIf="form.get('leitura_inicial')?.hasError('required')">Leitura inicial é obrigatória</mat-error>
-        <mat-error *ngIf="form.get('leitura_inicial')?.hasError('min')">Valor mínimo é 0</mat-error>
       </mat-form-field>
-
-      <mat-form-field appearance="outline" class="full-width">
+      <mat-form-field appearance="outline">
         <mat-label>Leitura Final (kWh)</mat-label>
         <input matInput type="number" formControlName="leitura_final" min="0" />
         <mat-error *ngIf="form.get('leitura_final')?.hasError('required')">Leitura final é obrigatória</mat-error>
-        <mat-error *ngIf="form.get('leitura_final')?.hasError('min')">Valor mínimo é 0</mat-error>
       </mat-form-field>
-
-      <div class="actions">
-        <button mat-flat-button color="primary" type="submit" class="btn-submit">
-          {{ editandoId ? 'Salvar Edição' : 'Cadastrar' }}
-        </button>
-        <button mat-stroked-button type="button" (click)="irParaResultados()" class="btn-secondary">
-          Ver Resultados
-        </button>
-      </div>
-
-      <mat-card class="card-filtros">
-        <mat-card-title>Filtros</mat-card-title>
-        <mat-card-content class="filtros-container">
-
-          <mat-form-field appearance="outline" class="filtro-field">
-            <mat-label>Filtrar por mês/ano</mat-label>
-            <input matInput type="month" formControlName="filtroMesAno" (input)="aplicarFiltrosBackend()" />
-          </mat-form-field>
-
-          <mat-form-field appearance="outline" class="filtro-field">
-            <mat-label>Filtrar por Estado</mat-label>
-            <mat-select formControlName="filtroEstado" (selectionChange)="aplicarFiltrosBackend()">
-              <mat-option [value]="null">Todos</mat-option>
-              <mat-option *ngFor="let est of estados" [value]="est.id">{{ est.nome }}</mat-option>
-            </mat-select>
-          </mat-form-field>
-
-          <mat-form-field appearance="outline" class="filtro-field">
-            <mat-label>Filtrar por Bandeira</mat-label>
-            <mat-select formControlName="filtroBandeira" (selectionChange)="aplicarFiltrosBackend()">
-              <mat-option [value]="null">Todos</mat-option>
-              <mat-option *ngFor="let ban of bandeiras" [value]="ban.id">{{ ban.cor }}</mat-option>
-            </mat-select>
-          </mat-form-field>
-
-        </mat-card-content>
-      </mat-card>
-
     </form>
-  </mat-card-content>
-</mat-card>
-
-<mat-card class="card-registros">
-  <mat-card-title>Registros Cadastrados</mat-card-title>
-  <mat-card-content>
-    <table mat-table [dataSource]="registros" class="mat-elevation-z8" *ngIf="registros.length > 0">
-
-      <ng-container matColumnDef="data">
-        <th mat-header-cell *matHeaderCellDef> Data </th>
-        <td mat-cell *matCellDef="let r"> {{ r.ano }}-{{ r.mes < 10 ? ('0' + r.mes) : r.mes }} </td>
-      </ng-container>
-
-      <ng-container matColumnDef="estado">
-        <th mat-header-cell *matHeaderCellDef> Estado </th>
-        <td mat-cell *matCellDef="let r"> {{ getEstadoNome(r.estado) }} </td>
-      </ng-container>
-
-      <ng-container matColumnDef="bandeira">
-        <th mat-header-cell *matHeaderCellDef> Bandeira </th>
-        <td mat-cell *matCellDef="let r"> {{ getBandeiraCor(r.bandeira) }} </td>
-      </ng-container>
-
-      <ng-container matColumnDef="tarifa_social">
-        <th mat-header-cell *matHeaderCellDef> Tarifa Social </th>
-        <td mat-cell *matCellDef="let r"> {{ r.tarifa_social ? 'Sim' : 'Não' }} </td>
-      </ng-container>
-
-      <ng-container matColumnDef="leitura_inicial">
-        <th mat-header-cell *matHeaderCellDef> Leitura Inicial (kWh) </th>
-        <td mat-cell *matCellDef="let r"> {{ r.leitura_inicial }} </td>
-      </ng-container>
-
-      <ng-container matColumnDef="leitura_final">
-        <th mat-header-cell *matHeaderCellDef> Leitura Final (kWh) </th>
-        <td mat-cell *matCellDef="let r"> {{ r.leitura_final }} </td>
-      </ng-container>
-
-      <ng-container matColumnDef="acoes">
-        <th mat-header-cell *matHeaderCellDef> Ações </th>
-        <td mat-cell *matCellDef="let r">
-          <button mat-icon-button color="primary" (click)="editarRegistro(r)" aria-label="Editar">
-            <mat-icon>edit</mat-icon>
-          </button>
-          <button mat-icon-button color="warn" (click)="removerRegistro(r.id)" aria-label="Remover">
-            <mat-icon>delete</mat-icon>
-          </button>
-        </td>
-      </ng-container>
-
-      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-
-    </table>
-
-    <div *ngIf="registros.length === 0" class="alert-info">
-      Nenhum registro encontrado para o filtro selecionado.
-    </div>
-  </mat-card-content>
-</mat-card>
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <button mat-stroked-button (click)="fecharDialog()">Cancelar</button>
+    <button mat-flat-button color="primary" (click)="onSubmit()" [disabled]="form.invalid">
+      {{ editandoId ? 'Salvar Edição' : 'Cadastrar' }}
+    </button>
+  </mat-dialog-actions>
+</ng-template>

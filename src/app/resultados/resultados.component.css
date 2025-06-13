@@ -35,7 +35,7 @@
 }
 
 .filter-card mat-card-title {
-  color: #004d40;
+  color: #678760;
 }
 
 .filter-card mat-card-content {
@@ -75,7 +75,7 @@ mat-card:hover {
 }
 
 mat-card-title {
-  color: #004d40;
+  color: #678760;
 }
 
 /* Estilo para o card de filtro */
@@ -128,7 +128,7 @@ mat-card-title {
 /* ====================================================== */
 .total-card {
   padding: 32px;
-  background: linear-gradient(135deg, #00796b, #004d40); /* Gradiente elegante */
+  background: linear-gradient(135deg, #678760, #3f5a37); /* Gradiente elegante */
   color: white; /* Cor padrão do texto para branco */
   grid-column: 1 / -1; /* Faz o card de total ocupar a largura toda da grade */
 }
@@ -175,16 +175,6 @@ mat-card-title {
   padding-top: 24px;
   border-top: 1px solid #e0e0e0; /* Linha sutil para separar do conteúdo */
 }
-
-/* Estilo geral para todos os botões na área de ações */
-.footer-actions button {
-  border-radius: 8px !important; /* Bordas levemente arredondadas */
-  padding: 8px 24px !important;   /* Mais espaço interno */
-  font-weight: 500;
-  letter-spacing: 0.5px;         /* Espaçamento entre as letras */
-  transition: all 0.2s ease-in-out;
-}
-
 /* Ajusta o ícone dentro do botão */
 .footer-actions button mat-icon {
   margin-right: 8px;
@@ -231,4 +221,47 @@ mat-card-title {
   margin-top: 16px;
   font-style: italic;
   color: #666;
+}
+
+.footer-actions .btn-novo-registro,
+.footer-actions .btn-grafico {
+  background-color: transparent !important;
+  border: 1px solid #678760 !important; /* Borda cinza clara, como na imagem */
+  box-shadow: none !important;
+  margin: 0 4px; /* Adiciona um pequeno espaçamento entre os botões */
+}
+
+/* Estilo específico para o botão "Novo Registro" (Azul) */
+.footer-actions .btn-novo-registro {
+  color: #678760 !important; /* Cor azul padrão do Material Design */
+}
+
+/* Estilo específico para o botão "Gráfico" (Verde) */
+.footer-actions .btn-grafico {
+  color: #678760 !important; /* Sua cor verde */
+}
+
+/* Efeito HOVER para os botões com contorno */
+.footer-actions .btn-novo-registro:hover {
+  background-color: rgb(103, 135, 96) !important; /* Fundo verde */
+  border-color: #678760 !important;               /* Borda fica verde */
+  color: #FFFFFF !important;                      /* NOVO: Cor da letra fica branca */
+}
+
+.footer-actions .btn-grafico:hover {
+  background-color: rgb(103, 135, 96) !important; /* Fundo verde */
+  border-color: #678760 !important;               /* Borda fica verde */
+  color: #FFFFFF !important;         /* Borda fica verde */
+}
+
+/* Estilo para o botão "Gerar Dica" (sólido) */
+.footer-actions button[color='primary'] {
+  background-color: #678760; /* Fundo verde */
+  color: #ffffff; /* Texto branco */
+  margin: 0 4px;
+}
+
+/* Regra geral para os ícones herdarem a cor do botão */
+.footer-actions button .mat-icon {
+  color: inherit;
 }

@@ -2,6 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { ContadorService } from '../services/contador.service';
 import { Chart, registerables, TooltipItem } from 'chart.js';
 import { Router } from '@angular/router';
+import {MatCard, MatCardActions, MatCardContent, MatCardTitle} from '@angular/material/card';
+import {MatRadioButton, MatRadioChange, MatRadioGroup} from '@angular/material/radio';
+import {FormsModule} from '@angular/forms';
+import {MatButton} from '@angular/material/button';
 
 Chart.register(...registerables);
 
@@ -9,6 +13,16 @@ Chart.register(...registerables);
   selector: 'app-grafico-contador',
   templateUrl: './grafico-contador.component.html',
   standalone: true,
+  imports: [
+    MatCard,
+    MatCardContent,
+    MatCardTitle,
+    MatRadioGroup,
+    FormsModule,
+    MatRadioButton,
+    MatCardActions,
+    MatButton
+  ],
   styleUrls: ['./grafico-contador.component.css']
 })
 export class GraficoContadorComponent implements OnInit {
@@ -139,9 +153,8 @@ export class GraficoContadorComponent implements OnInit {
     });
   }
 
-  onModoChange(event: Event) {
-    const input = event.target as HTMLInputElement;
-    this.modo = input.value as 'mensal' | 'anual';
+  onModoChange(event: MatRadioChange) {
+    this.modo = event.value as 'mensal' | 'anual';
     this.carregarDados();
   }
 
