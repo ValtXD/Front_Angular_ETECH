@@ -1,132 +1,91 @@
-<div class="min-h-screen px-4 py-8">
-  <div class="max-w-6xl mx-auto">
-    <!-- Header Section -->
-    <div class="flex justify-between items-center mb-8">
-      <div>
-        <h2 class="text-3xl font-bold text-dark-green">Leituras Registradas com Consumo e Custo</h2>
-        <p class="text-muted">Visualize e gerencie suas leituras de energia</p>
+<div class="ocr-full-page-container">
+  <button class="back-to-upload-button" (click)="voltarParaUpload()">
+    <i class="material-icons">arrow_back</i> Voltar para Upload
+  </button>
+
+  <div class="ocr-list-card">
+    <div class="card-header-section">
+      <h1 class="ocr-list-title">Leituras OCR</h1>
+      <p class="ocr-list-subtitle">Visualize e gerencie todas as leituras de contadores</p>
+    </div>
+
+    <hr class="divider"> <div class="filters-section">
+    <h3 class="filters-title">Filtros</h3>
+    <div class="filters-row">
+      <div class="custom-select-wrapper">
+        <select [(ngModel)]="filtroEstadoId" name="filtroEstado" class="custom-select">
+          <option [value]="null">Todos os Estados</option>
+          <option *ngFor="let estado of estados" [value]="estado.id">
+            {{ estado.nome }}
+          </option> </select>
+        <span class="custom-select-arrow"></span>
       </div>
-      <button id="voltarBtn" class="btn-orange text-white py-2 px-4 rounded-lg flex items-center font-medium">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
-          <path fill-rule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clip-rule="evenodd" />
-        </svg>
-        Voltar para Upload
+
+      <div class="custom-select-wrapper">
+        <select [(ngModel)]="filtroAno" name="filtroAno" class="custom-select">
+          <option value="">Todos os Anos</option>
+          <option *ngFor="let ano of anos" [value]="ano">{{ ano }}</option>
+        </select>
+        <span class="custom-select-arrow"></span>
+      </div>
+
+      <div class="custom-select-wrapper">
+        <select [(ngModel)]="filtroMes" name="filtroMes" class="custom-select">
+          <option *ngFor="let mesOp of meses" [value]="mesOp.value">{{ mesOp.label }}</option>
+        </select>
+        <span class="custom-select-arrow"></span>
+      </div>
+
+      <button (click)="aplicarFiltro()" class="apply-filter-button">
+        Aplicar Filtro
       </button>
     </div>
+  </div>
 
-    <!-- Card Container -->
-    <div class="card-beige p-6 mb-8">
-      <!-- Filter Form -->
-      <form id="filtroForm" class="flex flex-col md:flex-row items-center gap-4 mb-6">
-        <div class="w-full md:w-auto">
-          <label for="mes" class="block text-sm font-medium text-dark-green mb-1">Mês:</label>
-          <select id="mes" class="select-custom">
-            <option value="1">Janeiro</option>
-            <option value="2">Fevereiro</option>
-            <option value="3">Março</option>
-            <option value="4">Abril</option>
-            <option value="5">Maio</option>
-            <option value="6">Junho</option>
-            <option value="7">Julho</option>
-            <option value="8">Agosto</option>
-            <option value="9">Setembro</option>
-            <option value="10">Outubro</option>
-            <option value="11">Novembro</option>
-            <option value="12">Dezembro</option>
-          </select>
-        </div>
-
-        <div class="w-full md:w-auto">
-          <label for="ano" class="block text-sm font-medium text-dark-green mb-1">Ano:</label>
-          <select id="ano" class="select-custom">
-            <option value="">Todos</option>
-            <option value="2023">2023</option>
-            <option value="2022">2022</option>
-            <option value="2021">2021</option>
-          </select>
-        </div>
-
-        <button type="submit" class="btn-dark-green text-white py-2 px-6 rounded-lg font-medium mt-6 md:mt-6 self-end md:self-center">
-          Filtrar
-        </button>
-      </form>
-
-      <!-- Main Table -->
-      <div class="overflow-x-auto">
-        <table class="min-w-full bg-white rounded-lg overflow-hidden">
-          <thead class="header-dark-green">
-          <tr>
-            <th class="th">Data</th>
-            <th class="th">Valor Extraído (kWh)</th>
-            <th class="th">Valor Corrigido (kWh)</th>
-            <th class="th">Estado</th>
-            <th class="th">Tarifa (R$/kWh)</th>
-            <th class="th">Custo Estimado (R$)</th>
-            <th class="th">Bandeira</th>
-            <th class="th">Tarifa Social</th>
-            <th class="th">Imagem</th>
-            <th class="th">Ações</th>
-          </tr>
-          </thead>
-          <tbody>
-          <tr class="table-row-hover border-b border-[#e0e0e0]">
-            <td class="td">15/10/2023 14:30</td>
-            <td class="td">325.45</td>
-            <td class="td">318.94</td>
-            <td class="td">São Paulo</td>
-            <td class="td">0.759</td>
-            <td class="td">R$ 242.07</td>
-            <td class="td">Verde - Condições favoráveis</td>
-            <td class="td">Não</td>
-            <td class="td">
-              <div class="img-placeholder">Foto</div>
-            </td>
-            <td class="td">
-              <button class="btn-remove">Remover</button>
-            </td>
-          </tr>
-          <!-- + outras linhas como quiser -->
-          </tbody>
-        </table>
-      </div>
+    <hr class="divider"> <div class="list-section">
+    <div class="list-header">
+      <h3 class="list-title">Lista de Leituras</h3>
+      <span class="found-readings-count" *ngIf="leituras.length > 0">{{ leituras.length }} leituras encontradas</span>
     </div>
 
-    <!-- Averages Section -->
-    <div class="card-beige p-6 mb-8 max-w-3xl">
-      <h3 class="text-xl font-bold text-dark-green mb-4">Média para o Estado Selecionado</h3>
-
-      <div class="flex flex-col md:flex-row md:items-end gap-4 mb-6">
-        <div class="w-full md:w-64">
-          <label for="estado-media" class="block text-sm font-medium text-dark-green mb-1">Filtrar por Estado:</label>
-          <select id="estado-media" class="select-custom">
-            <option value="">-- Selecionar --</option>
-            <option value="SP">São Paulo</option>
-            <option value="RJ">Rio de Janeiro</option>
-            <option value="MG">Minas Gerais</option>
-          </select>
-        </div>
-
-        <button id="calcularMediaBtn" class="btn-orange text-white py-2 px-6 rounded-lg font-medium mt-2 md:mt-0">
-          Calcular Médias
-        </button>
-      </div>
-
-      <div class="overflow-x-auto">
-        <table class="min-w-full bg-white rounded-lg overflow-hidden">
-          <thead class="header-dark-green">
-          <tr>
-            <th class="th">Diferença Valor Corrigido (kWh)</th>
-            <th class="th">Diferença Custo Estimado (R$)</th>
-          </tr>
-          </thead>
-          <tbody>
-          <tr>
-            <td class="td">+12.34</td>
-            <td class="td">R$ 9.37</td>
-          </tr>
-          </tbody>
-        </table>
-      </div>
+    <div class="readings-table-container" *ngIf="leituras.length > 0">
+      <table>
+        <thead>
+        <tr>
+          <th>DATA</th>
+          <th>ESTADO</th>
+          <th>VALOR EXTRAÍDO</th>
+          <th>VALOR CORRIGIDO</th>
+          <th>CUSTO ESTIMADO</th>
+          <th>IMAGEM</th>
+          <th>AÇÕES</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let leitura of leituras">
+          <td>{{ leitura.data_registro | date:'shortDate' }} {{ leitura.data_registro | date:'shortTime' }}</td>
+          <td>{{ leitura.estado?.nome }}</td>
+          <td>R$ {{ leitura.valor_extraido | number:'1.2-2' }}</td>
+          <td>R$ {{ leitura.valor_corrigido | number:'1.2-2' }}</td>
+          <td>R$ {{ leitura.custo_total | number:'1.2-2' }}</td>
+          <td>
+            <img *ngIf="leitura.imagem_url" [src]="getImagemUrl(leitura.imagem_url)" alt="Imagem da Leitura" class="reading-thumbnail">
+            <span *ngIf="!leitura.imagem_url">Sem Imagem</span>
+          </td>
+          <td>
+            <button class="action-button delete-button" (click)="confirmarRemocao(leitura.id)">
+              <i class="material-icons">delete</i>
+            </button>
+          </td>
+        </tr>
+        </tbody>
+      </table>
     </div>
+
+    <div *ngIf="leituras.length === 0" class="no-data-full-message">
+      <p>Nenhuma leitura encontrada</p>
+      <p class="no-data-subtext">Aplique filtros diferentes ou faça upload de novas leituras</p>
+    </div>
+  </div>
   </div>
 </div>

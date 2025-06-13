@@ -1,18 +1,18 @@
 @use "sass:color";
-$background-page: #5CA88CFF; // Fundo verde-azulado da página
-$card-background: #c6f1e1; // Fundo do cartão branco
+$background-page: #4c7a45; // Fundo verde-azulado da página
+$card-background: #dcaa71; // Fundo do cartão branco
 $text-dark: #063c2c; // Texto escuro para títulos e inputs
 $text-medium: #031510; // Texto médio para subtítulos, labels e placeholders
-$link-color: #3b7867; // Cor dos links (verde escuro)
-$button-background: #0e4338; // Cor do botão "Cadastrar" (verde vibrante)
-$button-text-color: #031e12; // Cor do texto do botão (branco)
-$input-background-color: #ffffff; // Fundo dos campos de input (branco)
+$link-color: #0e230b; // Cor dos links (verde escuro)
+$button-background: #0e230b; // Cor do botão "Cadastrar" (verde vibrante)
+$button-text-color: #101010; // Cor do texto do botão (branco)
+$input-background-color: #0e230b; // Fundo dos campos de input (branco)
 $input-border-color: #144538; // Borda padrão dos inputs (cinza claro)
-$input-focus-border: #4d90fe; // Borda ao focar (azul vibrante) - Mantido para contraste, pode ser ajustado
+$input-focus-border: #0e230b; // Borda ao focar (azul vibrante) - Mantido para contraste, pode ser ajustado
 $error-color: #e53935; // Cor do texto de erro (vermelho)
-$error-background: #fff3e0; // Fundo do balão de erro (laranja claro)
+$error-background: #e0eeff; // Fundo do balão de erro (laranja claro)
 $error-text-color: #ff9800; // Texto no balão de erro (laranja escuro)
-$success-color: #168e6d; // Cor de sucesso (verde)
+$success-color: #0e230b; // Cor de sucesso (verde)
 $success-background: color.adjust($success-color, $lightness: 30%);
 
 :host {
@@ -49,9 +49,9 @@ $success-background: color.adjust($success-color, $lightness: 30%);
 }
 
 .card-subtitle {
-  font-size: 1em; // Tamanho do subtítulo
-  color: $text-medium; // Cor do subtítulo médio
-  margin-bottom: 25px; // Espaço antes do primeiro campo
+  font-size: 1em;
+  color: $text-medium;
+  margin-bottom: 25px;
   line-height: 1.5;
   width: 100%;
   text-align: center;
@@ -64,20 +64,19 @@ $success-background: color.adjust($success-color, $lightness: 30%);
   gap: 20px; // Espaço entre os campos
 }
 
-/* Angular Material Form Fields (mat-form-field) - Appearance Outline */
 .mat-form-field {
   width: 100%;
 
   .mat-form-field-wrapper {
-    padding-bottom: 0 !important; // Remove padding extra na base
-    margin: 0 !important; // Remove margin extra
+    padding-bottom: 0 !important;
+    margin: 0 !important;
   }
 
   .mat-form-field-flex {
-    background-color: $input-background-color; // Fundo do input branco
-    border-radius: 4px; // Bordas suaves
-    padding: 0 12px; // Padding interno do input (ajustado)
-    height: 50px; // Altura do campo (ajustado)
+    background-color: $input-background-color;
+    border-radius: 4px;
+    padding: 0 12px;
+    height: 50px;
     align-items: center;
     display: flex;
     box-sizing: border-box;
@@ -87,30 +86,30 @@ $success-background: color.adjust($success-color, $lightness: 30%);
   .mat-form-field-outline-gap,
   .mat-form-field-outline-end {
     border-width: 1px !important;
-    border-color: $input-border-color !important; // Borda cinza clara
+    border-color: $input-border-color !important;
     border-radius: 4px !important;
   }
 
   .mat-form-field-appearance-outline.mat-focused .mat-form-field-outline-start,
   .mat-form-field-appearance-outline.mat-focused .mat-form-field-outline-gap,
   .mat-form-field-appearance-outline.mat-focused .mat-form-field-outline-end {
-    border-color: $input-focus-border !important; // Cor da borda ao focar
+    border-color: $input-focus-border !important;
   }
 
   .mat-form-field-label {
-    color: $text-dark; // Cor do label escuro
-    font-size: 1em; // Tamanho normal do label
+    color: $text-dark;
+    font-size: 1em;
   }
 
   input.mat-input-element {
-    color: $text-dark; // Cor do texto digitado escuro
-    font-size: 1em; // Tamanho da fonte do input (ajustado)
+    color: $text-dark;
+    font-size: 1em;
     padding: 0;
     height: 100%;
-    caret-color: $button-background; // Cor do cursor
+    caret-color: $button-background;
 
     &::placeholder {
-      color: $text-medium; // Cor do placeholder
+      color: $text-medium;
       opacity: 0.8;
     }
   }
@@ -125,7 +124,6 @@ $success-background: color.adjust($success-color, $lightness: 30%);
   }
 }
 
-/* Estilo para a mensagem de erro (balão) */
 .mat-error {
   font-size: 0.85em;
   color: $error-text-color;
@@ -199,7 +197,6 @@ button[type="submit"] {
   }
 }
 
-/* Link de login "Já possui uma conta?" */
 .login-link {
   font-size: 0.9em;
   color: $text-medium;

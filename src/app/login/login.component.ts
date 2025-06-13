@@ -29,11 +29,12 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
   ],
 })
 export class LoginComponent {
-  username: string = ''; // ✅ AJUSTADO: substituído o "email" por "username"
+  username: string = '';
   password: string = '';
   hidePassword: boolean = true;
   rememberMe: boolean = false;
-  errorMsg: string = ''; // ✅ MANTIDO: mensagem de erro exibida no template
+  errorMsg: string = '';
+  successMsg: string = '';  // Defina a variável successMsg
 
   constructor(private authService: AuthService, private router: Router) {}
 
@@ -45,8 +46,14 @@ export class LoginComponent {
     });
 
     this.authService.login(this.username, this.password).subscribe({
-      next: () => this.router.navigate(['/app']), // ✅ FUNCIONAL: redireciona após login
-      error: () => (this.errorMsg = 'Usuário ou senha inválidos.'), // ✅ mensagem clara no front
+      next: () => {
+        this.successMsg = 'Login realizado com sucesso!';
+        this.router.navigate(['/app']);
+      },
+      error: () => {
+        this.errorMsg = 'Usuário ou senha inválidos.';
+        this.successMsg = ''; // Limpar a mensagem de sucesso em caso de erro
+      },
     });
   }
 }

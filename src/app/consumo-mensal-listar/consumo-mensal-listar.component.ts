@@ -148,3 +148,4 @@ Formate a resposta em tópicos claros com pelo menos 5 recomendações específi
     });
   }
 }
+

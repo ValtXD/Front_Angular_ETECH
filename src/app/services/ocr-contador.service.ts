@@ -17,6 +17,7 @@ export interface Bandeira {
 }
 
 export interface LeituraOCR {
+  imagem: string | undefined;
   tarifa_valor_kwh: number | null;
   id: number;
   valor_extraido: number;

@@ -1,66 +1,307 @@
-/* Botão de voltar estilizado */
-.voltar-btn {
-  background-color: #ff9900;
-  color: black;
-  padding: 8px 12px;
-  font-size: 14px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  margin-bottom: 16px;
-  display: inline-flex;
-  align-items: center;
-}
+@use "sass:color"; // Importação do módulo Sass para funções de cor
 
-/* Filtros */
-.filtros {
-  margin-bottom: 16px;
+/* Variáveis de Cores (Baseadas na image_b6c61d.png) */
+$background-page: #f0f0f0; // Fundo cinza claro da página
+$card-background: #ffffff; // Fundo do card branco
+$text-dark: #333; // Texto escuro para títulos
+$text-medium: #126c52; // Texto médio para subtítulos, labels e texto de tabela
+$text-light: #999; // Texto para mensagens secundárias
+$button-primary-bg: #4CAF50; // Verde do botão "Aplicar Filtro"
+$button-primary-text: #ffffff; // Texto branco do botão
+$button-back-bg: #e0e0e0; // Fundo do botão "Voltar" (cinza)
+$button-back-text: #333; // Texto do botão "Voltar" (escuro)
+$input-border-color: #ccc; // Borda padrão dos dropdowns (cinza claro)
+$input-focus-border: #4CAF50; // Borda ao focar (verde do botão)
+$table-header-bg: #f8f8f8; // Fundo do cabeçalho da tabela
+$table-border-color: #eee; // Borda da tabela
+$value-red: #d32f2f; // Cor para valores negativos/vermelhos (ex: R$ 150,75)
+$value-green: #388e3c; // Cor para valores positivos/verdes (ex: R$ 152,30)
+$icon-delete-color: #f44336; // Cor do ícone de lixeira
+
+:host {
   display: flex;
-  gap: 16px;
-  align-items: center;
-  flex-wrap: wrap;
+  flex-direction: column; // Conteúdo principal empilhado verticalmente
+  justify-content: flex-start; // Alinha ao topo
+  align-items: center; // Centraliza horizontalmente
+  min-height: 100vh;
+  background-color: $background-page; // Fundo da página
+  padding: 30px;
+  box-sizing: border-box;
+  font-family: 'Roboto', sans-serif;
+  position: relative; // Para posicionar o botão de voltar
 }
 
-/* Tabela */
-table {
+.ocr-full-page-container {
   width: 100%;
-  border-collapse: collapse;
-  margin-bottom: 20px;
+  max-width: 1200px; // Largura máxima da página
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-thead {
-  background-color: #1f2937;
-  color: white;
-}
-
-th, td {
-  padding: 8px 12px;
-  border: 1px solid #ddd;
-  text-align: center;
-  font-size: 14px;
-}
-
-tbody tr:nth-child(even) {
-  background-color: #f3f4f6;
-}
-
-/* Bloco de médias */
-.media-estado {
-  margin-top: 20px;
-  padding: 16px;
-  background-color: #f9fafb;
-  border: 1px solid #d1d5db;
-  border-radius: 8px;
-}
-
-/* Botão calcular */
-.botao-calcular {
-  background-color: #2563eb;
-  color: white;
-  padding: 6px 14px;
-  font-size: 14px;
+.back-to-upload-button {
+  position: absolute;
+  top: -10px; // Ajuste conforme necessário para o espaçamento
+  right: 0;
+  background-color: $button-back-bg; // Fundo cinza
+  color: $button-back-text; // Texto escuro
+  padding: 8px 15px;
   border: none;
   border-radius: 4px;
+  font-weight: 500;
   cursor: pointer;
-  margin-top: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  gap: 5px;
+
+  .material-icons {
+    font-size: 20px;
+  }
+
+  &:hover {
+    background-color: darken($button-back-bg, 5%);
+  }
+}
+
+.ocr-list-card {
+  width: 100%;
+  background-color: $card-background; // Fundo branco do card
+  border-radius: 8px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  padding: 30px;
+  box-sizing: border-box;
+  margin-top: 20px; // Espaço do botão de voltar
+}
+
+.card-header-section {
+  text-align: left;
+  margin-bottom: 20px;
+
+  .ocr-list-title {
+    font-size: 2.2em;
+    font-weight: 600;
+    color: $text-dark;
+    margin-bottom: 5px;
+  }
+
+  .ocr-list-subtitle {
+    font-size: 1em;
+    color: $text-medium;
+  }
+}
+
+.divider {
+  border: none;
+  border-top: 1px solid $table-border-color; // Cor do divisor
+  margin: 25px 0; // Espaço ao redor do divisor
+}
+
+.filters-section {
+  text-align: left;
+  .filters-title {
+    font-size: 1.2em;
+    font-weight: 500;
+    color: $text-dark;
+    margin-bottom: 15px;
+  }
+
+  .filters-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px; // Espaço entre os filtros e o botão
+    align-items: flex-end;
+  }
+
+  /* Estilo para dropdowns customizados */
+  .custom-select-wrapper {
+    position: relative;
+    flex-grow: 1;
+    min-width: 150px; // Largura mínima para os dropdowns
+    max-width: 200px; // Largura máxima para os dropdowns
+    height: 50px; // Altura do dropdown
+    border: 1px solid $input-border-color; // Borda padrão
+    border-radius: 4px;
+    background-color: $card-background; // Fundo branco
+    overflow: hidden; // Esconde a seta padrão
+
+    &:focus-within { // Estilo quando o select dentro está focado
+      border-color: $input-focus-border; // Borda verde ao focar
+      box-shadow: 0 0 0 2px rgba($input-focus-border, 0.2); // Leve sombra de foco
+    }
+
+    .custom-select {
+      width: 100%;
+      height: 100%;
+      padding: 0 12px;
+      border: none;
+      background: transparent;
+      font-size: 1em;
+      color: $text-dark;
+      appearance: none; // Remove o estilo padrão do navegador
+      cursor: pointer;
+      outline: none; // Remove o outline azul ao focar
+    }
+
+    /* Seta customizada para o dropdown */
+    .custom-select-arrow {
+      position: absolute;
+      top: 50%;
+      right: 12px;
+      transform: translateY(-50%);
+      width: 0;
+      height: 0;
+      border-left: 6px solid transparent;
+      border-right: 6px solid transparent;
+      border-top: 6px solid $text-medium;
+      pointer-events: none;
+    }
+  }
+
+  .apply-filter-button {
+    background-color: $button-primary-bg; // Cor do botão
+    color: $button-primary-text; // Texto branco
+    height: 50px; // Altura do botão igual aos dropdowns
+    font-size: 1em;
+    font-weight: 600;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+
+    &:hover { background-color: darken($button-primary-bg, 8%); }
+  }
+}
+
+.list-section {
+  text-align: left;
+  .list-title {
+    font-size: 1.2em;
+    font-weight: 500;
+    color: $text-dark;
+    margin-bottom: 15px;
+    display: inline-block;
+  }
+  .found-readings-count {
+    font-size: 0.9em;
+    color: $text-medium;
+    margin-left: 10px;
+    display: inline-block;
+  }
+}
+
+.readings-table-container {
+  width: 100%;
+  overflow-x: auto; // Permite rolagem horizontal em telas pequenas
+  margin-bottom: 20px;
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9em;
+
+    thead {
+      tr {
+        background-color: $table-header-bg; // Fundo do cabeçalho da tabela
+        th {
+          padding: 12px 15px;
+          text-align: left;
+          color: $text-dark;
+          font-weight: 600;
+          border-bottom: 1px solid $table-border-color; // Borda inferior do cabeçalho
+          white-space: nowrap;
+        }
+      }
+    }
+
+    tbody {
+      tr {
+        &:nth-child(even) { background-color: lighten($card-background, 2%); } // Linhas zebradas
+        &:hover { background-color: darken($card-background, 2%); } // Efeito hover
+        td {
+          padding: 12px 15px;
+          border-bottom: 1px solid $table-border-color; // Borda inferior das células
+          color: $text-medium;
+          white-space: nowrap;
+        }
+        // Cores específicas para VALOR EXTRAÍDO e VALOR CORRIGIDO
+        td:nth-child(3) { color: $value-red; font-weight: 500; } // Valor Extraído (vermelho)
+        td:nth-child(4) { color: $value-green; font-weight: 500; } // Valor Corrigido (verde)
+
+        .reading-thumbnail {
+          width: 50px; // Tamanho da imagem na tabela
+          height: auto;
+          border-radius: 4px;
+          display: block; // Para centralizar ou alinhar
+          margin: 0 auto; // Centraliza a imagem
+        }
+
+        .action-button {
+          background: none;
+          border: none;
+          cursor: pointer;
+          padding: 0;
+          font-size: 1em;
+          .material-icons {
+            font-size: 20px;
+            color: $icon-delete-color; // Cor do ícone de lixeira
+          }
+          &:hover .material-icons {
+            color: darken($icon-delete-color, 10%);
+          }
+        }
+      }
+    }
+  }
+}
+
+.no-data-full-message {
+  color: $text-medium;
+  font-size: 1.1em;
+  text-align: center;
+  padding: 30px 0;
+  width: 100%;
+
+  .no-data-subtext {
+    font-size: 0.9em;
+    color: $text-light;
+    margin-top: 5px;
+  }
+}
+
+
+/* Responsividade */
+@media (max-width: 992px) {
+  .ocr-list-card {
+    padding: 25px;
+  }
+  .filters-row {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+  }
+  .custom-select-wrapper, .apply-filter-button {
+    width: 100%;
+    max-width: unset;
+  }
+  .readings-table-container {
+    overflow-x: scroll; // Garante rolagem para tabelas muito grandes
+  }
+  table {
+    min-width: 700px; // Garante largura mínima da tabela para não quebrar
+  }
+}
+
+@media (max-width: 576px) {
+  :host { padding: 20px 15px; }
+  .ocr-list-card { padding: 20px; }
+  .ocr-list-title { font-size: 1.8em; }
+  .ocr-list-subtitle { font-size: 0.9em; }
+  .back-to-upload-button {
+    top: -5px;
+    right: 5px;
+    font-size: 0.8em;
+    padding: 5px 10px;
+  }
 }
