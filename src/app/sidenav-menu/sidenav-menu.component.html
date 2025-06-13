@@ -1,0 +1,67 @@
+<mat-nav-list>
+  <mat-list-item routerLink="/app" routerLinkActive="active-list-item" [routerLinkActiveOptions]="{ exact: true }">
+    <div class="menu-item-pill">
+      <mat-icon>home</mat-icon>
+      <span>Início</span>
+    </div>
+  </mat-list-item>
+
+  <mat-divider></mat-divider>
+
+  <div class="menu-group-title">Dispositivo</div>
+  <mat-list-item routerLink="calcular" routerLinkActive="active-list-item">
+    <div class="menu-item-pill">
+      <mat-icon>devices</mat-icon>
+      <span>Aparelho</span>
+    </div>
+  </mat-list-item>
+  <mat-list-item routerLink="resultados" routerLinkActive="active-list-item">
+    <div class="menu-item-pill">
+      <mat-icon>assessment</mat-icon>
+      <span>Resultados</span>
+    </div>
+  </mat-list-item>
+  <mat-list-item routerLink="monitoramento" routerLinkActive="active-list-item">
+    <div class="menu-item-pill">
+      <mat-icon>bar_chart</mat-icon>
+      <span>Gráficos</span>
+    </div>
+  </mat-list-item>
+
+  <mat-divider></mat-divider>
+
+  <div class="menu-group-title">Contador</div>
+  <mat-list-item routerLink="consumo-mensal-calcular" routerLinkActive="active-list-item">
+    <div class="menu-item-pill">
+      <mat-icon>edit_calendar</mat-icon>
+      <span>Cadastrar Consumo</span>
+    </div>
+  </mat-list-item>
+  <mat-list-item routerLink="grafico-contador" routerLinkActive="active-list-item">
+    <div class="menu-item-pill">
+      <mat-icon>show_chart</mat-icon>
+      <span>Gráficos</span>
+    </div>
+  </mat-list-item>
+
+  <mat-divider></mat-divider>
+
+  <div class="menu-group-title">Leitor OCR</div>
+  <mat-list-item routerLink="upload" routerLinkActive="active-list-item">
+    <div class="menu-item-pill">
+      <mat-icon>camera_alt</mat-icon>
+      <span>Upload Imagem</span>
+    </div>
+  </mat-list-item>
+  <mat-list-item routerLink="leituras" routerLinkActive="active-list-item">
+    <div class="menu-item-pill">
+      <mat-icon>history</mat-icon>
+      <span>Lista Leituras</span>
+    </div>
+  </mat-list-item>
+
+  <mat-divider></mat-divider>
+
+</mat-nav-list>
+
+<!--envia por favor-->
