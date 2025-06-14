@@ -1,5 +1,65 @@
 <div class="card">
   <h1>Simulador de Consumo de Energia</h1>
   <p>Calcule o consumo e o custo estimado da sua residência</p>
+</div>
 
+<div class="ai-tips-section">
+  <h2>Suas Dicas de Economia de Energia (Contador)</h2>
+  <p *ngIf="contadorAiTips.length === 0">Nenhuma dica do contador salva ainda. Gere uma dica na página de consumo mensal!</p>
+  <div *ngIf="contadorAiTips.length > 0" class="tip-cards-container">
+    <div *ngFor="let tip of contadorAiTips; let i = index" class="tip-card contador-tip" (click)="openContadorTipModal(tip, i)">
+      <h3>Dica de Contador de {{ tip.created_at | date:'MM/yyyy' }}</h3>
+      <p class="tip-preview">{{ (tip.text.length > 100 ? tip.text.substring(0, 100) + '...' : tip.text) }}</p>
+      <small>Gerado em: {{ tip.created_at | date:'short' }}</small>
+      <button (click)="$event.stopPropagation(); deleteContadorTip(tip.id)" class="delete-button-card">Remover</button>
+    </div>
+  </div>
+</div>
+
+<div class="ai-tips-section appliance-tips-section">
+  <h2>Suas Dicas de Economia de Energia (Aparelhos)</h2>
+  <p *ngIf="applianceAiTips.length === 0">Nenhuma dica de aparelhos salva ainda. Gere uma dica na página de resultados de aparelhos!</p>
+  <div *ngIf="applianceAiTips.length > 0" class="tip-cards-container">
+    <div *ngFor="let tip of applianceAiTips; let i = index" class="tip-card appliance-tip" (click)="openApplianceTipModal(tip, i)">
+      <h3>Dica de Aparelho de {{ tip.created_at | date:'MM/yyyy' }}</h3>
+      <p class="tip-preview">{{ (tip.text.length > 100 ? tip.text.substring(0, 100) + '...' : tip.text) }}</p>
+      <small>Gerado em: {{ tip.created_at | date:'short' }}</small>
+      <button (click)="$event.stopPropagation(); deleteApplianceTip(tip.id)" class="delete-button-card">Remover</button>
+    </div>
+  </div>
+</div>
+
+
+<div class="modal-overlay" *ngIf="isContadorModalOpen" (click)="closeContadorModal()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h2>Dica de Economia (Contador)</h2>
+      <button class="close-button" (click)="closeContadorModal()">&times;</button>
+    </div>
+    <div class="modal-body" *ngIf="currentContadorTip">
+      <p [innerHTML]="currentContadorTip.text"></p> <small *ngIf="currentContadorTip.created_at">Gerado em: {{ currentContadorTip.created_at | date:'medium' }}</small>
+    </div>
+    <div class="modal-footer">
+      <button class="nav-button" (click)="previousContadorTip()" [disabled]="selectedContadorTipIndex === 0">Anterior</button>
+      <button class="nav-button" (click)="nextContadorTip()" [disabled]="selectedContadorTipIndex === contadorAiTips.length - 1">Próxima</button>
+      <button class="delete-button" (click)="deleteContadorTip(currentContadorTip?.id)">Remover Dica</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" *ngIf="isApplianceModalOpen" (click)="closeApplianceModal()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h2>Dica de Economia (Aparelhos)</h2>
+      <button class="close-button" (click)="closeApplianceModal()">&times;</button>
+    </div>
+    <div class="modal-body" *ngIf="currentApplianceTip">
+      <p [innerHTML]="currentApplianceTip.text"></p> <small *ngIf="currentApplianceTip.created_at">Gerado em: {{ currentApplianceTip.created_at | date:'medium' }}</small>
+    </div>
+    <div class="modal-footer">
+      <button class="nav-button" (click)="previousApplianceTip()" [disabled]="selectedApplianceTipIndex === 0">Anterior</button>
+      <button class="nav-button" (click)="nextApplianceTip()" [disabled]="selectedApplianceTipIndex === applianceAiTips.length - 1">Próxima</button>
+      <button class="delete-button" (click)="deleteApplianceTip(currentApplianceTip?.id)">Remover Dica</button>
+    </div>
+  </div>
 </div>

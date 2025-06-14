@@ -1,5 +1,7 @@
+// src/app/resultados/resultados.component.ts
+
 import { Component, OnInit } from '@angular/core';
-import { ApiService } from '../services/api.service';
+import { ApiService } from '../services/api.service'; // Mantenha ApiService
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
@@ -23,13 +25,12 @@ export class ResultadosComponent implements OnInit {
   consumoTotalDia = 0;
   custoTotalNormal = 0;
   custoTotalSocial = 0;
-
   // Adicionais para modal da IA
   modalAberto = false;
   loadingDica = false;
   dicaGerada = '';
 
-  constructor(private api: ApiService, private router: Router) {}
+  constructor(private api: ApiService, private router: Router) {} // Injete ApiService
 
   ngOnInit() {
     this.carregarResultados();
@@ -80,7 +81,6 @@ export class ResultadosComponent implements OnInit {
     this.modalAberto = true;
     this.loadingDica = true;
     this.dicaGerada = '';
-
     const dadosParaIA = this.aparelhosDia.map(ap => ({
       nome: ap.nome,
       ambiente: ap.ambiente?.nome,
@@ -89,7 +89,6 @@ export class ResultadosComponent implements OnInit {
       consumo_diario_kwh: ap.consumo_diario_kwh,
       custo_diario: ap.custo_diario
     }));
-
     const mensagem = `
   Aqui estão os dados de consumo energético atuais para análise:
 
@@ -109,11 +108,22 @@ export class ResultadosComponent implements OnInit {
   Escreva de forma clara e objetiva, em português, para usuários comuns.
   `;
 
-    this.api.gerarDicaIA(mensagem).subscribe({
+    this.api.gerarDicaIA(mensagem).subscribe({ // Usa ApiService para gerar a dica
       next: res => {
         this.loadingDica = false;
         const texto = res?.candidates?.[0]?.content?.parts?.[0]?.text || 'Nenhuma dica gerada.';
         this.dicaGerada = texto.split('\n').map((p: string) => `<p>${p}</p>`).join('');
+
+        // Salvar a dica gerada no backend (para dicas de aparelhos)
+        this.api.saveApplianceAiTip({ text: texto }).subscribe({
+          next: (savedTip) => {
+            console.log('Dica de aparelho salva com sucesso:', savedTip);
+          },
+          error: (saveErr) => {
+            console.error('Erro ao salvar dica de aparelho IA:', saveErr);
+          }
+        });
+
       },
       error: err => {
         this.loadingDica = false;

@@ -1,4 +1,5 @@
 // src/app/services/api.service.ts
+
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
@@ -6,6 +7,14 @@ import { Ambiente } from '../models/ambiente';
 import { Estado } from '../models/estado';
 import { Bandeira } from '../models/bandeira';
 import { Aparelho } from '../models/aparelho';
+
+// NOVA Interface para as dicas de Aparelhos
+export interface ApplianceAiTip {
+  id?: number;
+  text: string;
+  created_at?: string;
+}
+
 
 @Injectable({
   providedIn: 'root',
@@ -45,7 +54,6 @@ export class ApiService {
     return this.http.delete(`${this.baseUrl}/aparelhos/${id}/`);
   }
 
-  // Único método para resultados, traz aparelhos, totais e datas
   getResultados(data?: string): Observable<any> {
     let params = new HttpParams();
     if (data) params = params.set('data', data);
@@ -54,7 +62,6 @@ export class ApiService {
 
   gerarDicaIA(mensagem: string): Observable<any> {
     const url = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=AIzaSyClP7PDzQR6AYg1hH7RZoNiZ-reoiQrNrs';
-
     const body = {
       contents: [{
         parts: [{ text: mensagem }]
@@ -71,7 +78,6 @@ export class ApiService {
         }
       ]
     };
-
     return this.http.post(url, body, {
       headers: { 'Content-Type': 'application/json' }
     });
@@ -87,5 +93,18 @@ export class ApiService {
       });
     }
     return this.http.get(`${this.baseUrl}/monitoramento/`, { params: httpParams });
+  }
+
+  // NOVOS MÉTODOS
+  saveApplianceAiTip(tip: { text: string }): Observable<ApplianceAiTip> {
+    return this.http.post<ApplianceAiTip>(`${this.baseUrl}/appliance-ai-tips/`, tip);
+  }
+
+  getApplianceAiTips(): Observable<ApplianceAiTip[]> {
+    return this.http.get<ApplianceAiTip[]>(`${this.baseUrl}/appliance-ai-tips/`);
+  }
+
+  deleteApplianceAiTip(id: number): Observable<any> {
+    return this.http.delete(`${this.baseUrl}/appliance-ai-tips/${id}/`);
   }
 }

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ContadorService } from '../services/contador.service';
+import { ContadorService, AiTip } from '../services/contador.service'; // Importe AiTip também
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -27,7 +27,8 @@ export class ConsumoMensalListarComponent implements OnInit {
   dicaIA: string = '';
   carregandoDica = false;
 
-  modalAberto = false;  // controle do modal
+  modalAberto = false;
+  // controle do modal
 
   constructor(private contadorService: ContadorService, private router: Router) {}
 
@@ -100,7 +101,6 @@ export class ConsumoMensalListarComponent implements OnInit {
     const mediaCusto = custos.reduce((a, b) => a + b, 0) / custos.length;
     const maxConsumo = Math.max(...consumos);
     const minConsumo = Math.min(...consumos);
-
     const mensagem = `
 Analise estes dados de consumo de energia elétrica e forneça recomendações detalhadas para economizar energia:
 
@@ -120,13 +120,13 @@ REQUISITOS PARA ANÁLISE:
 1. Identifique padrões de consumo ao longo dos meses
 2. Analise o impacto das bandeiras tarifárias nos custos
 3. Compare meses de maior e menor consumo
-4. Sugira medidas específicas para reduzir o consumo nos meses mais críticos
+4. Sugira medidas específicas para reduzir o consumo nos
+meses mais críticos
 5. Calcule estimativas de economia potencial
 6. Recomende hábitos para economia de energia
 7. Inclua dicas sobre horários de consumo
 
-Formate a resposta em tópicos claros com pelo menos 5 recomendações específicas.
-`;
+Formate a resposta em tópicos claros com pelo menos 5 recomendações específicas.`;
 
     this.carregandoDica = true;
     this.contadorService.gerarDicaIA(mensagem).subscribe({
@@ -134,6 +134,17 @@ Formate a resposta em tópicos claros com pelo menos 5 recomendações específi
         this.carregandoDica = false;
         if (res.candidates && res.candidates.length > 0) {
           this.dicaIA = res.candidates[0].content.parts[0].text;
+          // Salvar a dica gerada no backend
+          this.contadorService.saveAiTip({ text: this.dicaIA }).subscribe({
+            next: (savedTip) => {
+              console.log('Dica salva com sucesso:', savedTip);
+              // Poderia adicionar alguma lógica para avisar o usuário que a dica foi salva
+            },
+            error: (saveErr) => {
+              console.error('Erro ao salvar dica IA:', saveErr);
+              // Lógica para lidar com erro ao salvar a dica
+            }
+          });
         } else {
           this.dicaIA = 'Nenhuma resposta obtida da IA.';
         }
