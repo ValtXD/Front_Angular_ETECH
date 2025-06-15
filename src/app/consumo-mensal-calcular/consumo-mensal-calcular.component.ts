@@ -39,7 +39,7 @@ import {MatDivider} from '@angular/material/divider';
     MatFormFieldModule,  // Para <mat-form-field>
     MatInputModule,      // Para <input matInput>
     MatSelectModule,     // Para <mat-select>
-    MatCheckboxModule, ConsumoMensalListarComponent, MatDivider
+    MatCheckboxModule, ConsumoMensalListarComponent,
   ],
   styleUrls: ['./consumo-mensal-calcular.component.scss']
 })

@@ -1,4 +1,4 @@
-<h2>Upload de Imagem do Contador</h2>
+<h2 class="upload-title">Upload de Imagem do Contador</h2>
 
 <div style="text-align: center; margin-bottom: 20px;">
   <img src="/qrcode.png" alt="QR Code" style="width: 180px; height: 180px;" />
@@ -6,7 +6,7 @@
 </div>
 
 <div style="margin-bottom: 20px;">
-  <input type="file" accept="image/*" capture="environment" (change)="onFileSelected($event)" />
+  <input matInput type="file" accept="image/*" capture="environment" (change)="onFileSelected($event)" />
 </div>
 
 <div *ngIf="imagemPreviewUrl" style="margin-bottom: 20px; text-align:center;">
@@ -14,7 +14,7 @@
 </div>
 
 <div style="margin-bottom: 20px;">
-  <button (click)="processarOCR()" [disabled]="!imagemSelecionada" class="btn btn-secondary">
+  <button mat-raised-button (click)="processarOCR()" [disabled]="!imagemSelecionada" color="primary">
     Processar OCR
   </button>
 </div>
@@ -33,61 +33,56 @@
 </p>
 
 <div *ngIf="podeMostrarBotaoSalvar" style="margin-bottom: 20px;">
-  <label>Corrija o valor se necessário:</label>
-  <input type="number" [(ngModel)]="valorCorrigido" />
+  <mat-label>Corrija o valor se necessário:</mat-label>
+  <mat-form-field style="width: 100%;">
+    <input matInput type="number" [(ngModel)]="valorCorrigido" />
+  </mat-form-field>
 </div>
-
-<form (ngSubmit)="salvarLeitura()" #form="ngForm" style="max-width: 400px; margin: auto;">
-  <div style="margin-bottom: 10px;">
-    <label for="estado">Estado:</label>
-    <select
-      id="estado"
-      [ngModel]="estadoSelecionadoId"
+<form class="form-ocr" (ngSubmit)="salvarLeitura()" #form="ngForm">
+  <mat-form-field style="width: 100%; margin-bottom: 10px;">
+    <mat-label>Estado:</mat-label>
+    <mat-select
+      [(ngModel)]="estadoSelecionadoId"
       (ngModelChange)="estadoSelecionadoId = $event === '' ? null : +$event"
       name="estado"
       required
-      style="width: 100%; padding: 5px;"
     >
-      <option value="" disabled selected>Selecione um estado</option>
-      <option *ngFor="let estado of estados" [value]="estado.id">{{ estado.nome }}</option>
-    </select>
-  </div>
+      <mat-option value="" selected>Selecione um estado</mat-option>
+      <mat-option *ngFor="let estado of estados" [value]="estado.id">{{ estado.nome }}</mat-option>
+    </mat-select>
+  </mat-form-field>
 
-  <div style="margin-bottom: 10px;">
-    <label for="bandeira">Bandeira:</label>
-    <select
-      id="bandeira"
-      [ngModel]="bandeiraSelecionadaId"
+  <mat-form-field style="width: 100%; margin-bottom: 10px;">
+    <mat-label>Bandeira:</mat-label>
+    <mat-select
+      [(ngModel)]="bandeiraSelecionadaId"
       (ngModelChange)="bandeiraSelecionadaId = $event === '' ? null : +$event"
       name="bandeira"
       required
-      style="width: 100%; padding: 5px;"
     >
-      <option value="" disabled selected>Selecione uma bandeira</option>
-      <option *ngFor="let bandeira of bandeiras" [value]="bandeira.id">
+      <mat-option value="" selected>Selecione uma bandeira</mat-option>
+      <mat-option *ngFor="let bandeira of bandeiras" [value]="bandeira.id">
         {{ bandeira.cor }} - {{ bandeira.descricao }}
-      </option>
-    </select>
-  </div>
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
 
   <div style="margin-bottom: 20px;">
-    <label>
-      <input type="checkbox" [(ngModel)]="tarifaSocial" name="tarifaSocial" />
-      Tarifa Social
-    </label>
+    <mat-checkbox [(ngModel)]="tarifaSocial" name="tarifaSocial">Tarifa Social</mat-checkbox>
   </div>
 
-  <button
-    type="submit"
-    *ngIf="podeMostrarBotaoSalvar"
-    [disabled]="!podeSalvar"
-    class="btn btn-success"
-    style="width: 100%;"
-  >
+  <button mat-raised-button
+          type="submit"
+          *ngIf="podeMostrarBotaoSalvar"
+          [disabled]="!podeSalvar"
+          color="accent"
+          style="width: 100%;">
     Salvar Leitura
   </button>
 </form>
 
 <div style="text-align: center; margin-top: 20px;">
-  <button (click)="irParaLeituras()" class="btn btn-info">Ir para Lista de Leituras</button>
+  <button mat-raised-button (click)="irParaLeituras()" color="primary">
+    Ir para Lista de Leituras
+  </button>
 </div>

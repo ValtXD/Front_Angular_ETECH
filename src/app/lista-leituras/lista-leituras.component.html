@@ -1,92 +1,103 @@
-<h2>Leituras Registradas com Consumo e Custo</h2>
+<div class="ocr-full-page-container">
+  <mat-card class="ocr-list-card">
+    <div class="card-header-section">
+      <h1 class="ocr-list-title">Leituras do Contador</h1>
+      <p class="ocr-list-subtitle">Visualize e gerencie todas as leituras de contadores</p>
+    </div>
 
-<button (click)="voltarParaUpload()" style="margin-bottom: 15px;">
-  ← Voltar para Upload
-</button>
+    <mat-divider></mat-divider>
 
-<!-- Form principal filtro Mês e Ano -->
-<form (ngSubmit)="aplicarFiltro()" style="margin-bottom: 1rem;">
-  <label for="mes">Mês:</label>
-  <select id="mes" [(ngModel)]="filtroMes" name="mes">
-    <option *ngFor="let mes of meses" [value]="mes.value">{{ mes.label }}</option>
-  </select>
+    <div class="filters-section">
+      <h3 class="filters-title"><mat-icon>filter_list</mat-icon> Filtros</h3>
+      <div class="filters-row">
+        <mat-form-field appearance="outline" class="filter-dropdown">
+          <mat-label>Estado</mat-label>
+          <mat-select [(ngModel)]="filtroEstadoId" name="filtroEstado">
+            <mat-option [value]="null">Todos os Estados</mat-option>
+            <mat-option *ngFor="let estado of estados" [value]="estado.id">{{ estado.nome }}</mat-option>
+          </mat-select>
+        </mat-form-field>
 
-  <label for="ano" style="margin-left: 1rem;">Ano:</label>
-  <select id="ano" [(ngModel)]="filtroAno" name="ano">
-    <option value="">Todos</option>
-    <option *ngFor="let ano of anos" [value]="ano">{{ ano }}</option>
-  </select>
+        <mat-form-field appearance="outline" class="filter-dropdown">
+          <mat-label>Ano</mat-label>
+          <mat-select [(ngModel)]="filtroAno" name="filtroAno">
+            <mat-option value="">Todos os Anos</mat-option>
+            <mat-option *ngFor="let ano of anos" [value]="ano">{{ ano }}</mat-option>
+          </mat-select>
+        </mat-form-field>
 
-  <button type="submit" style="margin-left: 1rem;">Filtrar</button>
-</form>
+        <mat-form-field appearance="outline" class="filter-dropdown">
+          <mat-label>Mês</mat-label>
+          <mat-select [(ngModel)]="filtroMes" name="filtroMes">
+            <mat-option *ngFor="let mesOp of meses" [value]="mesOp.value">{{ mesOp.label }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
 
-<!-- Tabela principal das leituras -->
-<table border="1" cellspacing="0" cellpadding="5" style="width: 100%;">
-  <thead>
-  <tr>
-    <th>Data</th>
-    <th>Valor Extraído (kWh)</th>
-    <th>Valor Corrigido (kWh)</th>
-    <th>Estado</th>
-    <th>Tarifa (R$/kWh)</th>
-    <th>Custo Estimado Total (R$)</th>
-    <th>Bandeira</th>
-    <th>Tarifa Social</th>
-    <th>Imagem</th>
-    <th>Ações</th>
-  </tr>
-  </thead>
-  <tbody>
-  <tr *ngFor="let leitura of leituras">
-    <td>{{ leitura.data_registro | date: 'dd/MM/yyyy HH:mm' }}</td>
-    <td>{{ leitura.valor_extraido }}</td>
-    <td>{{ leitura.valor_corrigido }}</td>
-    <td>{{ leitura.estado.nome || 'N/A' }}</td>
-    <td>
-      {{ leitura.tarifa_valor_kwh !== undefined && leitura.tarifa_valor_kwh !== null
-      ? (leitura.tarifa_valor_kwh | number:'1.3-3')
-      : 'N/A' }}
-    </td>
-    <td>
-      {{ leitura.custo_total !== null && leitura.custo_total !== undefined
-      ? (leitura.custo_total | currency:'BRL')
-      : 'N/A' }}
-    </td>
-    <td>{{ leitura.bandeira.cor || 'N/A' }} - {{ leitura.bandeira.descricao || 'N/A' }}</td>
-    <td>{{ leitura.tarifa_social ? 'Sim' : 'Não' }}</td>
-    <td>
-      <img *ngIf="leitura.imagem_url; else semImagem" [src]="getImagemUrl(leitura.imagem_url)" alt="Foto leitura" width="120" />
-      <ng-template #semImagem>N/A</ng-template>
-    </td>
-    <td>
-      <button (click)="confirmarRemocao(leitura.id)">Remover</button>
-    </td>
-  </tr>
-  </tbody>
-</table>
+    <mat-divider></mat-divider>
 
-<!-- Seção de médias filtrada por Estado -->
-<div style="margin-top: 30px; font-weight: bold; max-width: 700px;">
-  <h3>Média para o Estado Selecionado</h3>
+    <div class="list-section">
+      <div class="list-header">
+        <h3 class="list-title"><mat-icon>list_alt</mat-icon> Lista de Leituras</h3>
+        <span class="found-readings-count" *ngIf="leituras.length > 0">{{ leituras.length }} leituras encontradas</span>
+      </div>
 
-  <label for="estado-media">Filtrar por Estado:</label>
-  <select id="estado-media" [(ngModel)]="filtroEstadoId" name="estadoMedia" (change)="calcularMediasPorEstado()" style="margin-bottom: 1rem;">
-    <option [ngValue]="null">-- Selecionar --</option>
-    <option *ngFor="let estado of estados" [ngValue]="estado.id">{{ estado.nome }}</option>
-  </select>
+      <div class="readings-table-container" *ngIf="leituras.length > 0">
+        <table mat-table [dataSource]="leituras" class="mat-elevation-z8">
 
-  <table border="1" cellspacing="0" cellpadding="5" style="width: 100%;">
-    <thead>
-    <tr>
-      <th>Diferença Valor Corrigido (kWh)</th>
-      <th>Diferença Custo Estimado (R$)</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr>
-      <td>{{ medias.diferencaValorCorrigidoMedia !== null ? (medias.diferencaValorCorrigidoMedia | number:'1.3-3') : 'N/A' }}</td>
-      <td>{{ medias.diferencaCustoEstimadoMedia !== null ? (medias.diferencaCustoEstimadoMedia | currency:'BRL') : 'N/A' }}</td>
-    </tr>
-    </tbody>
-  </table>
+          <ng-container matColumnDef="data">
+            <th mat-header-cell *matHeaderCellDef>DATA</th>
+            <td mat-cell *matCellDef="let leitura">{{ leitura.data_registro | date:'shortDate' }} {{ leitura.data_registro | date:'shortTime' }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="estado">
+            <th mat-header-cell *matHeaderCellDef>ESTADO</th>
+            <td mat-cell *matCellDef="let leitura">{{ leitura.estado?.nome }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="valorExtraido">
+            <th mat-header-cell *matHeaderCellDef>VALOR EXTRAÍDO</th>
+            <td mat-cell *matCellDef="let leitura" class="value-extraido">R$ {{ leitura.valor_extraido | number:'1.2-2' }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="valorCorrigido">
+            <th mat-header-cell *matHeaderCellDef>VALOR CORRIGIDO</th>
+            <td mat-cell *matCellDef="let leitura" class="value-corrigido">R$ {{ leitura.valor_corrigido | number:'1.2-2' }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="custoEstimado">
+            <th mat-header-cell *matHeaderCellDef>CUSTO ESTIMADO</th>
+            <td mat-cell *matCellDef="let leitura">R$ {{ leitura.custo_total | number:'1.2-2' }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="imagem">
+            <th mat-header-cell *matHeaderCellDef>IMAGEM</th>
+            <td mat-cell *matCellDef="let leitura">
+              <img *ngIf="leitura.imagem_url" [src]="getImagemUrl(leitura.imagem_url)" alt="Imagem da Leitura" class="reading-thumbnail">
+              <span *ngIf="!leitura.imagem_url">Sem Imagem</span>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="acoes">
+            <th mat-header-cell *matHeaderCellDef>AÇÕES</th>
+            <td mat-cell *matCellDef="let leitura">
+              <button mat-icon-button color="warn" (click)="confirmarRemocao(leitura.id)">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+      </div>
+
+      <div *ngIf="leituras.length === 0" class="no-data-full-message">
+        <mat-icon class="no-data-icon">info</mat-icon>
+        <p>Nenhuma leitura encontrada</p>
+        <p class="no-data-subtext">Aplique filtros diferentes ou faça upload de novas leituras</p>
+      </div>
+    </div>
+  </mat-card>
 </div>

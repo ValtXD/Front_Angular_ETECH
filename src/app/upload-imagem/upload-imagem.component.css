@@ -1,355 +1,280 @@
-/*.card {*/
-/*  max-width: 600px;*/
-/*  margin: 40px auto; !* Centraliza o cartão na página *!*/
-/*  padding: 30px;*/
-/*  border-radius: 12px; !* Cantos mais arredondados *!*/
-/*  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12); !* Sombra mais proeminente e suave *!*/
-/*  background-color: #ffffff; !* Fundo branco para o cartão *!*/
-/*  border: none; !* Remove a borda padrão do card do Bootstrap *!*/
-/*  display: flex;*/
-/*  flex-direction: column;*/
-/*  gap: 25px; !* Espaçamento consistente entre as seções *!*/
-/*}*/
+:host {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #f0f0f0;
+  padding: 0;
+  font-family: 'Inter', 'Roboto', 'Arial', sans-serif;
+}
 
-/*!* Título da Página *!*/
-/*h2 {*/
-/*  text-align: center;*/
-/*  font-size: 2.2em;*/
-/*  color: #3f51b5; !* Azul primário para títulos *!*/
-/*  margin-bottom: 25px; !* Espaçamento abaixo do título *!*/
-/*  font-weight: 600;*/
-/*  line-height: 1.2;*/
-/*}*/
+.ocr-full-page-container {
+  width: 100%;
+  max-width: 1200px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 70px 30px;
+  flex-grow: 1;
+  margin-top: 90px;
+}
 
-/*!* Seção do QR Code *!*/
-/*.qr-code-section {*/
-/*  text-align: center;*/
-/*  margin-bottom: 20px; !* Espaçamento entre as seções *!*/
-/*}*/
+.back-to-upload-button {
+  position: absolute;
+  top: -10px;
+  right: 0;
+  background-color: #678760;
+  color: #0b0a0a;
+  padding: 12px 25px;
+  font-size: 17px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgb(52, 69, 46);
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
 
-/*.qr-code-image {*/
-/*  width: 180px;*/
-/*  height: 180px;*/
-/*  border-radius: 8px;*/
-/*  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);*/
-/*  margin-bottom: 10px;*/
-/*}*/
+.back-to-upload-button:hover {
+  background-color: #4d6e4d;
+}
 
-/*.qr-code-text {*/
-/*  font-size: 0.95em;*/
-/*  color: #666;*/
-/*  margin: 0; !* Remover margin padrão de p *!*/
-/*}*/
+.ocr-list-card {
+  background-color: white;
+  border-radius: 18px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+  margin-bottom: 30px;
+  padding: 35px;
+  width: 100%;
+}
 
-/*!* Seção de Upload de Arquivo *!*/
-/*.file-upload-section {*/
-/*  margin-bottom: 20px;*/
-/*  text-align: center; !* Centraliza o input de arquivo *!*/
-/*}*/
+.card-header-section {
+  text-align: left;
+  margin-bottom: 20px;
 
-/*input[type="file"] {*/
-/*  display: block; !* Ocupa a largura total para melhor clique *!*/
-/*  width: 100%;*/
-/*  max-width: 300px; !* Limita a largura em telas maiores *!*/
-/*  margin: 0 auto; !* Centraliza o input *!*/
-/*  padding: 10px;*/
-/*  border: 2px dashed #bbdefb; !* Borda tracejada suave *!*/
-/*  border-radius: 8px;*/
-/*  background-color: #e3f2fd; !* Fundo azul claro *!*/
-/*  color: #3f51b5;*/
-/*  cursor: pointer;*/
-/*  font-size: 1em;*/
-/*  transition: all 0.3s ease;*/
+  .ocr-list-title {
+    font-size: 28px;
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 25px;
+    text-align: center;
+  }
 
-/*  &:hover {*/
-/*    background-color: #bbdefb;*/
-/*    border-color: #3f51b5;*/
-/*  }*/
-/*}*/
+  .ocr-list-subtitle {
+    font-size: 1em;
+    color: #126c52;
+  }
+}
 
-/*!* Seção de Preview da Imagem *!*/
-/*.image-preview-section {*/
-/*  margin-bottom: 20px;*/
-/*  text-align: center;*/
-/*}*/
+.filters-section {
+  text-align: left;
+  margin-bottom: 20px;
 
-/*.preview-image {*/
-/*  max-width: 100%;*/
-/*  max-height: 300px;*/
-/*  object-fit: contain; !* Garante que a imagem se ajuste sem distorção *!*/
-/*  border-radius: 8px;*/
-/*  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);*/
-/*  border: 1px solid #eee;*/
-/*}*/
+  .filters-title {
+    font-size: 1.2em;
+    font-weight: 500;
+    color: #333;
+    margin-bottom: 15px;
+  }
 
-/*!* Estilo para Botões *!*/
-/*.btn {*/
-/*  padding: 12px 30px; !* Preenchimento confortável *!*/
-/*  font-size: 1.1em; !* Tamanho da fonte legível *!*/
-/*  border-radius: 8px; !* Cantos arredondados *!*/
-/*  transition: all 0.3s ease; !* Transição suave para hover *!*/
-/*  border: none; !* Remover borda padrão do Bootstrap *!*/
-/*  cursor: pointer;*/
-/*}*/
+  .filters-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-bottom: 20px;
+  }
 
-/*.btn-secondary {*/
-/*  background-color: #6c757d; !* Cinza do Bootstrap secondary *!*/
-/*  color: white;*/
-/*  &:hover {*/
-/*    background-color: #5a6268;*/
-/*    transform: translateY(-2px);*/
-/*    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);*/
-/*  }*/
-/*  &[disabled] {*/
-/*    background-color: #e0e0e0;*/
-/*    color: #9e9e9e;*/
-/*    cursor: not-allowed;*/
-/*    box-shadow: none;*/
-/*    transform: none;*/
-/*  }*/
-/*}*/
+  .mat-form-field {
+    flex: 1;
+    min-width: 180px;
+    max-width: 200px;
+  }
 
-/*.btn-success {*/
-/*  background-color: #28a745; !* Verde do Bootstrap success *!*/
-/*  color: white;*/
-/*  &:hover {*/
-/*    background-color: #218838;*/
-/*    transform: translateY(-2px);*/
-/*    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);*/
-/*  }*/
-/*  &[disabled] {*/
-/*    background-color: #e0e0e0;*/
-/*    color: #9e9e9e;*/
-/*    cursor: not-allowed;*/
-/*    box-shadow: none;*/
-/*    transform: none;*/
-/*  }*/
-/*}*/
+  .apply-filter-button {
+    background-color: #678760;
+    color: white;
+    height: 50px;
+    font-size: 17px;
+    font-weight: 600;
+    padding: 12px 25px;
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+    box-shadow: 0 4px 12px rgb(52, 69, 46);
+    cursor: pointer;
+  }
 
-/*.btn-info {*/
-/*  background-color: #17a2b8; !* Azul claro do Bootstrap info *!*/
-/*  color: white;*/
-/*  &:hover {*/
-/*    background-color: #138496;*/
-/*    transform: translateY(-2px);*/
-/*    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);*/
-/*  }*/
-/*}*/
+  .apply-filter-button:hover {
+    background-color: #4d6e4d;
+  }
+}
 
-/*!* Classes de layout do Bootstrap para alinhamento *!*/
-/*.text-center { text-align: center; }*/
-/*.mb-3 { margin-bottom: 1rem; }*/
-/*.form-check { display: block; min-height: 1.5rem; padding-left: 1.5em; margin-bottom: 0.125rem; }*/
-/*.form-check-inline { display: inline-block; margin-right: 1rem; }*/
-/*.form-check-input { float: left; margin-left: -1.5em; }*/
-/*.form-check-label { margin-bottom: 0; }*/
-/*.me-2 { margin-right: 0.5rem; } !* Assumindo que você quer este espaçamento *!*/
+.readings-table-container {
+  width: 100%;
+  overflow-x: auto;
+  margin-bottom: 20px;
 
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9em;
+    text-align: left;
 
-/*!* Seção de Mensagens *!*/
-/*.message-area {*/
-/*  margin-bottom: 15px;*/
-/*  padding: 10px;*/
-/*  border-radius: 4px;*/
-/*  font-weight: 500;*/
-/*  text-align: center;*/
-/*}*/
+    thead {
+      tr {
+        background-color: #f8f8f8;
+        th {
+          padding: 12px 15px;
+          color: #333;
+          font-weight: 600;
+          border-bottom: 1px solid #eee;
+        }
+      }
+    }
 
-/*.error-message {*/
-/*  color: #d32f2f; !* Vermelho forte para erro *!*/
-/*  background-color: #ffebee; !* Fundo suave para erro *!*/
-/*  border: 1px solid #ef9a9a;*/
-/*}*/
+    tbody {
+      tr {
+        &:nth-child(even) {
+          background-color: #f9f9f9;
+        }
 
-/*!* Seção de Texto OCR *!*/
-/*.ocr-result-section {*/
-/*  margin-bottom: 20px;*/
-/*  h4 {*/
-/*    font-size: 1.2em;*/
-/*    color: #333;*/
-/*    margin-bottom: 10px;*/
-/*  }*/
-/*  pre {*/
-/*    background-color: #f8f8f8;*/
-/*    border: 1px solid #eee;*/
-/*    border-radius: 6px;*/
-/*    padding: 15px;*/
-/*    white-space: pre-wrap; !* Mantém quebras de linha e espaços *!*/
-/*    font-family: monospace; !* Fonte monoespaçada para código/texto bruto *!*/
-/*    font-size: 0.95em;*/
-/*    max-height: 150px; !* Limita a altura para rolagem *!*/
-/*    overflow-y: auto;*/
-/*    color: #444;*/
-/*  }*/
-/*}*/
+        &:hover {
+          background-color: #e0e0e0;
+        }
 
-/*!* Valor Extraído *!*/
-/*.extracted-value {*/
-/*  margin-bottom: 20px;*/
-/*  text-align: center;*/
-/*  p {*/
-/*    font-size: 1.1em;*/
-/*    color: #333;*/
-/*    margin: 0; !* Remover margin padrão de p *!*/
-/*    strong {*/
-/*      color: #3f51b5; !* Azul primário Material *!*/
-/*      font-weight: 700;*/
-/*    }*/
-/*  }*/
-/*}*/
+        td {
+          padding: 12px 15px;
+          border-bottom: 1px solid #eee;
+          color: #666;
+        }
 
-/*!* Seção de Correção de Valor *!*/
-/*.correction-section {*/
-/*  margin-bottom: 20px;*/
-/*  label {*/
-/*    display: block; !* Para a label ficar em sua própria linha *!*/
-/*    margin-bottom: 8px;*/
-/*    font-weight: 500;*/
-/*    color: #333;*/
-/*  }*/
-/*  input[type="number"] {*/
-/*    width: 100%;*/
-/*    padding: 10px;*/
-/*    border: 1px solid #ccc;*/
-/*    border-radius: 6px;*/
-/*    font-size: 1em;*/
-/*    box-sizing: border-box; !* Inclui padding e borda na largura *!*/
-/*    transition: border-color 0.2s ease, box-shadow 0.2s ease;*/
-/*    &:focus {*/
-/*      border-color: #3f51b5; !* Cor primária no foco *!*/
-/*      box-shadow: 0 0 0 3px rgba(63, 81, 181, 0.2);*/
-/*      outline: none;*/
-/*    }*/
-/*  }*/
-/*}*/
+        td:nth-child(3) {
+          color: #d32f2f;
+        }
 
-/*!* Formulário Principal *!*/
-/*form {*/
-/*  max-width: 400px;*/
-/*  margin: auto; !* Centraliza o formulário *!*/
-/*  display: flex;*/
-/*  flex-direction: column;*/
-/*  gap: 15px; !* Espaçamento entre os campos do formulário *!*/
-/*  margin-bottom: 20px;*/
+        td:nth-child(4) {
+          color: #388e3c;
+        }
 
-/*  !* Estilo para labels e inputs/selects dentro do formulário *!*/
-/*  div {*/
-/*    margin-bottom: 0; !* Remove margin padrão do HTML *!*/
-/*    label {*/
-/*      display: block;*/
-/*      margin-bottom: 8px;*/
-/*      font-weight: 500;*/
-/*      color: #333;*/
-/*    }*/
-/*    select {*/
-/*      width: 100%;*/
-/*      padding: 10px;*/
-/*      border: 1px solid #ccc;*/
-/*      border-radius: 6px;*/
-/*      font-size: 1em;*/
-/*      box-sizing: border-box;*/
-/*      background-color: white; !* Fundo branco para o select *!*/
-/*      transition: border-color 0.2s ease, box-shadow 0.2s ease;*/
-/*      &:focus {*/
-/*        border-color: #3f51b5;*/
-/*        box-shadow: 0 0 0 3px rgba(63, 81, 181, 0.2);*/
-/*        outline: none;*/
-/*      }*/
-/*    }*/
-/*  }*/
+        .reading-thumbnail {
+          width: 50px;
+          height: auto;
+          border-radius: 4px;
+          display: block;
+          margin: 0 auto;
+        }
 
-/*  !* Checkbox de Tarifa Social *!*/
-/*  .tarifa-social-checkbox-container { !* Adicione uma div ou classe para o checkbox *!*/
-/*    margin-bottom: 20px;*/
-/*    label {*/
-/*      display: flex; !* Para alinhar input e texto *!*/
-/*      align-items: center;*/
-/*      font-weight: normal;*/
-/*      color: #333;*/
-/*      input[type="checkbox"] {*/
-/*        margin-right: 8px;*/
-/*        width: 18px; !* Tamanho do checkbox *!*/
-/*        height: 18px;*/
-/*      }*/
-/*    }*/
-/*  }*/
+        .action-button {
+          background: none;
+          border: none;
+          cursor: pointer;
+          padding: 0;
+          font-size: 1em;
+          .mat-icon {
+            font-size: 20px;
+            color: #f44336;
+          }
 
-/*  !* Botão Salvar Leitura dentro do formulário *!*/
-/*  button[type="submit"] {*/
-/*    width: 100%;*/
-/*    margin-top: 15px; !* Espaçamento acima do botão *!*/
-/*  }*/
-/*}*/
+          &:hover .mat-icon {
+            color: #d32f2f;
+          }
+        }
+      }
+    }
+  }
+}
 
-/*!* Botão "Ir para Lista de Leituras" *!*/
-/*.navigation-button-container {*/
-/*  text-align: center;*/
-/*  margin-top: 20px;*/
-/*  .btn-info {*/
-/*  // Estilos já definidos acima para .btn-info*/
-/*  }*/
-/*}*/
+.no-data-full-message {
+  color: #856669;
+  font-size: 1.1em;
+  text-align: center;
+  padding: 30px 0;
+  width: 100%;
+}
 
-/*!* Responsividade *!*/
-/*@media (max-width: 768px) {*/
-/*  .card {*/
-/*    margin: 20px auto;*/
-/*    padding: 20px;*/
-/*    gap: 20px;*/
-/*  }*/
+@media (max-width: 768px) {
+  .ocr-full-page-container {
+    padding: 20px 15px;
+  }
 
-/*  h2 {*/
-/*    font-size: 1.8em;*/
-/*    margin-bottom: 20px;*/
-/*  }*/
+  .form-card, .lista-card {
+    padding: 25px;
+  }
 
-/*  .qr-code-image {*/
-/*    width: 150px;*/
-/*    height: 150px;*/
-/*  }*/
+  .mat-card-title {
+    font-size: 24px;
+  }
 
-/*  .btn {*/
-/*    padding: 10px 20px;*/
-/*    font-size: 1em;*/
-/*  }*/
+  .filters-row {
+    flex-direction: column;
+    gap: 15px;
+  }
 
-/*  form {*/
-/*    max-width: 100%; !* Ocupa a largura total em telas pequenas *!*/
-/*    padding: 0 10px; !* Adiciona algum padding lateral ao formulário *!*/
-/*  }*/
+  .filtro-field {
+    width: 100%;
+  }
 
-/*  !* Alinha os botões horizontalmente se houver vários em uma linha *!*/
-/*  .botoes-acoes { !* Se esta div existir no seu HTML atual para agrupar botões *!*/
-/*    text-align: center;*/
-/*    margin-top: 15px;*/
-/*  }*/
+  .readings-table-container {
+    overflow-x: scroll;
+  }
 
-/*  .botoes-acoes .btn {*/
-/*    display: inline-block; !* Mantém-os lado a lado se couber *!*/
-/*    margin-bottom: 10px; !* Adiciona espaçamento entre eles se quebrarem linha *!*/
-/*    width: auto;*/
-/*    max-width: unset;*/
-/*  }*/
+  table th, table td {
+    padding: 10px;
+    font-size: 14px;
+  }
 
-/*  button[type="submit"],*/
-/*  .navigation-button-container .btn-info {*/
-/*    width: 100%;*/
-/*    max-width: 300px; !* Limita a largura para botões empilhados *!*/
-/*    margin-left: auto;*/
-/*    margin-right: auto;*/
-/*    display: block;*/
-/*  }*/
-/*}*/
+  button[mat-raised-button] {
+    font-size: 16px;
+    padding: 10px 20px;
+  }
 
-/*@media (max-width: 480px) {*/
-/*  h2 {*/
-/*    font-size: 1.5em;*/
-/*  }*/
-/*  .btn {*/
-/*    padding: 8px 15px;*/
-/*    font-size: 0.9em;*/
-/*  }*/
-/*  input[type="file"] {*/
-/*    max-width: 100%;*/
-/*  }*/
-/*}*/
+  .modal-content {
+    width: 95%;
+    max-width: none;
+  }
+
+  .modal-header {
+    padding: 15px 20px;
+  }
+
+  .modal-title {
+    font-size: 22px;
+  }
+
+  .modal-body {
+    padding: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .ocr-full-page-container {
+    padding: 10px;
+  }
+
+  .form-card, .lista-card {
+    padding: 15px;
+  }
+
+  .mat-card-title {
+    font-size: 22px;
+  }
+
+  .btn-resultados button {
+    width: 100%;
+  }
+
+  .modal-header {
+    padding: 10px 15px;
+  }
+
+  .modal-title {
+    font-size: 20px;
+  }
+}
+.upload-title {
+  color: #000 !important;
+font-size: 26px;
+  font-weight: 700;
+  margin-bottom: 20px;
+  text-align: center;
+}
