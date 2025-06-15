@@ -1,9 +1,13 @@
 <div class="calcular-container">
-  <div class="add-aparelho-btn-container">
+  <div class="page-header">
+    <h1>Cadastro de aparelhos</h1>
     <button mat-flat-button color="primary" (click)="openModalForNew()">
-      <mat-icon>add</mat-icon> Novo Aparelho
+      <mat-icon>add</mat-icon>
+      Novo Consumo
     </button>
   </div>
+
+
   <div class="modal-overlay" [class.active]="isModalOpen">
     <div class="modal-content">
       <div class="modal-header">
@@ -130,7 +134,6 @@
         </mat-form-field>
       </div>
       <div class="apply-filters-actions">
-        <button mat-flat-button color="primary" (click)="aplicarFiltrosBackend()">Aplicar Filtros</button>
         <button mat-raised-button (click)="clearFilters()">Limpar Filtros</button>
       </div>
     </mat-card-content>
@@ -181,7 +184,5 @@
       </div>
     </mat-card-content>
   </mat-card>
-  <div class="btn-resultados">
-    <button mat-flat-button color="accent" (click)="irParaResultados()">Ir para Resultados</button>
-  </div>
+
 </div>

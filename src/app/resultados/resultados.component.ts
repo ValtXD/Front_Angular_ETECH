@@ -15,8 +15,6 @@ import {MatTableModule} from '@angular/material/table';
 import {MatProgressSpinner} from '@angular/material/progress-spinner';
 
 
-
-
 @Component({
   standalone: true,
   selector: 'app-resultados',

@@ -1,5 +1,4 @@
 <div class="page-container">
-  <!-- CABEÇALHO DA PÁGINA -->
   <div class="page-header">
     <h1>Visão Geral de Consumo</h1>
     <button mat-flat-button class="btn-novo" (click)="abrirFormulario()">
@@ -8,11 +7,17 @@
     </button>
   </div>
 
-  <!-- CARD DE FILTROS -->
+  <div class="results">
+    <app-consumo-mensal-listar
+      (resultadosProntos)="onResultadosDoFilho($event)">
+    </app-consumo-mensal-listar>
+  </div>
+
   <mat-card class="card-filtros">
     <div class="filtros-header">
       <h2>Filtros de Consumo</h2>
-      <button mat-mini-fab class="filtro-toggle-btn" (click)="toggleFiltros()" aria-label="Alternar visibilidade dos filtros">
+      <button mat-mini-fab class="filtro-toggle-btn" (click)="toggleFiltros()"
+              aria-label="Alternar visibilidade dos filtros">
         <mat-icon>search</mat-icon>
       </button>
     </div>
@@ -20,7 +25,7 @@
       <div [formGroup]="filtroForm" class="filtros-form-grid">
         <mat-form-field appearance="outline" class="filtro-field">
           <mat-label>Mês/Ano</mat-label>
-          <input matInput type="month" formControlName="filtroMesAno" />
+          <input matInput type="month" formControlName="filtroMesAno"/>
         </mat-form-field>
         <mat-form-field appearance="outline" class="filtro-field">
           <mat-label>Estado</mat-label>
@@ -39,12 +44,10 @@
       </div>
       <div class="filtros-actions">
         <button mat-flat-button class="btn-limpar-filtros" (click)="limparFiltros()">Limpar Filtros</button>
-        <button mat-flat-button class="btn-aplicar-filtros" (click)="aplicarFiltrosBackend()">Aplicar Filtros</button>
       </div>
     </div>
   </mat-card>
 
-  <!-- CARD UNIFICADO PARA ANÁLISE E LISTA DE CONSUMOS -->
   <mat-card class="card-lista-consumo">
 
     <div class="lista-section">
@@ -94,22 +97,22 @@
         <p>Nenhum registo encontrado para os filtros selecionados.</p>
       </div>
     </ng-template>
-
-    <app-consumo-mensal-listar
-      (resultadosProntos)="onResultadosDoFilho($event)">
-    </app-consumo-mensal-listar>
   </mat-card>
 
 </div>
 
-<!-- TEMPLATE PARA O DIÁLOGO DE FORMULÁRIO (localizado no final para melhor prática) -->
 <ng-template #formDialogTemplate>
-  <h2 mat-dialog-title>{{ editandoId ? 'Editar Consumo' : 'Cadastrar Novo Consumo' }}</h2>
-  <mat-dialog-content>
+  <h2 mat-dialog-title>
+    {{ editandoId ? 'Editar Consumo' : 'Cadastrar Novo Consumo' }}
+    <button mat-icon-button class="close-btn" (click)="fecharDialog()">
+      <mat-icon>close</mat-icon>
+    </button>
+  </h2>
+  <mat-dialog-content class="editar-cadastrar">
     <form [formGroup]="form" class="form-consumo-dialog">
       <mat-form-field appearance="outline">
         <mat-label>Data (Mês/Ano)</mat-label>
-        <input matInput type="month" formControlName="data" />
+        <input matInput type="month" formControlName="data"/>
         <mat-error *ngIf="form.get('data')?.hasError('required')">Data é obrigatória</mat-error>
       </mat-form-field>
       <mat-form-field appearance="outline">
@@ -129,19 +132,19 @@
       <mat-checkbox formControlName="tarifa_social" color="primary">Tarifa Social</mat-checkbox>
       <mat-form-field appearance="outline">
         <mat-label>Leitura Inicial (kWh)</mat-label>
-        <input matInput type="number" formControlName="leitura_inicial" min="0" />
+        <input matInput type="number" formControlName="leitura_inicial" min="0"/>
         <mat-error *ngIf="form.get('leitura_inicial')?.hasError('required')">Leitura inicial é obrigatória</mat-error>
       </mat-form-field>
       <mat-form-field appearance="outline">
         <mat-label>Leitura Final (kWh)</mat-label>
-        <input matInput type="number" formControlName="leitura_final" min="0" />
+        <input matInput type="number" formControlName="leitura_final" min="0"/>
         <mat-error *ngIf="form.get('leitura_final')?.hasError('required')">Leitura final é obrigatória</mat-error>
       </mat-form-field>
     </form>
   </mat-dialog-content>
   <mat-dialog-actions align="end">
     <button mat-stroked-button (click)="fecharDialog()">Cancelar</button>
-    <button mat-flat-button color="primary" (click)="onSubmit()" [disabled]="form.invalid">
+    <button mat-flat-button class="botao_salvar" (click)="onSubmit()" [disabled]="form.invalid">
       {{ editandoId ? 'Salvar Edição' : 'Cadastrar' }}
     </button>
   </mat-dialog-actions>

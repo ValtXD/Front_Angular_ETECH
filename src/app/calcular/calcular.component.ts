@@ -20,7 +20,7 @@ import {MatTableModule} from '@angular/material/table';
   standalone: true,
   selector: 'app-calcular',
   templateUrl: './calcular.component.html',
-  styleUrls: ['./calcular.component.css'],
+  styleUrls: ['./calcular.component.scss'],
   imports: [
     CommonModule,
     FormsModule,

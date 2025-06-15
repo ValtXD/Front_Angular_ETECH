@@ -4,8 +4,7 @@
     <div class="mode-selection">
       <!-- mat-radio-group para agrupar os botões de rádio do Material -->
       <mat-radio-group [(ngModel)]="modo" (change)="onModoChange($event)" color="primary">
-        <mat-radio-button value="mensal">Mensal</mat-radio-button>
-        <mat-radio-button value="anual">Anual</mat-radio-button>
+        <span>Gráfico de consumo mensal</span>
       </mat-radio-group>
     </div>
 
@@ -14,8 +13,4 @@
       <canvas id="graficoConsumo" #graficoConsumo></canvas>
     </div>
   </mat-card-content>
-  <mat-card-actions class="card-actions">
-    <!-- Botão Angular Material elevado com a cor de destaque do tema -->
-    <button mat-raised-button color="primary" (click)="voltar()">Voltar</button>
-  </mat-card-actions>
 </mat-card>

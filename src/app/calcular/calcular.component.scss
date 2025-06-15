@@ -8,6 +8,26 @@ body {
   padding: 0
 }
 
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  h1 {
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: var(--text-primary);
+  }
+}
+.btn-novo {
+  background-color: var(--primary-green);
+  color: white;
+  border-radius: 8px;
+  &:hover { background-color: var(--dark-green); }
+  mat-icon { margin-right: 4px; }
+}
+
 .calcular-container {
   max-width: 1200px;
   margin: 0 auto;
@@ -198,12 +218,6 @@ button[mat-stroked-button]:hover {
   }
 }
 
-.btn-resultados {
-  display: flex;
-  justify-content: center;
-  margin-top: 30px
-}
-
 button[mat-raised-button] {
   background-color: #678760;
   color: #fff;
@@ -219,35 +233,6 @@ button[mat-raised-button]:hover {
   background-color: #678760;
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgb(18, 90, 0);
-}
-
-.add-aparelho-btn-container {
-  position: absolute;
-  top: -1px;
-  right: 20px;
-  z-index: 10;
-}
-
-.add-aparelho-btn-container button {
-  padding: 12px 24px;
-  font-size: 16px;
-  font-weight: 600;
-  background-color: #678760;
-  color: #ffffff;
-  box-shadow: 0 4px 12px rgb(18, 90, 0);
-  display: flex;
-  align-items: center;
-  transition: 0.3s ease;
-}
-
-.add-aparelho-btn-container button:hover {
-  background-color: #678760;
-  box-shadow: 0 4px 12px rgb(18, 90, 0);
-}
-
-.add-aparelho-btn-container mat-icon {
-  margin-right: 8px;
-  font-size: 20px;
 }
 
 /* SEÇÃO DE FILTROS */
@@ -442,124 +427,104 @@ button[mat-raised-button]:hover {
     padding: 30px 15px
   }
 
-  .add-aparelho-btn-container {
-    top: 50px;
-    right: 15px;
-    padding: 0
-  }
-}
+  @media (max-width: 768px) {
+    .calcular-container {
+      padding: 20px 15px
+    }
 
-@media (max-width: 768px) {
-  .calcular-container {
-    padding: 20px 15px
-  }
+    .form-grid {
+      grid-template-columns:1fr;
+      gap: 20px
+    }
 
-  .form-grid {
-    grid-template-columns:1fr;
-    gap: 20px
-  }
+    .mat-card-title {
+      font-size: 24px
+    }
 
-  .mat-card-title {
-    font-size: 24px
-  }
+    .filters-header .mat-card-title-small {
+      font-size: 20px
+    }
 
-  .filters-header .mat-card-title-small {
-    font-size: 20px
-  }
+    .form-card, .lista-card, .form-card-modal {
+      padding: 25px
+    }
 
-  .form-card, .lista-card, .form-card-modal {
-    padding: 25px
-  }
+    .mat-card-actions, .modal-actions {
+      flex-direction: column;
+      align-items: stretch
+    }
 
-  .mat-card-actions, .modal-actions {
-    flex-direction: column;
-    align-items: stretch
-  }
+    .mat-card-actions button, .modal-actions button {
+      width: 100%;
+      margin-left: 0 !important
+    }
 
-  .mat-card-actions button, .modal-actions button {
-    width: 100%;
-    margin-left: 0 !important
-  }
+    .filters-content.active {
+      max-height: 400px;
+      padding-top: 15px;
+      padding-bottom: 25px
+    }
 
-  .add-aparelho-btn-container {
-    position: static;
-    width: 100%;
-    margin-bottom: 20px;
-    display: flex;
-    justify-content: center;
-    padding: 0
-  }
+    .filtros-row {
+      flex-direction: column;
+      gap: 15px
+    }
 
-  .add-aparelho-btn-container button {
-    width: auto;
-    max-width: 250px
-  }
+    .filtro-field {
+      width: 100%
+    }
 
-  .filters-content.active {
-    max-height: 400px;
-    padding-top: 15px;
-    padding-bottom: 25px
-  }
+    table th, table td {
+      padding: 10px;
+      font-size: 14px
+    }
 
-  .filtros-row {
-    flex-direction: column;
-    gap: 15px
-  }
+    button[mat-raised-button] {
+      font-size: 16px;
+      padding: 10px 20px
+    }
 
-  .filtro-field {
-    width: 100%
-  }
+    .modal-content {
+      width: 95%;
+      max-width: none
+    }
 
-  table th, table td {
-    padding: 10px;
-    font-size: 14px
-  }
+    .modal-header {
+      padding: 15px 20px
+    }
 
-  button[mat-raised-button] {
-    font-size: 16px;
-    padding: 10px 20px
+    .modal-title {
+      font-size: 22px
+    }
+
+    .modal-body {
+      padding: 20px
+    }
   }
 
-  .modal-content {
-    width: 95%;
-    max-width: none
-  }
+  @media (max-width: 480px) {
+    .calcular-container {
+      padding: 10px
+    }
 
-  .modal-header {
-    padding: 15px 20px
-  }
+    .form-card, .lista-card, .form-card-modal {
+      padding: 15px
+    }
 
-  .modal-title {
-    font-size: 22px
-  }
+    .mat-card-title {
+      font-size: 22px
+    }
 
-  .modal-body {
-    padding: 20px
-  }
-}
+    .btn-resultados button {
+      width: 100%
+    }
 
-@media (max-width: 480px) {
-  .calcular-container {
-    padding: 10px
-  }
+    .modal-header {
+      padding: 10px 15px
+    }
 
-  .form-card, .lista-card, .form-card-modal {
-    padding: 15px
-  }
-
-  .mat-card-title {
-    font-size: 22px
-  }
-
-  .btn-resultados button {
-    width: 100%
-  }
-
-  .modal-header {
-    padding: 10px 15px
-  }
-
-  .modal-title {
-    font-size: 20px
+    .modal-title {
+      font-size: 20px
+    }
   }
 }

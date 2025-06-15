@@ -1,40 +1,45 @@
+
 :host {
-  --primary-green: #4caf50;
-  --dark-green: #388e3c;
+  --primary-green: #678760;
+  --dark-green: #3f5a37; /* Cor mais escura para o hover */
   --light-gray-bg: #f7f9fc;
   --border-color: #eef2f6;
   --text-primary: #212121;
   --text-secondary: #667085;
-
-  display: block;
-  background-color: var(--light-gray-bg);
+  --ia-button-bg: #f0f4f8; /* Fundo para o botão de IA */
+  --ia-button-text: var(--primary-green); /* Texto para o botão de IA */
 }
 
 .page-container {
   padding: 32px;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
-// Cabeçalho da página
+/* --- CABEÇALHO DA PÁGINA --- */
 .page-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 24px;
-  h1 {
-    font-size: 1.8rem;
-    font-weight: 600;
-    color: var(--text-primary);
-  }
-}
-.btn-novo {
-  background-color: var(--primary-green);
-  color: white;
-  border-radius: 8px;
-  &:hover { background-color: var(--dark-green); }
-  mat-icon { margin-right: 4px; }
 }
 
-// --- CARD DE FILTROS ---
+.page-header h1 {
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.btn-novo {
+  background-color: var(--primary-green) !important;
+  color: white !important;
+  border-radius: 8px;
+}
+.btn-novo:hover { background-color: var(--dark-green) !important; }
+.btn-novo mat-icon { margin-right: 4px; }
+
+
+/* --- CARD DE FILTROS --- */
 .card-filtros {
   border-radius: 12px;
   padding: 24px;
@@ -47,25 +52,25 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
 
-  h2 {
-    font-size: 1.5rem;
-    font-weight: 600;
-    color: var(--text-primary);
-    margin: 0;
-  }
+.filtros-header h2 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0;
+}
 
-  .filtro-toggle-btn {
-    background-color: rgba(76, 175, 80, 0.1); // Usando RGB do primary-green
-    color: var(--primary-green);
-    box-shadow: none;
-    transition: all 0.3s ease;
+.filtro-toggle-btn {
+  background-color: transparent !important;
+  color: var(--primary-green) !important;
+  box-shadow: none;
+  transition: all 0.3s ease;
+}
 
-    &:hover {
-      background-color: rgba(76, 175, 80, 0.2);
-      transform: scale(1.1);
-    }
-  }
+.filtro-toggle-btn:hover {
+  background-color: rgba(103, 135, 96, 0.1) !important;
+  transform: scale(1.1);
 }
 
 .filtros-content {
@@ -73,12 +78,12 @@
   overflow: hidden;
   opacity: 0;
   transition: all 0.4s ease-in-out;
+}
 
-  &.visivel {
-    max-height: 500px;
-    opacity: 1;
-    padding-top: 24px;
-  }
+.filtros-content.visivel {
+  max-height: 500px;
+  opacity: 1;
+  padding-top: 24px;
 }
 
 .filtros-form-grid {
@@ -94,80 +99,25 @@
   margin-top: 24px;
   border-top: 1px solid var(--border-color);
   padding-top: 24px;
-
-  button {
-    border-radius: 8px;
-    font-weight: 500;
-  }
-
-  .btn-aplicar-filtros {
-    background-color: var(--primary-green);
-    color: white;
-    &:hover { background-color: var(--dark-green); }
-  }
-
-  .btn-limpar-filtros {
-    background-color: #f1f3f4;
-    color: var(--text-secondary);
-    &:hover { background-color: #e2e6ea; }
-  }
 }
 
-
-// --- CARD DE ANÁLISE (Adaptado para o tema verde) ---
-.card-analise {
-  border-radius: 12px;
-  padding: 24px;
-  margin-bottom: 32px;
-  background-color: #e8f5e9; // Fundo verde claro
-  border-left: 5px solid var(--primary-green);
-
-  .analise-title {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    color: var(--dark-green);
-    font-weight: 600;
-    font-size: 1.5rem;
-  }
-
-  .analise-content {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 20px;
-    padding-top: 16px;
-  }
-
-  .analise-item {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-
-    span {
-      font-size: 0.9em;
-      color: var(--dark-green);
-    }
-
-    strong {
-      font-size: 1.2em;
-      font-weight: 600;
-      color: var(--text-primary);
-    }
-  }
-
-  .detalhe-data {
-    font-size: 0.8em;
-    font-weight: 400;
-    color: var(--text-secondary);
-  }
+.filtros-actions button {
+  font-weight: 500;
 }
 
+.btn-limpar-filtros {
+  background-color: var(--primary-green) !important;
+  color: white !important;
+}
+.btn-limpar-filtros:hover { background-color: var(--dark-green) !important; }
 
-// --- LISTA DE CONSUMO ---
+
+/* --- CARD DE LISTA --- */
 .card-lista-consumo {
-  border-radius: 12px;
+  width: 100%;
+  border-radius: 16px;
   background-color: #ffffff;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
   padding: 24px;
 }
 
@@ -175,14 +125,18 @@
   font-size: 1.5rem;
   font-weight: 600;
   color: var(--text-primary);
-  margin-bottom: 24px;
+  margin: 0 0 16px 0;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--border-color);
 }
 
-.consumo-grid {
+
+.cards-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
   gap: 25px;
 }
+
 
 .consumo-card {
   background-color: #fff;
@@ -193,80 +147,204 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-
-  &:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08) !important;
-  }
-
-  mat-card-header { padding: 20px 20px 10px; }
-  mat-card-title {
-    font-size: 1.2rem;
-    font-weight: 700;
-    color: var(--text-primary);
-    margin-bottom: 5px;
-  }
-  mat-card-subtitle {
-    font-size: 0.85rem;
-    color: var(--text-secondary);
-  }
-  mat-card-content {
-    padding: 15px 20px;
-    font-size: 15px;
-    color: #334155;
-    flex-grow: 1;
-  }
-  mat-card-actions {
-    padding: 10px 15px;
-    border-top: 1px solid var(--border-color);
-    margin-top: 10px;
-    justify-content: flex-end;
-  }
 }
 
+.consumo-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08) !important;
+}
+
+.consumo-card mat-card-header {
+  padding: 20px 20px 10px;
+}
+
+.consumo-card mat-card-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.consumo-card mat-card-content {
+  padding: 15px 20px;
+  font-size: 0.95rem;
+  color: #334155;
+  flex-grow: 1;
+}
+
+.consumo-card mat-card-actions {
+  padding: 10px 15px;
+  border-top: 1px solid var(--border-color);
+  margin-top: 10px;
+  justify-content: flex-end;
+}
+
+/* Botões de ícone (editar) agora são verdes */
+.consumo-card mat-card-actions button[color='primary'],
+.consumo-card mat-card-actions button:not([color='warn']) {
+  color: var(--primary-green) !important;
+}
+
+
+/* --- Aparência dos itens de detalhe --- */
 .card-detail-item {
   margin-bottom: 14px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-
-  span {
-    color: var(--text-secondary);
-    font-weight: 500;
-  }
-
-  strong {
-    color: var(--text-primary);
-    font-weight: 600;
-  }
 }
+
+.card-detail-item span {
+  display: inline;
+  color: var(--text-secondary);
+  font-weight: 400;
+}
+
+.card-detail-item strong {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
 
 .bandeira-tag {
   display: inline-block;
   padding: 3px 10px;
-  border-radius: 16px;
+  border-radius: 20px;
   font-weight: 600;
   font-size: 13px;
   text-transform: capitalize;
-
-  &.bandeira-verde { background-color: #e8f5e9; color: #388e3c; }
-  &.bandeira-amarela { background-color: #fff9e6; color: #fbc02d; }
-  &.bandeira-vermelha { background-color: #ffebeb; color: #d32f2f; }
-  &.bandeira-desconhecida { background-color: #e2e3e5; color: #383d41; }
 }
 
-// --- RODAPÉ E OUTROS ---
-.footer-actions {
-  display: flex;
-  justify-content: center;
-  margin-top: 40px;
+.bandeira-tag.bandeira-verde { background-color: #e8f5e9; color: #388e3c; }
+.bandeira-tag.bandeira-amarela { background-color: #fff9e6; color: #fbc02d; }
+.bandeira-tag.bandeira-vermelha { background-color: #ffebeb; color: #d32f2f; }
+.bandeira-tag.bandeira-desconhecida { background-color: #e2e3e5; color: #383d41; }
 
-  .btn-resultados {
-    background-color: var(--primary-green);
-    color: white;
-    padding: 0 32px;
-    height: 44px;
-    border-radius: 8px;
-    &:hover { background-color: var(--dark-green); }
-  }
+
+/* --- BOTÃO DE DICA (IA) --- */
+.dica-button {
+  background-color: var(--primary-green) !important;
+  color: white !important;
+  border-radius: 9999px;
+  padding: 10px 20px;
+  font-weight: 600;
+  font-size: 1rem;
+  border: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.dica-button:hover {
+  background-color: var(--dark-green) !important;
+}
+
+
+/* --- MENSAGEM DE "NENHUM REGISTO" --- */
+.no-records {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 48px;
+  color: var(--text-secondary);
+  text-align: center;
+}
+
+.no-records mat-icon {
+  font-size: 48px;
+  width: 48px;
+  height: 48px;
+  margin-bottom: 16px;
+}
+
+
+h2[mat-dialog-title] {
+  padding: 16px 24px;
+  margin: 0;
+  font-size: 1.6rem;
+  font-weight: 600;
+  background-color: #f7931e;
+  color: #000;
+  border-top-left-radius: 16px;
+  border-top-right-radius: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+button.close-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: #000;
+}
+
+.mat-dialog-container {
+  border-radius: 16px !important;
+  padding: 0 !important;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1) !important;
+  background-color: #ffffff;
+  width: 900px !important;   /* Largura maior */
+}
+
+h2[mat-dialog-title] {
+  padding: 16px 24px;
+  margin: 0;
+  font-size: 1.6rem;
+  font-weight: 600;
+  background-color: #f7931e; /* Laranja do título */
+  color: #000;
+  border-top-left-radius: 16px;
+  border-top-right-radius: 16px;
+}
+
+mat-dialog-content {
+  padding: 20px;
+  max-height: 70vh;
+  overflow: auto;
+}
+
+.form-consumo-dialog {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); /* Campos lado a lado */
+  gap: 22px;
+}
+
+mat-form-field {
+  width: 100%;
+}
+
+mat-dialog-actions {
+  padding: 16px 24px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+button[mat-stroked-button] {
+  border-color: #678760 !important;
+  color: #678760 !important;
+}
+
+button[mat-stroked-button]:hover {
+  background-color: rgba(103, 135, 96, 0.1) !important;
+}
+
+
+.botao_salvar{
+  background-color: #678760 !important;
+  color: #fff !important;
+}
+
+.botao_salvar {
+  background-color: #546a50 !important;
+}
+
+button[mat-flat-button],
+button[mat-stroked-button] {
+  min-width: 140px;
+  border-radius: 24px;
+  font-weight: 600;
 }

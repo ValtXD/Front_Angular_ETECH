@@ -1,55 +1,7 @@
-.modal-fundo {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background: rgba(0,0,0,0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-}
-
-.modal-conteudo {
-  background: white;
-  padding: 20px;
-  border-radius: 8px;
-  max-width: 600px;
-  max-height: 80vh;
-  overflow-y: auto;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.3);
-}
-.filter-card {
-  display: flex;                 /* Ativa o modo de layout flexível (essencial!) */
-  justify-content: space-between;/* Coloca um item na esquerda e outro na direita */
-  align-items: center;           /* Alinha os dois verticalmente ao centro */
-  padding: 8px 24px;             /* Adiciona espaçamento interno para um visual limpo */
-  border-radius: 12px;           /* Bordas arredondadas */
-  border: 1px solid #e0e0e0;     /* Borda sutil */
-  background-color: #ffffff;     /* Garante o fundo branco */
-}
-
-.filter-card mat-card-header {
-  padding-right: 20px;
-}
-
-.filter-card mat-card-title {
-  color: #678760;
-}
-
-.filter-card mat-card-content {
-  padding: 0 !important;
-}
-
-.filter-card .mat-form-field {
-  width: 250px;
-  margin-bottom: -1.25em;
-}
-
 :host {
   display: block;
   background-color: #f4f7f6;
+  min-height: 100vh;
 }
 
 .results-page {
@@ -75,24 +27,56 @@ mat-card:hover {
 }
 
 mat-card-title {
-  color: #678760;
+  color: #000000;
 }
 
-/* Estilo para o card de filtro */
+
+/* ====================================================== */
+/* ESTILO PARA O CARD DE FILTRO - ATENÇÃO À ESTRUTURA HTML
+/* ====================================================== */
+
+/*
+  PARA ESTE LAYOUT FUNCIONAR, a sua estrutura HTML dentro do
+  componente DEVE ser semelhante a esta, com o seletor e o
+  botão DENTRO de <mat-card-content>:
+
+  <mat-card class="filter-card">
+    <mat-card-header>
+      <mat-card-title>Resultados</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>  <-- ESTE É O CONTAINER FLEX
+      <mat-form-field>
+         ... seletor de data ...
+      </mat-form-field>
+      <button mat-flat-button>
+         Gerar Dica
+      </button>
+    </mat-card-content>
+  </mat-card>
+*/
+
 .filter-card {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 8px 24px;
+  background-color: #ffffff;
 }
 
+/*
+  PONTO CRÍTICO DA CORREÇÃO:
+  Transformamos o <mat-card-content> num container flex.
+  Isto força os seus filhos (o seletor e o botão) a ficarem lado a lado.
+*/
 .filter-card mat-card-content {
-  padding: 0 !important;
+  display: flex;                  /* Essencial para o layout em linha */
+  flex-wrap: wrap;                /* Permite que quebre a linha em ecrãs pequenos */
+  justify-content: space-between; /* Coloca espaço máximo entre os itens */
+  align-items: center;            /* **ALTERADO** Alinha os itens verticalmente ao centro */
+  gap: 16px;                      /* Espaço entre os itens */
+  padding: 16px 24px !important;  /* Espaçamento interno */
 }
 
-.filter-card .mat-form-field {
-  width: 250px;
-  margin-bottom: -1.25em;
+/* Garante que o campo do formulário se comporte bem dentro do flex */
+.filter-card mat-card-content mat-form-field {
+  flex-grow: 1;      /* Permite que o campo cresça para ocupar espaço */
+  max-width: 300px;  /* Mas limita a sua largura máxima */
 }
 
 
@@ -128,13 +112,13 @@ mat-card-title {
 /* ====================================================== */
 .total-card {
   padding: 32px;
-  background: linear-gradient(135deg, #678760, #3f5a37); /* Gradiente elegante */
-  color: white; /* Cor padrão do texto para branco */
-  grid-column: 1 / -1; /* Faz o card de total ocupar a largura toda da grade */
+  background: linear-gradient(135deg, #678760, #3f5a37);
+  color: white;
+  grid-column: 1 / -1; /* Ocupa a largura toda da grade */
 }
 
 .total-card mat-card-title {
-  color: white; /* Cor do título para branco */
+  color: white;
   font-size: 1.5em;
   text-align: center;
 }
@@ -161,7 +145,7 @@ mat-card-title {
 .total-details strong {
   font-size: 2.8em;
   font-weight: 700;
-  color: #ffffff; /* Números em branco para alto contraste */
+  color: #ffffff;
 }
 
 /* ====================================================== */
@@ -171,20 +155,41 @@ mat-card-title {
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  gap: 16px; /* Espaço entre os botões */
+  gap: 16px;
   padding-top: 24px;
-  border-top: 1px solid #e0e0e0; /* Linha sutil para separar do conteúdo */
+  border-top: 1px solid #e0e0e0;
 }
-/* Ajusta o ícone dentro do botão */
-.footer-actions button mat-icon {
+
+.footer-actions button .mat-icon {
   margin-right: 8px;
+  color: inherit; /* Ícone herda a cor do botão */
 }
 
-/* Efeito de hover sutil para os botões com borda */
-.footer-actions button.mat-stroked-button:hover {
-  background-color: rgba(0, 0, 0, 0.04);
+.footer-actions .btn-novo-registro,
+.footer-actions .btn-grafico {
+  background-color: transparent !important;
+  border: 1px solid #678760 !important;
+  color: #678760 !important;
+  box-shadow: none !important;
+  margin: 0 4px;
 }
 
+.footer-actions .btn-novo-registro:hover,
+.footer-actions .btn-grafico:hover {
+  background-color: rgb(103, 135, 96) !important;
+  border-color: #678760 !important;
+  color: #FFFFFF !important;
+}
+
+/*
+  PONTO CRÍTICO DA CORREÇÃO:
+  Alterado o background-color de volta para a cor verde.
+*/
+.footer-actions button,
+.filter-card button{ /* Adicionada regra para o botão de dica */
+  background-color: #678760; /* Fundo verde */
+  color: #ffffff;
+}
 
 /* ====================================================== */
 /* ESTILOS ESSENCIAIS PARA O MODAL DE DICA
@@ -193,9 +198,9 @@ mat-card-title {
   position: fixed;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.6);
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.6);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -203,9 +208,14 @@ mat-card-title {
 }
 
 .modal-conteudo {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  max-width: 600px;
   width: 90%;
-  max-width: 500px;
-  padding: 16px;
+  max-height: 80vh;
+  overflow-y: auto;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
 }
 
 .modal-conteudo .loading-container {
@@ -221,47 +231,4 @@ mat-card-title {
   margin-top: 16px;
   font-style: italic;
   color: #666;
-}
-
-.footer-actions .btn-novo-registro,
-.footer-actions .btn-grafico {
-  background-color: transparent !important;
-  border: 1px solid #678760 !important; /* Borda cinza clara, como na imagem */
-  box-shadow: none !important;
-  margin: 0 4px; /* Adiciona um pequeno espaçamento entre os botões */
-}
-
-/* Estilo específico para o botão "Novo Registro" (Azul) */
-.footer-actions .btn-novo-registro {
-  color: #678760 !important; /* Cor azul padrão do Material Design */
-}
-
-/* Estilo específico para o botão "Gráfico" (Verde) */
-.footer-actions .btn-grafico {
-  color: #678760 !important; /* Sua cor verde */
-}
-
-/* Efeito HOVER para os botões com contorno */
-.footer-actions .btn-novo-registro:hover {
-  background-color: rgb(103, 135, 96) !important; /* Fundo verde */
-  border-color: #678760 !important;               /* Borda fica verde */
-  color: #FFFFFF !important;                      /* NOVO: Cor da letra fica branca */
-}
-
-.footer-actions .btn-grafico:hover {
-  background-color: rgb(103, 135, 96) !important; /* Fundo verde */
-  border-color: #678760 !important;               /* Borda fica verde */
-  color: #FFFFFF !important;         /* Borda fica verde */
-}
-
-/* Estilo para o botão "Gerar Dica" (sólido) */
-.footer-actions button[color='primary'] {
-  background-color: #678760; /* Fundo verde */
-  color: #ffffff; /* Texto branco */
-  margin: 0 4px;
-}
-
-/* Regra geral para os ícones herdarem a cor do botão */
-.footer-actions button .mat-icon {
-  color: inherit;
 }

@@ -4,7 +4,7 @@
       <mat-card-title>Resultados</mat-card-title>
     </mat-card-header>
     <mat-card-content>
-      <mat-form-field appearance="fill" class="w-100">
+      <mat-form-field appearance="outline">
         <mat-label>Selecionar data</mat-label>
         <mat-select [(ngModel)]="dataSelecionada" (selectionChange)="onDataChange()">
           <mat-option *ngFor="let data of datasDisponiveis" [value]="data">
@@ -12,8 +12,15 @@
           </mat-option>
         </mat-select>
       </mat-form-field>
+
+      <button mat-flat-button (click)="gerarDica()">
+        <mat-icon>lightbulb</mat-icon>
+        Gerar Dica
+      </button>
     </mat-card-content>
   </mat-card>
+
+
 
   <div class="results-grid" *ngIf="aparelhosDia.length > 0">
     <mat-card *ngFor="let ap of aparelhosDia" class="result-card">
@@ -46,22 +53,7 @@
     </mat-card>
   </div>
 
-  <div class="footer-actions">
-    <button mat-stroked-button class="btn-novo-registro" (click)="voltar()">
-      <mat-icon>add</mat-icon>
-      Novo Registro
-    </button>
 
-    <button mat-stroked-button class="btn-grafico" (click)="irParaGrafico()">
-      <mat-icon>bar_chart</mat-icon>
-      Gráfico
-    </button>
-
-    <button mat-flat-button color="primary" (click)="gerarDica()">
-      <mat-icon>lightbulb</mat-icon>
-      Gerar Dica
-    </button>
-  </div>
 </div>
 
 

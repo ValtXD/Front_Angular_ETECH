@@ -1,79 +1,72 @@
-<mat-card class="unified-card">
-  <mat-card-title class="unified-card-title">
-    Painel de Controlo de Energia
-  </mat-card-title>
 
-  <mat-card-content>
-    <!-- 1. SECÇÃO DE FILTROS -->
-    <div class="card-section">
-      <h3 class="section-title">Filtrar Período</h3>
-      <div class="filters-container">
-        <mat-form-field appearance="outline" class="filter-field">
-          <mat-label>Ano</mat-label>
-          <mat-select [(value)]="anoSelecionado" (selectionChange)="onFiltroAlterado()">
-            <mat-option [value]="null">Todos</mat-option>
-            <mat-option *ngFor="let ano of anosDisponiveis" [value]="ano">{{ ano }}</mat-option>
-          </mat-select>
-        </mat-form-field>
-        <mat-form-field appearance="outline" class="filter-field">
-          <mat-label>Mês</mat-label>
-          <mat-select [(value)]="mesSelecionado" (selectionChange)="onFiltroAlterado()">
-            <mat-option [value]="null">Todos</mat-option>
-            <mat-option *ngFor="let mes of mesesDisponiveis" [value]="mes">{{ mes }}</mat-option>
-          </mat-select>
-        </mat-form-field>
-      </div>
-    </div>
+  <mat-card class="unified-card">
+    <mat-card-title class="unified-card-title">
+      Painel de Controle de Energia
+    </mat-card-title>
 
-    <mat-divider></mat-divider>
-
-    <!-- 2. SECÇÃO DE RESULTADOS -->
-    <div class="card-section" *ngIf="consumoTotal > 0; else noRecords">
-      <h3 class="section-title">Resumo Total</h3>
-      <div class="summary-container">
-        <div class="summary-item">
-          <span class="summary-label">Consumo Total</span>
-          <span class="summary-value consumption">{{ consumoTotal | number:'1.2-2' }} kWh</span>
-        </div>
-        <div class="summary-item">
-          <span class="summary-label">Custo Total</span>
-          <span class="summary-value cost">{{ custoTotal | currency:'BRL':'symbol':'1.2-2' }}</span>
+    <mat-card-content>
+      <div class="card-section">
+        <h3 class="section-title">FILTRAR PERÍODO</h3>
+        <div class="filters-container">
+          <mat-form-field appearance="outline" class="filter-field">
+            <mat-label>Ano</mat-label>
+            <mat-select [(value)]="anoSelecionado" (selectionChange)="onFiltroAlterado()">
+              <mat-option [value]="null">Todos</mat-option>
+              <mat-option *ngFor="let ano of anosDisponiveis" [value]="ano">{{ ano }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field appearance="outline" class="filter-field">
+            <mat-label>Mês</mat-label>
+            <mat-select [(value)]="mesSelecionado" (selectionChange)="onFiltroAlterado()">
+              <mat-option [value]="null">Todos</mat-option>
+              <mat-option *ngFor="let mes of mesesDisponiveis" [value]="mes">{{ mes }}</mat-option>
+            </mat-select>
+          </mat-form-field>
         </div>
       </div>
-    </div>
 
-    <!-- Mensagem para quando não há registos -->
-    <ng-template #noRecords>
-      <div class="no-records-message">
-        <p>Selecione um período para ver o resumo.</p>
+      <mat-divider></mat-divider>
+
+      <div class="card-section" *ngIf="consumoTotal > 0; else noRecords">
+        <h3 class="section-title">Resumo Total</h3>
+        <div class="summary-container">
+          <div class="summary-item">
+            <span class="summary-label">Consumo Total</span>
+            <span class="summary-value consumption">{{ consumoTotal | number:'1.2-2' }} kWh</span>
+          </div>
+          <div class="summary-item">
+            <span class="summary-label">Custo Total</span>
+            <span class="summary-value cost">{{ custoTotal | currency:'BRL':'symbol':'1.2-2' }}</span>
+          </div>
+        </div>
       </div>
-    </ng-template>
 
-    <mat-divider></mat-divider>
+      <ng-template #noRecords>
+        <div class="no-records-message">
+          <p>Selecione um período para ver o resumo.</p>
+        </div>
+      </ng-template>
 
-    <!-- 3. SECÇÃO DA DICA DE IA -->
-    <div class="card-section">
-      <h3 class="section-title">Otimização Inteligente</h3>
-      <div class="actions-container">
-        <button mat-raised-button class="dica-button" (click)="gerarDica()"
-                [disabled]="carregandoDica || consumoTotal === 0">
-          <mat-icon>lightbulb</mat-icon>
-          {{ carregandoDica ? 'A gerar...' : 'Receber Dica de IA' }}
-        </button>
+      <mat-divider></mat-divider>
+
+      <div class="card-section">
+        <h3 class="section-title">Otimização Inteligente</h3>
+        <div class="actions-container">
+          <button mat-raised-button class="dica-button" (click)="gerarDica()">
+            <mat-icon>lightbulb</mat-icon>
+            Receber Dica de IA
+          </button>
+        </div>
       </div>
-    </div>
-  </mat-card-content>
-</mat-card>
+    </mat-card-content>
+  </mat-card>
 
-<!-- O MODAL DA DICA CONTINUA FORA DO CARD -->
-<div *ngIf="modalAberto" class="modal-overlay">
-  <div class="modal-dialog">
-    <h3 class="modal-title">Dica de Economia de Energia</h3>
-    <pre class="modal-content">{{ dicaIA }}</pre>
-    <div class="modal-actions">
-      <button mat-raised-button color="primary" (click)="fecharModal()">Fechar</button>
+  <div *ngIf="modalAberto" class="modal-overlay">
+    <div class="modal-dialog">
+      <h3 class="modal-title">Dica de Economia de Energia</h3>
+      <pre class="modal-content">{{ dicaIA }}</pre>
+      <div class="modal-actions">
+        <button mat-raised-button color="primary" (click)="fecharModal()">Fechar</button>
+      </div>
     </div>
   </div>
-</div>
-
-
