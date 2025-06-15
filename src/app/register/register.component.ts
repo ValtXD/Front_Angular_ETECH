@@ -1,61 +1,54 @@
 import { Component } from '@angular/core';
-import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { RouterModule, Router } from '@angular/router';
-import { MatCardModule } from '@angular/material/card';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
-import { AuthService } from '../services/auth.service'; // ✅ importado
+import { FormsModule } from '@angular/forms';
+import { Router, RouterModule } from '@angular/router';
+import { AuthCacheService } from '../services/auth-cache.service'; // Ajuste o caminho
 
 @Component({
+  standalone: true,
   selector: 'app-register',
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.scss'],
-  standalone: true,
   imports: [
-    FormsModule,
     CommonModule,
-    RouterModule,
-    MatCardModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatButtonModule,
-    MatIconModule
-  ],
+    FormsModule,
+    RouterModule
+  ]
 })
 export class RegisterComponent {
   username: string = '';
   email: string = '';
-  password: string = '';
-  errorMsg: string = '';
-  successMsg: string = '';
+  message: string = '';
 
-  constructor(private authService: AuthService, private router: Router) {}
+  // Expressão regular para domínios conhecidos em minúsculas
+  private emailRegex = /^[a-zA-Z0-9._%+-]+@(gmail\.com|yahoo\.com|outlook\.com|hotmail\.com|icloud\.com|protonmail\.com|zoho\.com|aol\.com|mail\.com|gmx\.com|web\.de|t-online\.de|libero\.it|terra\.com\.br|uol\.com\.br|bol\.com\.br|ig\.com\.br|r7\.com|zipmail\.com\.br)$/;
 
-  onSubmit() {
-    if (this.username && this.email && this.password) {
-      this.authService.register(this.username, this.email, this.password).subscribe({
-        next: () => {
-          this.successMsg = 'Cadastro realizado com sucesso!';
-          this.errorMsg = '';
-          // Limpa os campos
-          this.username = '';
-          this.email = '';
-          this.password = '';
-          // Redireciona para o login
-          setTimeout(() => this.router.navigate(['/login']), 1500);
-        },
-        error: (err) => {
-          this.errorMsg = 'Erro ao cadastrar. Verifique os dados ou tente novamente.';
-          this.successMsg = '';
-          console.error(err);
-        },
-      });
-    } else {
-      this.errorMsg = 'Por favor, preencha todos os campos corretamente.';
-      this.successMsg = '';
+  constructor(private authCacheService: AuthCacheService, private router: Router) {}
+
+  onRegister(): void {
+    if (!this.username || !this.email) {
+      this.message = 'Por favor, preencha todos os campos.';
+      return;
     }
+
+    if (!this.emailRegex.test(this.email)) {
+      this.message = 'Formato de e-mail inválido. Por favor, insira um e-mail de um provedor conhecido e em minúsculas (ex: @gmail.com).';
+      return;
+    }
+
+    // --- NOVA LÓGICA DE TRATAMENTO DO RETORNO DO SERVIÇO ---
+    const registrationResult = this.authCacheService.register(this.username, this.email);
+
+    if (registrationResult === 'success') {
+      this.message = 'Cadastro realizado com sucesso! Por favor, faça login.';
+      this.router.navigate(['/login']);
+    } else if (registrationResult === 'username_taken') {
+      this.message = 'Nome de usuário já está em uso. Por favor, escolha outro.';
+    } else if (registrationResult === 'email_taken') {
+      this.message = 'E-mail já está em uso. Por favor, insira outro e-mail.';
+    } else {
+      this.message = 'Erro ao cadastrar. Tente novamente.'; // Para outros casos de erro, como falha de armazenamento
+    }
+    // --- FIM DA NOVA LÓGICA ---
   }
 }

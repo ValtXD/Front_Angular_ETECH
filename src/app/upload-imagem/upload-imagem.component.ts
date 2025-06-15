@@ -3,13 +3,20 @@ import { OcrContadorService, Estado, Bandeira } from '../services/ocr-contador.s
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
+import {MatFormField, MatInput, MatLabel} from '@angular/material/input';
+import {MatOption} from '@angular/material/core';
+import {MatSelect} from '@angular/material/select';
+import {MatCheckbox} from '@angular/material/checkbox';
+import {MatButton} from '@angular/material/button';
+import {MatCard, MatCardContent, MatCardHeader, MatCardTitle} from '@angular/material/card';
+import {MatIcon} from '@angular/material/icon';
 
 @Component({
   selector: 'app-upload-imagem',
   templateUrl: './upload-imagem.component.html',
-  styleUrls: ['./upload-imagem.component.css'],
+  styleUrls: ['./upload-imagem.component.scss'],
   standalone: true,
-  imports: [FormsModule, CommonModule],
+  imports: [FormsModule, CommonModule, MatLabel, MatOption, MatFormField, MatSelect, MatCheckbox, MatButton, MatInput, MatCardContent, MatCardTitle, MatCardHeader, MatCard, MatIcon],
 })
 export class UploadImagemComponent implements OnInit {
   estados: Estado[] = [];

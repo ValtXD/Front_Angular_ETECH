@@ -77,7 +77,7 @@ export class OcrContadorService {
     return this.http.post<LeituraOCR>(`${this.baseUrl}/api/leituras-ocr/`, formData);
   }
 
-  listarLeituras(mes?: string, ano?: string): Observable<LeituraOCR[]> {
+  listarLeituras(mes?: string, ano?: string, filtroEstadoId?: number | null): Observable<LeituraOCR[]> {
     let params = new HttpParams();
     if (mes) params = params.set('mes', mes);
     if (ano) params = params.set('ano', ano);

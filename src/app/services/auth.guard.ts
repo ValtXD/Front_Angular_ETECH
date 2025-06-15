@@ -1,20 +1,28 @@
-import { inject } from '@angular/core';
-import { CanActivateFn, Router } from '@angular/router';
-import { AuthService } from './auth.service';
+// src/app/guards/auth.guard.ts
 
-export const authGuard: CanActivateFn = () => {
-  const router = inject(Router);
-  const auth = inject(AuthService);
+import { Injectable } from '@angular/core';
+import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, Router, UrlTree } from '@angular/router';
+import { Observable } from 'rxjs';
+import {AuthCacheService} from './auth-cache.service';
 
-  const loggedIn = auth.isLoggedIn();
-  console.log('[AuthGuard] isLoggedIn:', loggedIn);
 
-  if (!loggedIn) {
-    console.log('[AuthGuard] Usuário NÃO autenticado. Redirecionando para /login');
-    router.navigate(['/login']);
-    return false;
+@Injectable({
+  providedIn: 'root'
+})
+export class AuthGuard implements CanActivate {
+  constructor(private authCacheService: AuthCacheService, private router: Router) {}
+
+  canActivate(
+    route: ActivatedRouteSnapshot,
+    state: RouterStateSnapshot
+  ): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
+    if (this.authCacheService.isLoggedIn()) {
+      // Se o usuário estiver logado, permite o acesso à rota
+      return true;
+    } else {
+      // Se não estiver logado, redireciona para a página de login
+      // E retorna um UrlTree para o Angular entender a navegação
+      return this.router.createUrlTree(['/login']);
+    }
   }
-
-  console.log('[AuthGuard] Usuário autenticado. Permitindo acesso.');
-  return true;
-};
+}

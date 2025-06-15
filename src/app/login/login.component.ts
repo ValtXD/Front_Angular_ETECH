@@ -1,52 +1,42 @@
 import { Component } from '@angular/core';
-import { AuthService } from '../services/auth.service';
-import { Router } from '@angular/router';
-import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
-import { MatCardModule } from '@angular/material/card';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
-import { MatCheckboxModule } from '@angular/material/checkbox';
+import { FormsModule } from '@angular/forms';
+import { Router, RouterModule } from '@angular/router';
+import { AuthCacheService } from '../services/auth-cache.service'; // Ajuste o caminho
 
 @Component({
-  selector: 'app-login',
   standalone: true,
+  selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
   imports: [
-    FormsModule,
     CommonModule,
-    RouterModule,
-    MatCardModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatButtonModule,
-    MatIconModule,
-    MatCheckboxModule,
-  ],
+    FormsModule,
+    RouterModule
+  ]
 })
 export class LoginComponent {
-  username: string = ''; // ✅ AJUSTADO: substituído o "email" por "username"
-  password: string = '';
-  hidePassword: boolean = true;
-  rememberMe: boolean = false;
-  errorMsg: string = ''; // ✅ MANTIDO: mensagem de erro exibida no template
+  username: string = '';
+  message: string = '';
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(private authCacheService: AuthCacheService, private router: Router) {}
 
-  onSubmit() {
-    console.log('Dados de login:', {
-      username: this.username,
-      password: this.password,
-      rememberMe: this.rememberMe,
-    });
+  onLogin(): void {
+    console.log('onLogin iniciado.');
 
-    this.authService.login(this.username, this.password).subscribe({
-      next: () => this.router.navigate(['/app']), // ✅ FUNCIONAL: redireciona após login
-      error: () => (this.errorMsg = 'Usuário ou senha inválidos.'), // ✅ mensagem clara no front
-    });
+    if (!this.username) {
+      this.message = 'Por favor, insira o nome de usuário.';
+      console.log('Nome de usuário vazio.');
+      return;
+    }
+
+    if (this.authCacheService.login(this.username)) {
+      this.message = 'Login realizado com sucesso!';
+      console.log('Login bem-sucedido, redirecionando para /home.');
+      this.router.navigate(['/home']); // Redireciona para a rota protegida 'home'
+    } else {
+      this.message = 'Nome de usuário não encontrado ou incorreto no cache.';
+      console.log('Login falhou pelo serviço.');
+    }
   }
 }

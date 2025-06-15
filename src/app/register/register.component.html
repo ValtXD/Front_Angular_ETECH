@@ -1,42 +1,16 @@
-<div class="registration-page-container">
-  <mat-card class="registration-card">
-    <h2 class="card-title">Cadastre-se</h2>
-    <p class="card-subtitle">Preencha o formulário abaixo para criar uma nova conta.</p>
-
-    <form (ngSubmit)="onSubmit()" class="registration-form" #registrationForm="ngForm">
-
-      <mat-form-field appearance="outline" class="full-width">
-        <mat-label>Usuário</mat-label> <input matInput [(ngModel)]="username" name="username" required #usernameInput="ngModel" placeholder="Seu nome de usuário"> <mat-error *ngIf="usernameInput.invalid && (usernameInput.dirty || usernameInput.touched)">
-        Usuário é obrigatório.
-      </mat-error>
-      </mat-form-field>
-
-      <mat-form-field appearance="outline" class="full-width">
-        <mat-label>Email</mat-label>
-        <input matInput type="email" [(ngModel)]="email" name="email" required email #emailInput="ngModel" placeholder="exemplo@exemplo.com">
-        <mat-error *ngIf="emailInput.invalid && (emailInput.dirty || emailInput.touched)">
-          <span *ngIf="emailInput.errors?.['required']">Email é obrigatório.</span>
-          <span *ngIf="emailInput.errors?.['email']">Email inválido.</span>
-        </mat-error>
-      </mat-form-field>
-
-      <mat-form-field appearance="outline" class="full-width">
-        <mat-label>Senha</mat-label>
-        <input matInput type="password" [(ngModel)]="password" name="password" required #passwordInput="ngModel" placeholder="Crie uma senha">
-        <mat-error *ngIf="passwordInput.invalid && (passwordInput.dirty || passwordInput.touched)">
-          Senha é obrigatória.
-        </mat-error>
-      </mat-form-field>
-
-      <div *ngIf="errorMsg" class="message error-general-message">{{ errorMsg }}</div>
-      <div *ngIf="successMsg" class="message success-message">{{ successMsg }}</div>
-
-      <button mat-raised-button color="primary" type="submit" [disabled]="registrationForm.invalid">Cadastrar</button>
-
-      <p class="login-link">
-        Já possui uma conta? <a routerLink="/login">Entre agora.</a>
-      </p>
-
-    </form>
-  </mat-card>
+<div class="auth-container">
+  <h2>Cadastre-se (Local)</h2>
+  <form (submit)="onRegister()">
+    <div class="form-group">
+      <label for="username">Nome de Usuário:</label>
+      <input type="text" id="username" [(ngModel)]="username" name="username" required>
+    </div>
+    <div class="form-group">
+      <label for="email">Email:</label>
+      <input type="email" id="email" [(ngModel)]="email" name="email" required>
+    </div>
+    <button type="submit" class="auth-button">Cadastrar</button>
+  </form>
+  <p class="message" [class.success]="message.includes('sucesso')" [class.error]="message.includes('Erro')">{{ message }}</p>
+  <p class="mt-2">Já tem uma conta? <a routerLink="/login">Faça Login</a></p>
 </div>

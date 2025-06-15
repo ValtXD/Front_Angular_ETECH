@@ -1,22 +1,24 @@
-import {Component, HostListener, ViewChild} from '@angular/core';
-import { MatSidenav } from '@angular/material/sidenav';
-import { MatSidenavModule } from '@angular/material/sidenav';
-import { MatToolbarModule } from '@angular/material/toolbar';
-import { MatIconModule } from '@angular/material/icon';
-import { MatButtonModule } from '@angular/material/button';
-import { MatListModule } from '@angular/material/list';
-import { MatExpansionModule } from '@angular/material/expansion';
-import { RouterModule } from '@angular/router';
+import {MatSidenav} from '@angular/material/sidenav';
+import {MatSidenavModule} from '@angular/material/sidenav';
+import {MatToolbarModule} from '@angular/material/toolbar';
+import {MatIconModule} from '@angular/material/icon';
+import {MatButtonModule} from '@angular/material/button';
+import {MatListModule} from '@angular/material/list';
+import {MatExpansionModule} from '@angular/material/expansion';
+import {Router, RouterModule} from '@angular/router';
 import {SidenavMenuComponent} from '../sidenav-menu/sidenav-menu.component';
+import {Component, HostListener, ViewChild} from '@angular/core';
 
-
+import {Subscription} from 'rxjs';
+import {AuthCacheService, UserProfile} from '../services/auth-cache.service';
+import {MatTooltip} from '@angular/material/tooltip';
+import {NgIf} from '@angular/common';
 
 
 @Component({
-  standalone: true,
   selector: 'app-layout',
   templateUrl: './layout.component.html',
-  styleUrls: ['./layout.component.css'],
+  styleUrls: ['./layout.component.scss'],
   standalone: true,
   imports: [
     MatSidenavModule,
@@ -33,12 +35,18 @@ export class LayoutComponent {
   @ViewChild('sidenav') sidenav!: MatSidenav;
 
   isSidenavMini: boolean = false; // Propriedade para controlar o estado mini do sidenav
-
+  currentUser: UserProfile | null = null;
+  private userSubscription: Subscription = new Subscription();
   // Define o estado de abertura inicial do sidenav em desktop.
   // Se quiser que ele comece no modo MINI em desktop, mude para 'false'.
   private isSidenavOpenOnDesktopInitially: boolean = true;
 
-  constructor() {}
+  constructor(
+    private authCacheService: AuthCacheService,
+    private router: Router
+  ) {
+
+  }
 
   @HostListener('window:resize', ['$event'])
   onResize(event: any) {
@@ -89,5 +97,22 @@ export class LayoutComponent {
       this.sidenav.close();
     }
     // Em modo 'side' (desktop), clicar em um item não afeta o estado aberto/mini.
+  }
+  onLogout() {
+    this.authCacheService.logout();
+    this.router.navigate(['/login']);
+  }
+
+  // MÉTODO PARA EXCLUIR CONTA - AGORA PASSA O USERNAME
+  onDeleteAccount(): void {
+    if (this.currentUser && confirm(`Tem certeza que deseja EXCLUIR a conta de "${this.currentUser.username}"? Esta ação é irreversível e removerá seus dados salvos localmente.`)) {
+      const usernameToDelete = this.currentUser.username;
+      if (this.authCacheService.deleteAccount(usernameToDelete)) {
+        alert(`A conta de "${usernameToDelete}" foi excluída com sucesso.`);
+        this.router.navigate(['/register']); // Redireciona para o registro após a exclusão
+      } else {
+        alert(`Não foi possível excluir a conta de "${usernameToDelete}".`);
+      }
+    }
   }
 }

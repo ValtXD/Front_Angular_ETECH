@@ -1,16 +1,18 @@
-// src/app/pages/home/home.component.ts
 
 import { Component, OnInit } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
 import { ContadorService, AiTip } from '../../services/contador.service'; // Para dicas de contador
-import { ApiService, ApplianceAiTip } from '../../services/api.service'; // Para dicas de aparelhos
+import { ApiService, ApplianceAiTip } from '../../services/api.service';
+import {MatButton, MatIconButton} from '@angular/material/button';
+import {MatIcon} from '@angular/material/icon';
+import {MatCard, MatCardActions, MatCardContent, MatCardHeader, MatCardTitle} from '@angular/material/card'; // Para dicas de aparelhos
 
 @Component({
   standalone: true,
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
-  imports: [CommonModule]
+  imports: [CommonModule, DatePipe, MatButton, MatIcon, MatIcon, MatCardActions, MatIconButton, MatCardContent, MatCardTitle, MatCardHeader, MatCard]
 })
 export class HomeComponent implements OnInit {
   // Dicas do Contador (EXISTENTES)

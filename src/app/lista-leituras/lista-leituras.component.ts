@@ -2,17 +2,37 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { OcrContadorService, LeituraOCR } from '../services/ocr-contador.service';
 import { interval, Subscription } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
-import { Router } from '@angular/router';
+import {Router, RouterModule} from '@angular/router';
 import { FormsModule } from '@angular/forms';
-import {CurrencyPipe, DatePipe, DecimalPipe} from '@angular/common';
+import { DatePipe, DecimalPipe } from '@angular/common';
 import { CommonModule } from '@angular/common';
+import { MatCardModule } from '@angular/material/card';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatTableModule } from '@angular/material/table';
 
 @Component({
   selector: 'app-lista-leituras',
   templateUrl: './lista-leituras.component.html',
-  styleUrls: ['./lista-leituras.component.css'],
+  styleUrls: ['./lista-leituras.components.scss'],
   standalone: true,
-  imports: [FormsModule, DecimalPipe, CurrencyPipe, DatePipe, CommonModule]
+  imports: [
+    FormsModule,
+    DecimalPipe,
+    DatePipe,
+    CommonModule,
+    RouterModule,
+    MatCardModule,
+    MatDividerModule,
+    MatFormFieldModule,
+    MatSelectModule,
+    MatButtonModule,
+    MatIconModule,
+    MatTableModule
+  ]
 })
 export class ListaLeiturasComponent implements OnInit, OnDestroy {
   leituras: LeituraOCR[] = [];
@@ -37,6 +57,9 @@ export class ListaLeiturasComponent implements OnInit, OnDestroy {
     { value: '12', label: 'Dezembro' },
   ];
 
+  // Colunas a serem exibidas na tabela Angular Material
+  displayedColumns: string[] = ['data', 'estado', 'valorExtraido', 'valorCorrigido', 'custoEstimado', 'imagem', 'acoes'];
+
   medias = {
     valorExtraidoMedia: 0,
     valorCorrigidoMedia: 0,
@@ -45,7 +68,7 @@ export class ListaLeiturasComponent implements OnInit, OnDestroy {
   };
 
   private pollingSubscription?: Subscription;
-  baseUrl = 'http://localhost:8000';
+  baseUrl = 'http://localhost:8000'; // Ajuste esta URL se seu backend não estiver em localhost:8000
 
   constructor(
     private ocrContadorService: OcrContadorService,
@@ -62,10 +85,10 @@ export class ListaLeiturasComponent implements OnInit, OnDestroy {
     this.carregarEstados();
 
     this.pollingSubscription = interval(5000)
-      .pipe(switchMap(() => this.ocrContadorService.listarLeituras(this.filtroMes, this.filtroAno)))
+      .pipe(switchMap(() => this.ocrContadorService.listarLeituras(this.filtroMes, this.filtroAno, this.filtroEstadoId)))
       .subscribe(data => {
         this.leituras = data;
-        this.calcularMediasPorEstado(); // Atualiza médias ao receber dados
+        this.calcularMediasPorEstado();
       });
   }
 
@@ -74,7 +97,7 @@ export class ListaLeiturasComponent implements OnInit, OnDestroy {
   }
 
   carregarLeituras(): void {
-    this.ocrContadorService.listarLeituras(this.filtroMes, this.filtroAno).subscribe(data => {
+    this.ocrContadorService.listarLeituras(this.filtroMes, this.filtroAno, this.filtroEstadoId).subscribe(data => {
       this.leituras = data;
       this.calcularMediasPorEstado();
     });
@@ -91,7 +114,7 @@ export class ListaLeiturasComponent implements OnInit, OnDestroy {
   }
 
   calcularMediasPorEstado(): void {
-    if (this.filtroEstadoId === null) {
+    if (this.filtroEstadoId === null || this.leituras.length === 0) {
       this.medias = {
         valorExtraidoMedia: 0,
         valorCorrigidoMedia: 0,
@@ -101,7 +124,6 @@ export class ListaLeiturasComponent implements OnInit, OnDestroy {
       return;
     }
 
-    // Filtra leituras do estado selecionado e ordena por data
     const leiturasEstado = this.leituras
       .filter(l => l.estado?.id === this.filtroEstadoId)
       .sort((a, b) => new Date(a.data_registro).getTime() - new Date(b.data_registro).getTime());
@@ -116,7 +138,6 @@ export class ListaLeiturasComponent implements OnInit, OnDestroy {
       return;
     }
 
-    // Calcula médias simples para valores extraido e corrigido
     const valorExtraidoTotal = leiturasEstado.reduce((acc, cur) => acc + cur.valor_extraido, 0);
     const valorCorrigidoTotal = leiturasEstado.reduce((acc, cur) => acc + cur.valor_corrigido, 0);
     const custoEstimadoTotal = leiturasEstado.reduce((acc, cur) => acc + (cur.custo_total || 0), 0);
@@ -124,7 +145,6 @@ export class ListaLeiturasComponent implements OnInit, OnDestroy {
     const valorExtraidoMedia = valorExtraidoTotal / leiturasEstado.length;
     const valorCorrigidoMedia = valorCorrigidoTotal / leiturasEstado.length;
 
-    // Diferenças entre último e primeiro valor corrigido e custo estimado
     const primeiraLeitura = leiturasEstado[0];
     const ultimaLeitura = leiturasEstado[leiturasEstado.length - 1];
     const diferencaValorCorrigidoMedia = ultimaLeitura.valor_corrigido - primeiraLeitura.valor_corrigido;
@@ -143,8 +163,9 @@ export class ListaLeiturasComponent implements OnInit, OnDestroy {
     if (imagemUrl.startsWith('http://') || imagemUrl.startsWith('https://')) {
       return imagemUrl;
     }
-    return `${this.baseUrl}/media/leituras_imagens/${imagemUrl}`;
+    return `${this.baseUrl}${imagemUrl}`;
   }
+
 
   voltarParaUpload(): void {
     this.router.navigate(['/upload']);
@@ -157,7 +178,10 @@ export class ListaLeiturasComponent implements OnInit, OnDestroy {
           alert('Leitura removida com sucesso!');
           this.carregarLeituras();
         },
-        error: () => alert('Erro ao remover leitura.')
+        error: (err) => {
+          const errorMessage = err.error?.message || err.error?.detail || 'Erro ao remover leitura.';
+          alert(errorMessage);
+        }
       });
     }
   }

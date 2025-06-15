@@ -1,93 +1,83 @@
-<h2>Upload de Imagem do Contador</h2>
+<!-- HTML do seu componente de Upload -->
+<div class="upload-container">
+  <mat-card class="upload-card">
+    <mat-card-header>
+      <mat-card-title class="upload-title">Upload de Imagem do Contador</mat-card-title>
+    </mat-card-header>
 
-<div style="text-align: center; margin-bottom: 20px;">
-  <img src="qrcode.png" alt="QR Code" style="width: 180px; height: 180px;" />
-  <p>Escaneie este QR Code para dispositivos móveis para abrir a página.</p>
-</div>
+    <mat-card-content>
+      <div class="qr-section">
+        <img src="/qrcode.png" alt="QR Code" class="qr-code-img" />
+        <p>Escaneie para abrir em dispositivos móveis.</p>
+      </div>
 
-<div style="margin-bottom: 20px;">
-  <input type="file" accept="image/*" capture="environment" (change)="onFileSelected($event)" />
-</div>
+      <div class="upload-actions">
+        <!-- Input de arquivo estilizado (opcional, mas recomendado) -->
+        <label for="file-upload" class="file-upload-label">
+          <mat-icon>attach_file</mat-icon>
+          Selecionar Imagem
+        </label>
+        <input id="file-upload" type="file" accept="image/*" capture="environment" (change)="onFileSelected($event)" class="file-input-hidden" />
+      </div>
 
-<div *ngIf="imagemPreviewUrl" style="margin-bottom: 20px; text-align:center;">
-  <img [src]="imagemPreviewUrl" alt="Preview da Imagem" style="max-width: 100%; max-height: 300px; border-radius: 6px; box-shadow: 0 0 8px rgba(0,0,0,0.2);" />
-</div>
+      <div *ngIf="imagemPreviewUrl" class="image-preview-container">
+        <img [src]="imagemPreviewUrl" alt="Preview da Imagem" class="image-preview" />
+      </div>
 
-<div style="margin-bottom: 20px;">
-  <button (click)="processarOCR()" [disabled]="!imagemSelecionada" class="btn btn-secondary">
-    Processar OCR
-  </button>
-</div>
+      <button mat-raised-button
+              class="ocr-action-button"
+              (click)="processarOCR()"
+              [disabled]="!imagemSelecionada">
+        Processar OCR
+      </button>
 
-<div *ngIf="mensagem" style="color: red; margin-bottom: 15px;">
-  {{ mensagem }}
-</div>
+      <div *ngIf="mensagem" class="error-message">
+        {{ mensagem }}
+      </div>
 
-<div *ngIf="textoOCR" style="margin-bottom: 20px;">
-  <h4>Texto extraído do OCR:</h4>
-  <pre>{{ textoOCR }}</pre>
-</div>
+      <div *ngIf="textoOCR" class="ocr-result">
+        <h4>Texto extraído:</h4>
+        <pre>{{ textoOCR }}</pre>
+      </div>
 
-<p *ngIf="valorExtraido !== null" style="margin-bottom: 20px;">
-  Valor extraído: <strong>{{ valorExtraido }}</strong> kWh
-</p>
+      <p *ngIf="valorExtraido !== null" class="ocr-result-value">
+        Valor extraído: <strong>{{ valorExtraido }}</strong> kWh
+      </p>
 
-<div *ngIf="podeMostrarBotaoSalvar" style="margin-bottom: 20px;">
-  <label>Corrija o valor se necessário:</label>
-  <input type="number" [(ngModel)]="valorCorrigido" />
-</div>
+      <!-- Formulário para salvar -->
+      <form class="form-ocr" (ngSubmit)="salvarLeitura()" #form="ngForm" *ngIf="podeMostrarBotaoSalvar">
 
-<form (ngSubmit)="salvarLeitura()" #form="ngForm" style="max-width: 400px; margin: auto;">
-  <div style="margin-bottom: 10px;">
-    <label for="estado">Estado:</label>
-    <select
-      id="estado"
-      [ngModel]="estadoSelecionadoId"
-      (ngModelChange)="estadoSelecionadoId = $event === '' ? null : +$event"
-      name="estado"
-      required
-      style="width: 100%; padding: 5px;"
-    >
-      <option value="" disabled selected>Selecione um estado</option>
-      <option *ngFor="let estado of estados" [value]="estado.id">{{ estado.nome }}</option>
-    </select>
-  </div>
+        <mat-form-field appearance="outline">
+          <mat-label>Corrija o valor se necessário:</mat-label>
+          <input matInput type="number" [(ngModel)]="valorCorrigido" name="valorCorrigido" />
+        </mat-form-field>
 
-  <div style="margin-bottom: 10px;">
-    <label for="bandeira">Bandeira:</label>
-    <select
-      id="bandeira"
-      [ngModel]="bandeiraSelecionadaId"
-      (ngModelChange)="bandeiraSelecionadaId = $event === '' ? null : +$event"
-      name="bandeira"
-      required
-      style="width: 100%; padding: 5px;"
-    >
-      <option value="" disabled selected>Selecione uma bandeira</option>
-      <option *ngFor="let bandeira of bandeiras" [value]="bandeira.id">
-        {{ bandeira.cor }} - {{ bandeira.descricao }}
-      </option>
-    </select>
-  </div>
+        <mat-form-field appearance="outline">
+          <mat-label>Estado:</mat-label>
+          <mat-select [(ngModel)]="estadoSelecionadoId" name="estado" required>
+            <mat-option *ngFor="let estado of estados" [value]="estado.id">{{ estado.nome }}</mat-option>
+          </mat-select>
+        </mat-form-field>
 
-  <div style="margin-bottom: 20px;">
-    <label>
-      <input type="checkbox" [(ngModel)]="tarifaSocial" name="tarifaSocial" />
-      Tarifa Social
-    </label>
-  </div>
+        <mat-form-field appearance="outline">
+          <mat-label>Bandeira:</mat-label>
+          <mat-select [(ngModel)]="bandeiraSelecionadaId" name="bandeira" required>
+            <mat-option *ngFor="let bandeira of bandeiras" [value]="bandeira.id">
+              {{ bandeira.cor }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
 
-  <button
-    type="submit"
-    *ngIf="podeMostrarBotaoSalvar"
-    [disabled]="!podeSalvar"
-    class="btn btn-success"
-    style="width: 100%;"
-  >
-    Salvar Leitura
-  </button>
-</form>
+        <mat-checkbox [(ngModel)]="tarifaSocial" name="tarifaSocial">Aplicar Tarifa Social</mat-checkbox>
 
-<div style="text-align: center; margin-top: 20px;">
-  <button (click)="irParaLeituras()" class="btn btn-info">Ir para Lista de Leituras</button>
+        <button mat-raised-button
+                type="submit"
+                class="ocr-action-button"
+                [disabled]="!podeSalvar"
+                style="margin-top: 20px;">
+          Salvar Leitura
+        </button>
+      </form>
+    </mat-card-content>
+  </mat-card>
 </div>

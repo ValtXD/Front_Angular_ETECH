@@ -1,26 +1,64 @@
-import { Routes } from '@angular/router';
+// src/app/routes.ts
+
+import { inject } from '@angular/core';
+import { Router, Routes } from '@angular/router';
+
 import { LayoutComponent } from './layout/layout.component';
 import { HomeComponent } from './pages/home/home.component';
+import { RegisterComponent } from './register/register.component';
+import { LoginComponent } from './login/login.component';
+import { AuthGuard } from './services/auth.guard';
+
 import { CalcularComponent } from './calcular/calcular.component';
 import { ResultadosComponent } from './resultados/resultados.component';
 import { MonitoramentoComponent } from './monitoramento/monitoramento.component';
-import { ConsumoMensalCalcularComponent } from './consumo-mensal-calcular/consumo-mensal-calcular.component';
-import { ConsumoMensalListarComponent } from './consumo-mensal-listar/consumo-mensal-listar.component';
-import { GraficoContadorComponent } from './grafico-contador/grafico-contador.component';
-import { UploadImagemComponent } from './upload-imagem/upload-imagem.component';
-import { ListaLeiturasComponent } from './lista-leituras/lista-leituras.component';
-import { LeituraQrComponent } from './leitura-qr/leitura-qr.component';
-import { UploadDocumentoComponent } from './upload-documento/upload-documento.component';
-import { ResultadosDocumentoComponent } from './resultados-documento/resultados-documento.component';
-import {HttpInterceptor} from '@angular/common/http';
-import { authGuard } from './services/auth.guard';
+import {ConsumoMensalListarComponent} from './consumo-mensal-listar/consumo-mensal-listar.component';
+import {GraficoContadorComponent} from './grafico-contador/grafico-contador.component';
+import {ConsumoMensalCalcularComponent} from './consumo-mensal-calcular/consumo-mensal-calcular.component';
+import {UploadImagemComponent} from './upload-imagem/upload-imagem.component';
+import {ListaLeiturasComponent} from './lista-leituras/lista-leituras.component';
+import {LeituraQrComponent} from './leitura-qr/leitura-qr.component';
+import {UploadDocumentoComponent} from './upload-documento/upload-documento.component';
+import {ResultadosDocumentoComponent} from './resultados-documento/resultados-documento.component';
+
+import { AuthCacheService } from './services/auth-cache.service';
 
 export const routes: Routes = [
   {
     path: '',
+    redirectTo: 'login',
+    pathMatch: 'full'
+  },
+  {
+    path: 'login',
+    component: LoginComponent,
+    canActivate: [() => {
+      const authService = inject(AuthCacheService);
+      const router = inject(Router);
+      if (authService.isLoggedIn()) {
+        return router.createUrlTree(['/home']);
+      }
+      return true;
+    }]
+  },
+  {
+    path: 'register',
+    component: RegisterComponent,
+    canActivate: [() => {
+      const authService = inject(AuthCacheService);
+      const router = inject(Router);
+      if (authService.isLoggedIn()) {
+        return router.createUrlTree(['/home']);
+      }
+      return true;
+    }]
+  },
+  {
+    path: '',
     component: LayoutComponent,
+    canActivate: [AuthGuard],
     children: [
-      { path: '', component: HomeComponent },
+      { path: 'home', component: HomeComponent },
 
       // Rotas originais dos aparelhos
       { path: 'calcular', component: CalcularComponent },
@@ -32,22 +70,17 @@ export const routes: Routes = [
       { path: 'consumo-mensal-listar', component: ConsumoMensalListarComponent },
       { path: 'grafico-contador', component: GraficoContadorComponent },
 
-      //Rotas de OCR
-      //{ path: '', redirectTo: 'upload', pathMatch: 'full' },
+      // Rotas de OCR
       { path: 'upload', component: UploadImagemComponent },
       { path: 'leituras', component: ListaLeiturasComponent },
-      //{ path: '**', redirectTo: 'upload' },
 
-      //Rotas de QrCode OCR Celular
+      // Rotas de QrCode OCR Celular
       { path: 'leitura-qr', component: LeituraQrComponent },
 
-      //Rotas Login_Cadastro_Django
-
-      //Rotas do Leitura_Documento
+      // Rotas do Leitura_Documento
       { path: 'upload-documento', component: UploadDocumentoComponent },
       { path: 'resultados-documento', component: ResultadosDocumentoComponent },
-
     ]
   },
-  { path: '**', redirectTo: '' }
+  { path: '**', redirectTo: 'login' }
 ];

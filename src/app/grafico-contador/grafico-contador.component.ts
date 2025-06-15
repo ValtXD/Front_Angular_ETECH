@@ -19,11 +19,8 @@ Chart.register(...registerables);
     MatCardTitle,
     MatRadioGroup,
     FormsModule,
-    MatRadioButton,
-    MatCardActions,
-    MatButton
   ],
-  styleUrls: ['./grafico-contador.component.css']
+  styleUrls: ['./grafico-contador.component.scss']
 })
 export class GraficoContadorComponent implements OnInit {
   chart: Chart | undefined;

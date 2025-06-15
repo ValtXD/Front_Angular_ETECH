@@ -103,7 +103,6 @@ export class ResultadosComponent implements OnInit {
     this.modalAberto = true;
     this.loadingDica = true;
     this.dicaGerada = '';
-
     const dadosParaIA = this.aparelhosDia.map(ap => ({
       nome: ap.nome,
       ambiente: ap.ambiente?.nome,
@@ -112,7 +111,6 @@ export class ResultadosComponent implements OnInit {
       consumo_diario_kwh: ap.consumo_diario_kwh,
       custo_diario: ap.custo_diario
     }));
-
     const mensagem = `
   Aqui estão os dados de consumo energético atuais para análise:
 
@@ -132,7 +130,7 @@ export class ResultadosComponent implements OnInit {
   Escreva de forma clara e objetiva, em português, para usuários comuns.
   `;
 
-    this.api.gerarDicaIA(mensagem).subscribe({
+    this.api.gerarDicaIA(mensagem).subscribe({ // Usa ApiService para gerar a dica
       next: res => {
         this.loadingDica = false;
         const texto = res?.candidates?.[0]?.content?.parts?.[0]?.text || 'Nenhuma dica gerada.';

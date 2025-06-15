@@ -1,225 +1,78 @@
-@use "sass:color";
 
-$background-page: #5ca88c;
-$card-background: #c6f1e1;
-$text-dark: #333;
-$text-medium: #666;
-$link-color: #42a5f5;
-$button-background: #044e2d;
-$button-text-color: #05251c;
-$input-background-color: #ffffff;
-$input-border-color: #e0e0e0;
-$input-focus-border: #26a69a;
-$error-color: #d32f2f;
-$error-background: #ffebee;
-$error-text-color: #d32f2f;
 
-:host {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-  background-color: $background-page;
-  padding: 20px;
-  box-sizing: border-box;
-  font-family: 'Roboto', sans-serif;
+.auth-container h2 {
+  color: #333;
+  margin-bottom: 25px;
+  font-size: 1.8em;
 }
 
-.login-card {
-  width: 450px;
-  max-width: 95%;
-  padding: 40px 30px;
-  border-radius: 15px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-  background-color: $card-background;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-}
-
-.logo-section {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+.form-group {
   margin-bottom: 20px;
-  width: 100%;
+  text-align: left;
 }
 
-.app-logo {
-  height: auto;
-  width: 450px;
-  max-width: 80%;
-  user-select: none;
-  padding: 5px;
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  color: #555;
+  font-weight: bold;
 }
 
-.login-form {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  gap: 18px;
-}
-
-.mat-form-field {
-  width: 100%;
-}
-
-.mat-error {
-  font-size: 0.8em;
-  color: $error-text-color;
-  background-color: $error-background;
-  padding: 8px 12px;
-  border-radius: 4px;
-  text-align: center;
-  position: relative;
-  margin-top: 5px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-  max-width: max-content;
-  align-self: flex-start;
-  left: 0;
-  transform: translateY(-10px);
-
-  &::before {
-    content: '';
-    position: absolute;
-    bottom: -8px;
-    left: 15px;
-    width: 0;
-    height: 0;
-    border-left: 8px solid transparent;
-    border-right: 8px solid transparent;
-    border-top: 8px solid $error-background;
-  }
-}
-
-.options-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 5px;
-  margin-bottom: 10px;
-
-  mat-checkbox {
-    .mdc-form-field__label {
-      font-size: 0.9em;
-      color: $text-medium;
-    }
-  }
-
-  .forgot-password-link {
-    color: $link-color;
-    text-decoration: none;
-    font-size: 0.9em;
-    font-weight: 500;
-    transition: color 0.2s ease;
-
-    &:hover {
-      color: darken($link-color, 8%);
-      text-decoration: underline;
-    }
-  }
-}
-
-.error-message {
-  padding: 10px 15px;
-  border-radius: 4px;
-  font-size: 0.9em;
-  text-align: center;
-  width: 100%;
+.form-group input {
+  width: calc(100% - 20px);
+  padding: 12px 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 1em;
   box-sizing: border-box;
-  margin-top: 10px;
-  color: $error-color;
-  background-color: color.adjust($error-color, $lightness: 30%);
-  border: 1px solid $error-color;
 }
 
-button[type="submit"] {
-  background-color: $button-background;
-  color: $button-text-color;
-  height: 50px;
+.form-group input:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+.auth-button {
+  background-color: #007bff;
+  color: white;
+  padding: 12px 25px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
   font-size: 1.1em;
-  font-weight: 600;
-  border-radius: 8px;
+  transition: background-color 0.2s ease-in-out;
   width: 100%;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-
-  &:disabled {
-    background-color: color.adjust($button-background, $lightness: 20%);
-    color: rgba($button-text-color, 0.6);
-    cursor: not-allowed;
-    box-shadow: none;
-  }
-
-  &:hover:not(:disabled) {
-    background-color: color.adjust($button-background, $lightness: -10%);
-  }
-
-  mat-icon {
-    font-size: 20px;
-    width: 20px;
-    height: 20px;
-    color: $button-text-color;
-  }
 }
 
-.register-link {
+.auth-button:hover {
+  background-color: #0056b3;
+}
+
+.message {
+  margin-top: 20px;
+  font-weight: bold;
+}
+
+.message.success {
+  color: #28a745;
+}
+
+.message.error {
+  color: #dc3545;
+}
+
+.mt-2 {
+  margin-top: 15px;
   font-size: 0.9em;
-  color: $text-medium;
-  margin-top: 25px;
-
-  a {
-    color: $link-color;
-    text-decoration: none;
-    font-weight: 500;
-    &:hover {
-      text-decoration: underline;
-    }
-  }
+  color: #666;
 }
 
-.footer-links {
-  font-size: 0.8em;
-  color: $text-medium;
-  margin-top: 30px;
-  line-height: 1.5;
-
-  a {
-    color: $link-color;
-    text-decoration: none;
-    transition: color 0.2s ease;
-
-    &:hover {
-      color: darken($link-color, 8%);
-      text-decoration: underline;
-    }
-  }
+.mt-2 a {
+  color: #007bff;
+  text-decoration: none;
 }
 
-@media (max-width: 600px) {
-  .login-card {
-    padding: 30px 20px;
-  }
-  .logo-section {
-    margin-bottom: 20px;
-  }
-  .app-logo {
-    width: 200px;
-  }
-  .options-row {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 10px;
-  }
-  .forgot-password-link {
-    align-self: flex-end;
-  }
-  button[type="submit"] {
-    height: 45px;
-    font-size: 1em;
-  }
-  .footer-links {
-    font-size: 0.75em;
-    margin-top: 20px;
-  }
+.mt-2 a:hover {
+  text-decoration: underline;
 }

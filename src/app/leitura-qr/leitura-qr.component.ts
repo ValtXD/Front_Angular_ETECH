@@ -2,7 +2,6 @@ import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { OcrContadorQrService, Estado, Bandeira } from '../services/ocr-contador-qr.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { OcrContadorQrService, Estado, Bandeira } from '../services/ocr-contador-qr.service';
 import { Router } from '@angular/router';
 
 @Component({

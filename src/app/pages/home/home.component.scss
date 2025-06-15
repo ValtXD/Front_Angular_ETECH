@@ -1,394 +1,203 @@
-h1, h2, h3, h4, h5, h6 {
-  margin: 0;
-  line-height: 1.2;
-  color: #61a6ab; /* Roxo suave para os títulos, que se destacam no fundo claro */
-  text-align: center; /* Garante que o texto dentro do h1/h2 etc. esteja centralizado */
-}
-
-/* Estilos da seção principal do home */
-.main-content-home {
-  padding: 80px 20px; /* Mais padding para a seção principal */
-  background-color: #ffffff; /* Mantém o fundo claro da paleta */
-  color: #363C3F; /* Cor de texto padrão para esta seção */
-  min-height: calc(100vh - 70px); /* Ajusta a altura mínima considerando a navbar */
-  display: flex;
-  flex-direction: column;
-  align-items: center; /* Centraliza os itens filhos horizontalmente */
-  justify-content: flex-start; /* Alinha ao topo */
-  text-align: center; /* Centraliza o texto e inline-block elements dentro de main-content-home */
-}
-
-.hero-section {
-  display: flex;
-  flex-direction: column; /* Conteúdo em coluna */
-  align-items: center; /* Centraliza os itens filhos de hero-section horizontalmente */
-  justify-content: center;
-  max-width: 900px; /* Largura para o conteúdo principal */
-  margin: 0 auto; /* Centraliza o próprio hero-section dentro de seu pai */
-  background-color: transparent; /* Transparente para usar o fundo do .main-content-home */
-  border-radius: 0;
-  box-shadow: none;
-  padding: 0;
-  gap: 30px; /* Espaço entre elementos */
-}
-
-.hero-text {
-  text-align: center; /* Centraliza o texto dentro do hero-text (h1 e p) */
-  padding: 0 20px; /* Padding horizontal */
-}
-
-.hero-text h1 {
-  font-size: 4.5em; /* Título bem grande e impactante */
-  color: #264e51; /* Roxo suave para o título principal */
-  margin-bottom: 25px;
-  line-height: 1.1;
-  font-weight: 800; /* Super negrito */
-  letter-spacing: -0.04em; /* Espaçamento entre letras ajustado */
-  max-width: 750px; /* **NOVO:** Adicionado um max-width para tentar melhorar a quebra de linha visual */
-  margin-left: auto; /* Para garantir centralização com max-width */
-  margin-right: auto; /* Para garantir centralização com max-width */
-}
-
-.hero-text p {
-  font-size: 1.6em; /* Parágrafo grande e legível */
-  color: #4F8299; /* Azul acinzentado para o parágrafo */
-  line-height: 1.5;
-  margin-bottom: 60px;
-  max-width: 700px; /* Limita a largura do parágrafo */
-  margin-left: auto; /* Para garantir centralização com max-width */
-  margin-right: auto; /* Para garantir centralização com max-width */
-  text-align: center; /* Garante que o texto do parágrafo esteja centralizado */
-}
-
-.btn-action {
-  display: inline-block; /* Importante para que text-align: center do pai funcione */
-  background-color: #18CCC8; /* Ciano vibrante para o botão principal, chamativo e tecnológico */
-  color: #363C3F; /* Texto cinza escuro para contraste forte no botão */
-  padding: 20px 50px; /* Padding grande para um botão principal */
-  border-radius: 10px;
-  text-decoration: none;
-  font-weight: 700;
-  font-size: 1.3em;
-  transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
-  box-shadow: 0 8px 20px rgba(24, 204, 200, 0.4); /* Sombra suave do ciano do botão */
-  letter-spacing: 0.05em;
-}
-
-.btn-action:hover {
-  background-color: #4F8299; /* Azul acinzentado no hover, um pouco mais sóbrio mas harmonioso */
-  transform: translateY(-4px); /* Efeito de elevação mais notável */
-  box-shadow: 0 12px 25px rgba(79, 130, 153, 0.5); /* Sombra mais intensa no hover */
-}
-
-.hero-image {
-  margin-top: 60px; /* Espaço entre o botão e a imagem */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.hero-image .logo-img {
-  max-width: 300px; /* Ajuste o tamanho da imagem da lâmpada/logo */
-  height: auto;
-  filter: drop-shadow(0 0 20px rgba(24, 204, 200, 0.4)); /* Brilho suave na imagem com o tom ciano */
-  animation: pulse 2s infinite alternate; /* Animação sutil de pulso */
-}
-
-@keyframes pulse {
-  from { transform: scale(1); opacity: 0.9; }
-  to { transform: scale(1.03); opacity: 1; }
-}
-
-/* -------------------- Responsividade da Home -------------------- */
-@media (max-width: 992px) {
-  .main-content-home {
-    padding: 60px 15px;
-  }
-  .hero-text h1 {
-    font-size: 3.5em;
-    max-width: 100%; /* Ajuste para responsividade */
-  }
-  .hero-text p {
-    font-size: 1.3em;
-    max-width: 100%; /* Ajuste para responsividade */
-  }
-  .btn-action {
-    padding: 18px 40px;
-    font-size: 1.2em;
-  }
-  .hero-image {
-    margin-top: 40px;
-  }
-}
-
-@media (max-width: 768px) {
-  .hero-text h1 {
-    font-size: 2.8em;
-  }
-  .hero-text p {
-    font-size: 1.1em;
-    margin-bottom: 40px;
-  }
-  .btn-action {
-    padding: 16px 35px;
-    font-size: 1.1em;
-  }
-  .hero-image .logo-img {
-    max-width: 250px;
-  }
-}
-
-@media (max-width: 600px) {
-  .main-content-home {
-    padding: 40px 10px;
-  }
-  .hero-text h1 {
-    font-size: 2em;
-  }
-  .hero-text p {
-    font-size: 0.95em;
-    margin-bottom: 30px;
-  }
-  .btn-action {
-    padding: 14px 30px;
-    font-size: 1em;
-  }
-  .hero-image {
-    margin-top: 30px;
-  }
-  .hero-image .logo-img {
-    max-width: 200px;
-  }
-}
-
-
-.card {
-  background-color: #f0f0f0;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  padding: 20px;
-  text-align: center;
-  margin-bottom: 30px;
-}
-
-.card h1 {
-  color: #333;
-  margin-bottom: 10px;
-}
-
-.card p {
-  color: #666;
-  font-size: 1.1em;
-}
-
 .ai-tips-section {
-  margin-top: 30px;
-  padding: 20px;
-  background-color: #fff;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  text-align: center;
+  margin: 24px;
 }
 
 .ai-tips-section h2 {
-  color: #333;
-  margin-bottom: 20px;
+  font-weight: 600;
+  margin-bottom: 16px;
+  color: #000000; /* cor primária material */
 }
 
+.empty-message {
+  font-style: italic;
+  color: #777;
+  padding: 8px;
+}
+
+/* ===== CARDS ===== */
 .tip-cards-container {
-  display: flex; /* Para alinhar os cards lado a lado */
-  flex-wrap: wrap; /* Para quebrar a linha se não houver espaço */
-  gap: 20px; /* Espaço entre os cards */
-  justify-content: center; /* Centraliza os cards */
-  padding: 10px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
 }
 
 .tip-card {
-  background-color: #eaf7ed; /* Um verde claro */
-  border: 1px solid #d4edda;
-  border-radius: 8px;
-  padding: 15px;
-  width: 280px; /* Largura fixa para os cards */
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
   cursor: pointer;
-  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between; /* Espaçamento para o botão de remover */
-  align-items: flex-start;
-  text-align: left;
-  position: relative; /* Para posicionar o botão de remover */
+  padding: 16px;
+  border-radius: 12px;
+  background: #fafafa;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .tip-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.15);
 }
 
 .tip-card h3 {
-  color: #28a745; /* Verde mais escuro */
-  margin-top: 0;
-  margin-bottom: 10px;
-  font-size: 1.2em;
+  margin: 0 0 8px 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: #333;
 }
 
-.tip-card p.tip-preview {
+.tip-preview {
   color: #555;
-  font-size: 0.9em;
-  line-height: 1.4;
-  flex-grow: 1; /* Faz o parágrafo ocupar o espaço restante */
+  font-size: 14px;
 }
 
 .tip-card small {
-  color: #888;
-  font-size: 0.75em;
-  display: block; /* Para a data ficar em sua própria linha */
-  margin-top: 10px;
+  display: block;
+  color: #999;
+  margin-top: 8px;
 }
 
 .delete-button-card {
-  background-color: #dc3545;
+  margin-top: 8px;
+  background: #e57373;
   color: white;
   border: none;
-  padding: 6px 10px;
-  border-radius: 5px;
+  border-radius: 4px;
+  padding: 4px 8px;
+  font-size: 12px;
   cursor: pointer;
-  font-size: 0.8em;
-  margin-top: 10px; /* Espaço acima do botão */
-  align-self: flex-end; /* Alinha o botão à direita dentro do card */
-  position: absolute; /* Para posicionar no canto superior direito */
-  top: 10px;
-  right: 10px;
+  transition: background 0.2s ease;
 }
 
 .delete-button-card:hover {
-  background-color: #c82333;
+  background: #d32f2f;
 }
 
-
-/* Modal Styles */
+/* ===== MODAL (AJUSTADO PARA SCROLL) ===== */
 .modal-overlay {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.6);
+  inset: 0;
+  background: rgba(0, 0, 0, 0.7);
   display: flex;
-  justify-content: center;
-  align-items: center;
+  align-items: flex-start; /* Alinha o modal no topo */
+  justify-content: center;  /* Mantém a centralização horizontal */
+  padding-top: 10vh;      /* Adiciona um espaço de 10% da altura da tela no topo */
+  overflow-y: auto;       /* Garante que, se o modal for maior que a tela, a página possa rolar */
   z-index: 1000;
-  animation: fadeIn 0.3s ease-out; /* Animação para o overlay */
 }
 
 .modal-content {
-  background-color: #ffffff;
-  border-radius: 8px;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  background: #fff;
+  border-radius: 12px;
+  max-width: 600px; /* Largura máxima do modal */
   width: 90%;
-  max-width: 600px;
-  max-height: 80vh; /* Limita a altura do modal */
-  display: flex;
-  flex-direction: column;
-  overflow: hidden; /* Garante que o conteúdo não vaze */
+  max-height: 80vh; /* Altura máxima (80% da altura da tela) */
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+  animation: fadeInModal 0.3s ease-out;
+  display: flex; /* Habilita flexbox */
+  flex-direction: column; /* Organiza os itens filhos em coluna */
+  overflow: hidden; /* Garante que os cantos arredondados sejam respeitados */
+}
 
-  /* Animação para o modal deslizar da esquerda */
-  transform: translateX(-100%); /* Começa fora da tela à esquerda */
-  animation: slideInFromLeft 0.4s forwards ease-out;
+@keyframes fadeInModal {
+  from {
+    opacity: 0;
+    transform: translateY(-20px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
 }
 
 .modal-header {
-  padding: 15px 20px;
-  border-bottom: 1px solid #eee;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #f8f8f8;
+  border-bottom: 1px solid #e0e0e0;
+  padding: 16px 24px;
+  flex-shrink: 0; /* Impede que o cabeçalho encolha */
 }
 
 .modal-header h2 {
   margin: 0;
-  color: #333;
-  font-size: 1.5em;
+  font-size: 20px;
+  font-weight: 600;
+  color: #000000;
 }
 
 .close-button {
-  background: none;
+  background: transparent;
   border: none;
-  font-size: 2em;
+  font-size: 24px;
   cursor: pointer;
-  color: #aaa;
-  line-height: 1; /* Para alinhar melhor o 'x' */
+  color: #555;
+  transition: color 0.2s ease;
 }
 
 .close-button:hover {
-  color: #666;
+  color: #000;
 }
 
 .modal-body {
-  padding: 20px;
-  overflow-y: auto; /* Adiciona scroll se o conteúdo for muito longo */
-  flex-grow: 1; /* Ocupa o máximo de espaço vertical */
-  text-align: left;
+  font-size: 15px;
+  color: #444;
+  line-height: 1.6;
+  padding: 16px 24px;
+  overflow-y: auto; /* ★ A MÁGICA ACONTECE AQUI: Adiciona scroll vertical apenas no corpo do modal */
+  flex-grow: 1; /* Permite que o corpo ocupe o espaço disponível */
 }
 
 .modal-body p {
-  color: #444;
-  line-height: 1.6;
-  margin-bottom: 15px;
-}
-
-.modal-body small {
-  display: block;
-  color: #777;
-  font-size: 0.9em;
+  margin: 0 0 12px 0;
 }
 
 .modal-footer {
-  padding: 15px 20px;
-  border-top: 1px solid #eee;
   display: flex;
-  justify-content: center; /* Centraliza os botões */
-  gap: 15px; /* Espaço entre os botões */
-  background-color: #f8f8f8;
+  justify-content: flex-end;
+  gap: 8px;
+  padding: 16px 24px;
+  border-top: 1px solid #e0e0e0;
+  flex-wrap: wrap;
+  flex-shrink: 0; /* Impede que o rodapé encolha */
 }
 
 .nav-button, .delete-button {
-  background-color: #007bff;
-  color: white;
+  background-color: rgb(103, 135, 96) !important;
+  color: #fff;
   border: none;
-  padding: 10px 15px;
-  border-radius: 5px;
+  padding: 8px 16px;
+  border-radius: 4px;
   cursor: pointer;
-  font-size: 1em;
-  transition: background-color 0.2s ease-in-out;
+  font-size: 14px;
+  transition: background 0.2s ease;
 }
 
-.nav-button:hover, .delete-button:hover {
-  background-color: #0056b3;
+.nav-button:hover {
+  background-color: rgba(103, 135, 96, 0.56) !important;
 }
 
 .delete-button {
-  background-color: #dc3545; /* Vermelho para o botão de remover */
+  background: #e57373;
 }
 
 .delete-button:hover {
-  background-color: #c82333;
+  background: #d32f2f;
 }
 
 .nav-button:disabled {
-  background-color: #cccccc;
+  background: #bbb;
   cursor: not-allowed;
 }
 
-/* Animações */
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+/* ===== RESPONSIVO ===== */
+@media (max-width: 480px) {
+  .modal-content {
+    width: 95%;
+    max-height: 90vh;
+  }
+  .modal-header, .modal-body, .modal-footer {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+  .modal-footer {
+    flex-direction: column;
+    align-items: stretch;
+  }
 }
-
-@keyframes slideInFromLeft {
-  from { transform: translateX(-100%); opacity: 0; }
-  to { transform: translateX(0); opacity: 1; }
-}
-

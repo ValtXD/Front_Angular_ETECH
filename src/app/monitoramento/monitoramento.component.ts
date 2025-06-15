@@ -82,14 +82,18 @@ export class MonitoramentoComponent implements OnInit {
           label: (context: TooltipItem<'line'>) => {
             // Acessa nosso dataset customizado de forma segura
             const customDataset = context.dataset as CustomChartDataset;
-            const extras = customDataset.dadosExtras?.[context.dataIndex]; // Access dadosExtras
+            const extras = customDataset.dadosExtras?.[context.dataIndex];
 
-            let label = `${dataset.label}: ${context.formattedValue}`;
-            if (extras) {
+            // Formata o label principal (Ex: "Consumo Diário (kWh): 15.2")
+            let label = `${context.dataset.label}: ${context.formattedValue}`;
+
+            // Adiciona a lista de aparelhos se existirem
+            if (extras && extras.aparelhos && extras.aparelhos.length > 0) {
+              // Adiciona uma quebra de linha e a lista de aparelhos
               label += `\nAparelhos: ${extras.aparelhos.join(', ')}`;
             }
             return label;
-          }
+          },
         }
       }
     },
@@ -224,7 +228,10 @@ export class MonitoramentoComponent implements OnInit {
     this.carregarDados();
   }
 
-  onModoChange() {
+  // Chamado quando o usuário muda o modo (Diário / 30 dias)
+  onModoChange(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    this.modo = input.value as 'diario' | '30dias';
     this.carregarDados();
   }
 
