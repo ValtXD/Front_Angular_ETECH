@@ -1,104 +1,122 @@
-import {Component, HostListener, ViewChild} from '@angular/core';
-import { MatSidenav } from '@angular/material/sidenav';
-import { MatSidenavModule } from '@angular/material/sidenav';
+import { Component, HostListener, ViewChild, AfterViewInit } from '@angular/core';
+import { Router, RouterModule } from '@angular/router';
+import { CommonModule } from '@angular/common';
+
+// Imports do Angular Material
+import { MatSidenav, MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatListModule } from '@angular/material/list';
 import { MatExpansionModule } from '@angular/material/expansion';
-import { RouterModule } from '@angular/router';
-import {SidenavMenuComponent} from '../sidenav-menu/sidenav-menu.component';
 
+// Imports de Serviços e Componentes Personalizados
+import { AuthService } from '../services/auth.service'; // Ajuste o caminho se necessário
 
-
-import { Component } from '@angular/core';
-import { RouterModule, Router } from '@angular/router';
-import { CommonModule } from '@angular/common';
-import { AuthService } from '../services/auth.service'; // ajuste o caminho se necessário
 
 @Component({
   selector: 'app-layout',
   templateUrl: './layout.component.html',
-  styleUrls: ['./layout.component.css'],
+  styleUrls: ['./layout.component.scss'], // Unificado para usar SCSS
   standalone: true,
   imports: [
+    // Módulos do Angular
+    CommonModule,
+    RouterModule,
+
+    // Módulos do Angular Material
     MatSidenavModule,
     MatToolbarModule,
     MatIconModule,
     MatButtonModule,
     MatListModule,
     MatExpansionModule,
-    RouterModule,
-    SidenavMenuComponent,
-  ]
-  styleUrls: ['./layout.component.scss'],
-  imports: [RouterModule, CommonModule]
+
+
+  ],
 })
-export class LayoutComponent {
+export class LayoutComponent implements AfterViewInit {
+  // ViewChild para obter a referência do componente sidenav no template
   @ViewChild('sidenav') sidenav!: MatSidenav;
 
-  isSidenavMini: boolean = false; // Propriedade para controlar o estado mini do sidenav
+  // Controla se o sidenav está no modo "mini" (recolhido)
+  isSidenavMini: boolean = false;
 
-  // Define o estado de abertura inicial do sidenav em desktop.
-  // Se quiser que ele comece no modo MINI em desktop, mude para 'false'.
+  // Define se o sidenav deve começar aberto ou fechado em desktops
   private isSidenavOpenOnDesktopInitially: boolean = true;
 
-  constructor() {}
+  /**
+   * Construtor para injetar os serviços necessários.
+   * @param authService - Serviço para gerenciar a autenticação do usuário.
+   * @param router - Serviço para gerenciar a navegação entre rotas.
+   */
+  constructor(private authService: AuthService, private router: Router) {}
 
+  /**
+   * Hook do ciclo de vida chamado após a inicialização da view do componente.
+   * Ajusta o sidenav com base no tamanho inicial da tela.
+   */
+  ngAfterViewInit() {
+    // Garante que o código só execute no navegador, onde 'window' está disponível
+    if (typeof window !== 'undefined') {
+      this.adjustSidenavForScreenSize(window.innerWidth);
+    }
+  }
+
+  /**
+   * Listener que detecta o redimensionamento da janela do navegador.
+   * @param event - O evento de redimensionamento.
+   */
   @HostListener('window:resize', ['$event'])
   onResize(event: any) {
     this.adjustSidenavForScreenSize(event.target.innerWidth);
   }
 
-  ngAfterViewInit() {
-    this.adjustSidenavForScreenSize(window.innerWidth);
-  }
-
+  /**
+   * Ajusta o modo e o estado do sidenav com base na largura da tela.
+   * @param width - A largura atual da tela.
+   */
   private adjustSidenavForScreenSize(width: number) {
-    if (width < 768) { // Mobile/Tablet: Sidenav sempre 'over' e fechado
-      this.sidenav.mode = 'over';
+    if (width < 768) { // Telas de Mobile/Tablet
+      this.sidenav.mode = 'over'; // Sidenav flutua sobre o conteúdo
       this.sidenav.close();
-      this.isSidenavMini = false; // Não aplica modo mini em mobile
-    } else { // Desktop: Sidenav sempre 'side'
-      this.sidenav.mode = 'side';
-      // Garante que o sidenav esteja aberto para poder empurrar o conteúdo
+      this.isSidenavMini = false; // Modo mini não se aplica
+    } else { // Telas de Desktop
+      this.sidenav.mode = 'side'; // Sidenav empurra o conteúdo
       this.sidenav.open();
 
-      // Define o estado mini baseado na preferência inicial do desktop
-      if (this.isSidenavOpenOnDesktopInitially) {
-        this.isSidenavMini = false; // Inicia totalmente aberto
-      } else {
-        this.isSidenavMini = true; // Inicia no modo mini
-      }
+      // Define o estado inicial (aberto ou mini) para desktop
+      this.isSidenavMini = !this.isSidenavOpenOnDesktopInitially;
     }
   }
 
-  // MÉTODO ATUALIZADO PARA ALTERNAR ENTRE ABERTO E MINI (ou abrir/fechar em mobile)
-  toggleSidenavMini() {
-    if (this.sidenav.mode === 'over') { // Se estiver em mobile ('over' mode)
-      this.sidenav.toggle(); // Comportamento padrão de abrir/fechar completamente
-    } else { // Se estiver em desktop ('side' mode)
-      this.isSidenavMini = !this.isSidenavMini; // Alterna o estado mini
-      // Importante: No modo 'side', o sidenav deve permanecer 'opened' (aberto no TS)
-      // para continuar empurrando o conteúdo. A mudança visual é CSS.
-      // Se por algum motivo ele estiver fechado, reabra-o para aplicar o mini-estado.
-      if (!this.sidenav.opened) {
-        this.sidenav.open();
-      }
+  /**
+   * Alterna o estado do sidenav.
+   * Em mobile: abre/fecha completamente.
+   * Em desktop: alterna entre o modo completo e o modo "mini".
+   */
+  toggleSidenav() {
+    if (this.sidenav.mode === 'over') {
+      this.sidenav.toggle(); // Abre ou fecha em telas menores
+    } else {
+      this.isSidenavMini = !this.isSidenavMini; // Alterna o modo mini em desktops
     }
   }
 
-  // Método chamado quando um item no sidenav é clicado (útil para fechar em 'over' mode)
-  onSidenavClose() {
-    if (this.sidenav.mode === 'over') { // Fecha o sidenav APENAS se estiver em mobile
+  /**
+   * Chamado quando um item do menu é clicado.
+   * Fecha o sidenav se estiver no modo 'over' (mobile).
+   */
+  onSidenavItemClick() {
+    if (this.sidenav.mode === 'over') {
       this.sidenav.close();
     }
-    // Em modo 'side' (desktop), clicar em um item não afeta o estado aberto/mini.
   }
-}
-export class LayoutComponent {
-  constructor(private authService: AuthService, private router: Router) {}
 
+  /**
+   * Realiza o logout do usuário, limpa os dados de autenticação
+   * e redireciona para a página de login.
+   */
   logout() {
     this.authService.logout();
     this.router.navigate(['/login']);

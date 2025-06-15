@@ -1,71 +1,50 @@
-<mat-toolbar color="primary" class="top-toolbar">
-  <div class="logo-container logo-clickable" (click)="sidenav.toggle()">
-    <img src="/logo.png" alt="Logo Controla AI" class="logo-img" />
-<div class="menu">
-  <div class="top-menu">
-    <a routerLink="/app" routerLinkActive="active">Início</a>
-    <button (click)="logout()" class="logout-btn">Sair</button>
-  </div>
+<!--
+  O container principal que gerencia o Sidenav e a área de conteúdo.
+  A classe 'sidenav-container-main-area' ajuda a aplicar estilos globais, como altura total.
+-->
+<mat-sidenav-container class="sidenav-container">
 
-  <div class="dropdown">
-    <div class="dropdown-btn">Dispositivo</div>
-    <div class="dropdown-content">
-      <a routerLink="/app/calcular" routerLinkActive="active">Aparelho</a>
-      <a routerLink="/app/resultados" routerLinkActive="active">Resultados</a>
-      <a routerLink="/app/monitoramento" routerLinkActive="active">Gráficos</a>
-    </div>
-  </div>
+  <!--
+    O Sidenav (menu lateral).
+    #sidenav: Permite que o TypeScript acesse este componente via @ViewChild.
+    [mode]: Controla o comportamento (side, over, push). É definido dinamicamente no TS.
+    [opened]: Controla se o sidenav está visível. É definido no TS para telas grandes.
+    [class.sidenav-mini]="isSidenavMini": Aplica uma classe CSS quando o menu está no modo "mini",
+                                          permitindo estilizar o menu recolhido.
+  -
 
-  <div class="dropdown">
-    <div class="dropdown-btn">Contador</div>
-    <div class="dropdown-content">
-      <a routerLink="/app/consumo-mensal-calcular" routerLinkActive="active">Cadastrar Consumo</a>
-      <a routerLink="/app/consumo-mensal-listar" routerLinkActive="active">Resultados</a>
-      <a routerLink="/app/grafico-contador" routerLinkActive="active">Gráficos</a>
-    </div>
-  </div>
+.
+    -->
+    <mat-toolbar color="primary" class="top-toolbar">
+      <!--
+        Botão "hambúrguer" para abrir/fechar o Sidenav.
+        Chama o método toggleSidenav() definido no componente TS.
+      -->
+      <button mat-icon-button (click)="toggleSidenav()">
+        <mat-icon>menu</mat-icon>
+      </button>
 
-  <div class="dropdown">
-    <div class="dropdown-btn">Leitor OCR</div>
-    <div class="dropdown-content">
-      <a routerLink="/app/upload" routerLinkActive="active">Upload Imagem</a>
-      <a routerLink="/app/leituras" routerLinkActive="active">Lista Leituras</a>
-    </div>
-  </div>
+      <span>Meu App</span>
 
-  <div class="dropdown">
-    <div class="dropdown-btn">Leitor DOC</div>
-    <div class="dropdown-content">
-      <a routerLink="/app/upload-documento" routerLinkActive="active">Upload DOC</a>
-      <a routerLink="/app/resultados-documento" routerLinkActive="active">Resultado DOC</a>
-    </div>
-  </div>
+      <!-- Este spacer empurra os itens seguintes para a direita -->
+      <span class="toolbar-spacer"></span>
 
-  <span class="toolbar-spacer"></span>
+      <!-- Botão de Logout -->
+      <button mat-button (click)="logout()">
+        <mat-icon>logout</mat-icon>
+        <span>Sair</span>
+      </button>
+    </mat-toolbar>
 
-  <button mat-button class="logout-button">
-    <mat-icon>logout</mat-icon> Sair
-  </button>
-</mat-toolbar>
-
-<mat-sidenav-container class="sidenav-container-main-area">
-
-  <mat-sidenav #sidenav mode="side" [opened]="true" class="custom-sidenav">
-    <app-sidenav-menu (menuItemClicked)="onSidenavClose()"></app-sidenav-menu>
-  </mat-sidenav>
-
-  <mat-sidenav-content class="main-content-area-below-toolbar">
-    <div class="main-router-outlet-wrapper">
+    <!--
+      O container para o conteúdo das rotas.
+      É aqui que os componentes das suas páginas (Ex: home, dashboard, etc.) serão renderizados.
+      Deve haver apenas UM router-outlet principal em um layout.
+    -->
+    <main class="main-content-area-below-toolbar">
       <router-outlet></router-outlet>
-    </div>
-  </mat-sidenav-content>
+    </main>
+
+
 
 </mat-sidenav-container>
-<!-- Conteúdo principal -->
-<div class="content-container">
-  <router-outlet></router-outlet>
-</div>
-  <div class="container">
-    <router-outlet></router-outlet>
-  </div>
-</div>

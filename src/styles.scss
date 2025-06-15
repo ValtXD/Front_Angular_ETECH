@@ -6,25 +6,32 @@ body {
   background-color: #ffffff; /* Azul Marinho Profundo para o fundo geral do site */
   color: #4bf3ff; /* Turquesa Claríssimo para o texto padrão do body, garantindo excelente legibilidade */
   overflow-x: hidden; /* Evita scroll horizontal indesejado */
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+  html, body {
+    height: 100%;
+  }
 
-.mat-mdc-menu-panel {
-  background-color: rgb(95, 239, 251) !important;
-  border-radius: 8px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
-}
+  body {
+    margin: 0;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+  }
 
-h1, h2, h3, h4, h5, h6 {
-  margin: 0;
-  line-height: 1.2;
-  color: #00b9be; /* Ciano Vibrante para os títulos, um destaque moderno e chamativo */
-}
+  .mat-mdc-menu-panel {
+    background-color: rgb(95, 239, 251) !important;
+    border-radius: 8px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+  }
 
-/* Estilos globais para todos os parágrafos */
-p {
-  margin: 0;
-  color: #338c00; /* Azul Médio Escuro para os parágrafos, uma cor suave que complementa o fundo escuro */
-  text-align: center; /* Centraliza o texto de todos os parágrafos */
+  h1, h2, h3, h4, h5, h6 {
+    margin: 0;
+    line-height: 1.2;
+    color: #00b9be; /* Ciano Vibrante para os títulos, um destaque moderno e chamativo */
+  }
+
+  /* Estilos globais para todos os parágrafos */
+  p {
+    margin: 0;
+    color: #338c00; /* Azul Médio Escuro para os parágrafos, uma cor suave que complementa o fundo escuro */
+    text-align: center; /* Centraliza o texto de todos os parágrafos */
+  }
 }
 

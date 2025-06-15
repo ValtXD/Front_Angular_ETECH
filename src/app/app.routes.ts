@@ -1,6 +1,4 @@
 import { Routes } from '@angular/router';
-import { LoginComponent } from './login/login.component';
-import { RegisterComponent } from './register/register.component';
 import { LayoutComponent } from './layout/layout.component';
 import { HomeComponent } from './pages/home/home.component';
 import { CalcularComponent } from './calcular/calcular.component';
@@ -18,35 +16,38 @@ import {HttpInterceptor} from '@angular/common/http';
 import { authGuard } from './services/auth.guard';
 
 export const routes: Routes = [
-  // Redirecionamento padrão para login ou register
-  { path: '', redirectTo: 'login', pathMatch: 'full' },
-
-  // Rotas públicas
-  { path: 'login', component: LoginComponent },
-  { path: 'register', component: RegisterComponent },
-
-  // Rota pai protegida com guard
   {
-    path: 'app',
+    path: '',
     component: LayoutComponent,
-    canActivate: [authGuard],       // protege rota pai
-    canActivateChild: [authGuard],  // protege subrotas
     children: [
       { path: '', component: HomeComponent },
+
+      // Rotas originais dos aparelhos
       { path: 'calcular', component: CalcularComponent },
       { path: 'resultados', component: ResultadosComponent },
       { path: 'monitoramento', component: MonitoramentoComponent },
+
+      // Rotas do contador de energia
       { path: 'consumo-mensal-calcular', component: ConsumoMensalCalcularComponent },
       { path: 'consumo-mensal-listar', component: ConsumoMensalListarComponent },
       { path: 'grafico-contador', component: GraficoContadorComponent },
+
+      //Rotas de OCR
+      //{ path: '', redirectTo: 'upload', pathMatch: 'full' },
       { path: 'upload', component: UploadImagemComponent },
       { path: 'leituras', component: ListaLeiturasComponent },
+      //{ path: '**', redirectTo: 'upload' },
+
+      //Rotas de QrCode OCR Celular
       { path: 'leitura-qr', component: LeituraQrComponent },
+
+      //Rotas Login_Cadastro_Django
+
+      //Rotas do Leitura_Documento
       { path: 'upload-documento', component: UploadDocumentoComponent },
       { path: 'resultados-documento', component: ResultadosDocumentoComponent },
+
     ]
   },
-
-  // Rota curinga redirecionando para login
-  { path: '**', redirectTo: 'login' },
+  { path: '**', redirectTo: '' }
 ];
