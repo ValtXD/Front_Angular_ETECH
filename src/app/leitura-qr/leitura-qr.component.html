@@ -1,112 +1,73 @@
 <h2>Leitura via QR Code</h2>
 
-<div style="text-align: center; margin-bottom: 20px;">
-  <img src="qrcode.png" alt="QR Code" style="width: 180px; height: 180px;" />
-  <p>Escaneie este QR Code com outro dispositivo para abrir esta página.</p>
+<div style="text-align:center; margin-bottom:20px;">
+  <img src="qrcode2.png" alt="QR Code" style="width:180px; height:180px;">
+  <p>Escaneie este QR Code com outro dispositivo para abrir esta mesma página, recomenda-se, ver o restnate dos dados enviados no Computador.</p>
 </div>
 
-<!-- Botões para tirar foto e escolher arquivo -->
-<div style="margin-bottom: 20px;">
-  <label for="cameraInput" class="btn btn-primary" style="cursor: pointer; margin-right: 10px;">
-    Tirar Foto do Contador
-  </label>
-  <input
-    id="cameraInput"
-    type="file"
-    accept="image/*"
-    capture="environment"
-    (change)="onFileSelected($event)"
-    style="display: none;"
-  />
+<button (click)="abrirCamera()" class="btn btn-primary" style="margin-right: 10px;">Tirar Foto do Contador</button>
+<button (click)="abrirGaleria()" class="btn btn-secondary">Escolher Arquivo</button>
 
-  <label for="fileInput" class="btn btn-secondary" style="cursor: pointer;">
-    Escolher Arquivo
-  </label>
-  <input
-    id="fileInput"
-    type="file"
-    accept="image/*"
-    (change)="onFileSelected($event)"
-    style="display: none;"
-  />
+<input #cameraInput type="file" accept="image/*" capture="environment" (change)="onFileSelected($event)" hidden />
+<input #galleryInput type="file" accept="image/*" (change)="onFileSelected($event)" hidden />
+
+<div *ngIf="previewUrl" style="text-align:center; margin:20px 0;">
+  <img [src]="previewUrl" alt="Preview da Imagem" style="max-width:300px; max-height:300px; border:1px solid #ddd;" />
 </div>
 
-<!-- Preview da imagem -->
-<div *ngIf="previewUrl" style="text-align: center; margin-bottom: 20px;">
-  <img [src]="previewUrl" alt="Preview da Imagem" style="max-width: 300px; max-height: 300px; border: 1px solid #ddd;" />
-</div>
-
-<button (click)="processarOCR()" [disabled]="!imagemSelecionada" class="btn btn-secondary" style="margin-bottom: 20px;">
+<button (click)="processarOCR()" [disabled]="!imagemSelecionada" class="btn btn-secondary" style="margin-bottom:20px;">
   Processar OCR
 </button>
 
-<!-- Texto extraído do OCR -->
 <div style="margin-bottom: 20px;">
   <h4>Valor extraído pelo OCR:</h4>
-  <p *ngIf="valorExtraido !== null; else semValor">
-    {{ valorExtraido }} kWh
-  </p>
-  <ng-template #semValor>
-    <p><i>Nenhum valor extraído ainda.</i></p>
-  </ng-template>
+  <p *ngIf="valorExtraido !== null; else semValor">{{ valorExtraido }} kWh</p>
+  <ng-template #semValor><p><i>Nenhum valor extraído ainda.</i></p></ng-template>
 </div>
 
-<!-- Campo para corrigir o valor: aparece só se valorExtraido existir -->
 <div *ngIf="valorExtraido !== null" style="margin-bottom: 20px;">
-  <label>
-    Corrigir valor:
+  <label>Corrigir valor:
     <input type="number" [(ngModel)]="valorCorrigido" />
   </label>
 </div>
 
-<!-- Formulário de seleção de estado, bandeira e tarifa social -->
-<form (ngSubmit)="salvarLeitura()" style="max-width: 400px; margin: auto;">
-  <div style="margin-bottom: 10px;">
+<form (ngSubmit)="salvarLeitura()" style="max-width:400px; margin:auto;">
+  <div style="margin-bottom:10px;">
     <label for="estado">Estado:</label>
-    <select
-      id="estado"
-      [(ngModel)]="estadoSelecionadoId"
-      name="estado"
-      required
-      style="width: 100%; padding: 5px;"
-    >
-      <option value="" disabled>Selecione o estado</option>
+    <select id="estado" [(ngModel)]="estadoSelecionadoId" name="estado" required style="width:100%; padding:5px;">
+      <option value="" disabled>Selecione um estado</option>
       <option *ngFor="let e of estados" [value]="e.id">{{ e.nome }}</option>
     </select>
   </div>
 
-  <div style="margin-bottom: 10px;">
+  <div style="margin-bottom:10px;">
     <label for="bandeira">Bandeira:</label>
-    <select
-      id="bandeira"
-      [(ngModel)]="bandeiraSelecionadaId"
-      name="bandeira"
-      required
-      style="width: 100%; padding: 5px;"
-    >
+    <select id="bandeira" [(ngModel)]="bandeiraSelecionadaId" name="bandeira" required style="width:100%; padding:5px;">
       <option value="" disabled>Selecione a bandeira</option>
       <option *ngFor="let b of bandeiras" [value]="b.id">{{ b.cor }} - {{ b.descricao }}</option>
     </select>
   </div>
 
-  <div style="margin-bottom: 20px;">
+  <div style="margin-bottom:20px;">
     <label>
       <input type="checkbox" [(ngModel)]="tarifaSocial" name="tarifaSocial" />
       Tarifa Social
     </label>
   </div>
 
-  <button
-    type="button"
-    (click)="salvarLeitura()"
-    [disabled]="!podeSalvar"
-    class="btn btn-success"
-    style="width: 100%;"
-  >
-    Salvar Leitura
-  </button>
+  <button type="submit" [disabled]="!podeSalvar" class="btn btn-success" style="width:100%;">Salvar Leitura</button>
 </form>
 
-<div *ngIf="mensagem" style="color: red; margin-top: 15px; text-align: center;">
+<div *ngIf="mensagem" style="color:red; margin-top:15px; text-align:center;">
   {{ mensagem }}
+</div>
+
+---
+
+<div class="modal-overlay" *ngIf="showModal">
+  <div class="modal-content">
+    <h3>Sucesso!</h3>
+    <p>{{ modalMessage }}</p>
+    <button (click)="closeModal()" class="btn btn-primary">Entendi!</button>
+  </div>
 </div>

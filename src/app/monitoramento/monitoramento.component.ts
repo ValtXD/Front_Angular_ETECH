@@ -78,6 +78,7 @@ export class MonitoramentoComponent implements OnInit {
       tooltip: {
         enabled: true,
         callbacks: {
+<<<<<<< HEAD
           // --- FUNÇÃO DO TOOLTIP CORRIGIDA ---
           label: (context: TooltipItem<'line'>) => {
             // Acessa nosso dataset customizado de forma segura
@@ -90,10 +91,34 @@ export class MonitoramentoComponent implements OnInit {
             // Adiciona a lista de aparelhos se existirem
             if (extras && extras.aparelhos && extras.aparelhos.length > 0) {
               // Adiciona uma quebra de linha e a lista de aparelhos
+=======
+          label: (context: TooltipItem<'line'>) => {
+            const dataset = context.dataset as any;
+            const index = context.dataIndex;
+            const extras = dataset.dadosExtras?.[index]; // Access dadosExtras
+
+            let label = `${dataset.label}: ${context.formattedValue}`;
+            if (extras && extras.aparelhos && extras.aparelhos.length > 0) {
+>>>>>>> main
               label += `\nAparelhos: ${extras.aparelhos.join(', ')}`;
             }
             return label;
           },
+<<<<<<< HEAD
+=======
+          // You can add a footer callback here if you want to show other info like 'estados' or 'bandeiras'
+          // footer: (tooltipItems) => {
+          //   if (tooltipItems.length > 0) {
+          //     const dataset = tooltipItems[0].dataset as any;
+          //     const index = tooltipItems[0].dataIndex;
+          //     const extras = dataset.dadosExtras?.[index];
+          //     if (extras && extras.estados && extras.estados.length > 0) {
+          //       return `Estados: ${extras.estados.join(', ')}`;
+          //     }
+          //   }
+          //   return '';
+          // }
+>>>>>>> main
         }
       }
     },
@@ -151,19 +176,30 @@ export class MonitoramentoComponent implements OnInit {
   carregarDados(): void {
     if (!this.dataSelecionada) return;
 
+<<<<<<< HEAD
     // Constrói os parâmetros da requisição de forma segura
     let params = new HttpParams().set('periodo', this.dataSelecionada);
     if (this.modo === '30dias') {
       params = params.set('modo', '30dias');
+=======
+    const params: any = { periodo: this.dataSelecionada };
+    if (this.modo === '30dias') {
+      params.modo = '30dias';
+>>>>>>> main
     }
 
     this.http.get<MonitoramentoResponse>('/api/monitoramento/', { params }).subscribe({
       next: (res) => {
         let dados = res.dados || [];
 
+<<<<<<< HEAD
         // Ajusta os dados se o modo for '30dias'
         if (this.modo === '30dias') {
           dados = dados.map((d) => ({
+=======
+        if (this.modo === '30dias') {
+          dados = dados.map((d: any) => ({
+>>>>>>> main
             ...d,
             consumo: d.consumo * 30,
             custo_normal: d.custo_normal * 30,
@@ -185,7 +221,11 @@ export class MonitoramentoComponent implements OnInit {
           datasets: [
             {
               label: this.modo === '30dias' ? 'Consumo Mensal (kWh)' : 'Consumo Diário (kWh)',
+<<<<<<< HEAD
               data: dados.map((d) => d.consumo),
+=======
+              data: dados.map((d: any) => d.consumo),
+>>>>>>> main
               borderColor: 'blue',
               backgroundColor: 'rgba(0,0,255,0.1)',
               fill: true,
@@ -193,8 +233,13 @@ export class MonitoramentoComponent implements OnInit {
               yAxisID: 'y1',
               pointRadius: 5,
               pointHoverRadius: 7,
+<<<<<<< HEAD
               dadosExtras: dadosExtras, // Adiciona os dados extras de forma limpa
             } as CustomChartDataset
+=======
+              ...( { dadosExtras } as any )
+            }
+>>>>>>> main
           ]
         };
 
@@ -204,7 +249,11 @@ export class MonitoramentoComponent implements OnInit {
           datasets: [
             {
               label: this.modo === '30dias' ? 'Custo Mensal (R$)' : 'Custo Diário (R$)',
+<<<<<<< HEAD
               data: dados.map((d) => d.custo_normal),
+=======
+              data: dados.map((d: any) => d.custo_normal),
+>>>>>>> main
               borderColor: 'green',
               backgroundColor: 'rgba(0,255,0,0.1)',
               fill: true,
@@ -212,8 +261,13 @@ export class MonitoramentoComponent implements OnInit {
               yAxisID: 'y2',
               pointRadius: 5,
               pointHoverRadius: 7,
+<<<<<<< HEAD
               dadosExtras: dadosExtras, // Adiciona os dados extras de forma limpa
             } as CustomChartDataset,
+=======
+              ...( { dadosExtras } as any )
+            },
+>>>>>>> main
           ]
         };
       },
@@ -228,14 +282,22 @@ export class MonitoramentoComponent implements OnInit {
     this.carregarDados();
   }
 
+<<<<<<< HEAD
   // Chamado quando o usuário muda o modo (Diário / 30 dias)
   onModoChange(event: Event): void {
+=======
+  onModoChange(event: Event) {
+>>>>>>> main
     const input = event.target as HTMLInputElement;
     this.modo = input.value as 'diario' | '30dias';
     this.carregarDados();
   }
 
+<<<<<<< HEAD
   voltar(): void {
+=======
+  voltar() {
+>>>>>>> main
     this.router.navigate(['/resultados']);
   }
 }

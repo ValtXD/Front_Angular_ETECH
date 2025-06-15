@@ -59,6 +59,7 @@ export class ApiService {
     return this.http.get<any>(`${this.baseUrl}/resultados/`, { params });
   }
 
+<<<<<<< HEAD
   // Método para gerar dicas de IA
   gerarDicaIA(mensagem: string): Observable<any> {
     const url = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=AIzaSyClP7PDzQR6AYg1hH7RZoNiZ-reoiQrNrs'; // Não inclua chaves de API reais em código que será compartilhado publicamente
@@ -78,11 +79,17 @@ export class ApiService {
           threshold: "BLOCK_ONLY_HIGH"
         }
       ]
+=======
+  // NOVA FUNÇÃO: Chama seu backend para gerar a dica de IA
+  gerarDicaIA(aparelhos: any[], consumoTotal: number, custoTotal: number): Observable<any> {
+    const payload = {
+      aparelhos: aparelhos,
+      consumo_total: consumoTotal,
+      custo_total: custoTotal
+>>>>>>> main
     };
-
-    return this.http.post(url, body, {
-      headers: { 'Content-Type': 'application/json' }
-    });
+    // O endpoint agora é o  backend, que por sua vez, chamará a API Gemini
+    return this.http.post(`${this.baseUrl}/gerar-dica-economia/`, payload);
   }
 
   // Método para monitoramento (com suporte a parâmetros de busca)

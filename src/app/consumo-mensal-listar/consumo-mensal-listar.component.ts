@@ -1,7 +1,14 @@
+<<<<<<< HEAD
 import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import { ContadorService } from '../services/contador.service';
+=======
+// src/app/consumo-mensal-listar/consumo-mensal-listar.component.ts
+
+import { Component, OnInit } from '@angular/core';
+import { ContadorService, ConsumoMensal } from '../services/contador.service';
+>>>>>>> main
 import { Router } from '@angular/router';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import {MatFormField} from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -30,10 +37,14 @@ export interface ResultadosEvent {
   styleUrls: ['./consumo-mensal-listar.component.scss']
 })
 export class ConsumoMensalListarComponent implements OnInit {
+<<<<<<< HEAD
   @Output() resultadosProntos = new EventEmitter<ResultadosEvent>();
 
   // Suas propriedades originais (sem alterações)
   registros: any[] = [];
+=======
+  registros: ConsumoMensal[] = [];
+>>>>>>> main
   consumoTotal = 0;
   custoTotal = 0;
   consumoAnualTotal = 0;
@@ -44,7 +55,12 @@ export class ConsumoMensalListarComponent implements OnInit {
   mesSelecionado: number | null = null;
   dicaIA: string = '';
   carregandoDica = false;
+<<<<<<< HEAD
   modalAberto = false;
+=======
+
+  modalAberto = false; // controle do modal
+>>>>>>> main
 
   constructor(private contadorService: ContadorService, private router: Router) {}
 
@@ -66,6 +82,7 @@ export class ConsumoMensalListarComponent implements OnInit {
     if (this.anoSelecionado) params.ano = this.anoSelecionado.toString();
     if (this.mesSelecionado) params.mes = this.mesSelecionado.toString();
 
+<<<<<<< HEAD
     this.contadorService.listarConsumos(params).subscribe(res => {
       // A SUA LÓGICA DE NEGÓCIO CONTINUA EXATAMENTE IGUAL
       this.registros = res.registros;
@@ -77,6 +94,26 @@ export class ConsumoMensalListarComponent implements OnInit {
       // 3. NO FINAL, AVISE O PAI COM OS RESULTADOS
       this.resultadosProntos.emit({ consumo: this.consumoTotal, custo: this.custoTotal });
     });
+=======
+    this.contadorService.listarConsumosComFiltro(params).subscribe(res => {
+        this.registros = res.registros;
+
+        this.consumoTotal = res.consumo_total;
+        this.custoTotal = res.custo_total;
+
+        this.consumoAnualTotal = this.registros.reduce((acc, r) => acc + this.calcularConsumoAnual(r), 0);
+        this.custoAnualTotal = this.registros.reduce((acc, r) => acc + ((r.total_pagar ?? 0) * 12), 0);
+      },
+      error => {
+        console.error('Erro ao carregar registros:', error);
+        // Opcional: Tratar o erro no frontend (ex: exibir mensagem para o usuário)
+        this.registros = [];
+        this.consumoTotal = 0;
+        this.custoTotal = 0;
+        this.consumoAnualTotal = 0;
+        this.custoAnualTotal = 0;
+      });
+>>>>>>> main
   }
 
   onFiltroAlterado() {
@@ -113,55 +150,49 @@ export class ConsumoMensalListarComponent implements OnInit {
       return;
     }
 
-    const consumos = this.registros.map(r => r.consumo_kwh);
-    const custos = this.registros.map(r => r.total_pagar);
-    const mediaConsumo = consumos.reduce((a, b) => a + b, 0) / consumos.length;
-    const mediaCusto = custos.reduce((a, b) => a + b, 0) / custos.length;
-    const maxConsumo = Math.max(...consumos);
-    const minConsumo = Math.min(...consumos);
+    // Certifique-se de que os valores numéricos são tratados como números
+    const consumos = this.registros.map(r => Number(r.consumo_kwh));
+    const custos = this.registros.map(r => Number(r.total_pagar));
 
-    const mensagem = `
-Analise estes dados de consumo de energia elétrica e forneça recomendações detalhadas para economizar energia:
+    const mediaConsumo = consumos.length > 0 ? consumos.reduce((a, b) => a + b, 0) / consumos.length : 0;
+    const mediaCusto = custos.length > 0 ? custos.reduce((a, b) => a + b, 0) / custos.length : 0;
+    const maxConsumo = consumos.length > 0 ? Math.max(...consumos) : 0;
+    const minConsumo = consumos.length > 0 ? Math.min(...consumos) : 0;
 
-DADOS:
-- Período analisado: ${this.registros.length} meses
-- Consumo médio mensal: ${mediaConsumo.toFixed(2)} kWh
-- Custo médio mensal: R$ ${mediaCusto.toFixed(2)}
-- Maior consumo: ${maxConsumo} kWh
-- Menor consumo: ${minConsumo} kWh
+    // Prepare os dados para enviar ao backend.
+    const registrosFormatadosParaBackend = this.registros.map(r => ({
+      mes: r.mes,
+      ano: r.ano,
+      consumo_kwh: r.consumo_kwh,
+      total_pagar: r.total_pagar,
+      bandeira_cor: r.bandeira_cor,
+      estado_nome: r.estado_nome,
+    }));
 
-DETALHES POR MÊS:
-${this.registros.map(r =>
-      `- ${r.mes}/${r.ano}: ${r.consumo_kwh} kWh (R$ ${r.total_pagar}) ${r.bandeira_cor ? '| Bandeira: ' + r.bandeira_cor : ''}`
-    ).join('\n')}
 
-REQUISITOS PARA ANÁLISE:
-1. Identifique padrões de consumo ao longo dos meses
-2. Analise o impacto das bandeiras tarifárias nos custos
-3. Compare meses de maior e menor consumo
-4. Sugira medidas específicas para reduzir o consumo nos meses mais críticos
-5. Calcule estimativas de economia potencial
-6. Recomende hábitos para economia de energia
-7. Inclua dicas sobre horários de consumo
-
-Formate a resposta em tópicos claros com pelo menos 5 recomendações específicas.
-`;
+    const payloadParaBackend = {
+      registros: registrosFormatadosParaBackend,
+      consumo_total: this.consumoTotal,
+      custo_total: this.custoTotal,
+      media_consumo: mediaConsumo,
+      media_custo: mediaCusto,
+      max_consumo: maxConsumo,
+      min_consumo: minConsumo,
+    };
 
     this.carregandoDica = true;
-    this.contadorService.gerarDicaIA(mensagem).subscribe({
+    this.contadorService.gerarDicaIA(payloadParaBackend).subscribe({
       next: (res) => {
         this.carregandoDica = false;
-        if (res.candidates && res.candidates.length > 0) {
-          this.dicaIA = res.candidates[0].content.parts[0].text;
-        } else {
-          this.dicaIA = 'Nenhuma resposta obtida da IA.';
-        }
+        // A resposta do backend já deve vir com a dica formatada em 'dica'
+        this.dicaIA = res?.dica || 'Nenhuma resposta obtida da IA.';
         this.abrirModal();
       },
       error: (err) => {
         console.error('Erro ao gerar dica IA:', err);
         this.carregandoDica = false;
-        this.dicaIA = 'Erro ao gerar dica. Verifique o console para detalhes.';
+        // Exiba a mensagem de erro que vem do backend para o usuário
+        this.dicaIA = `Erro ao gerar dica. Detalhes: ${err.error?.details || err.error?.error || 'Erro desconhecido.'}`;
         this.abrirModal();
       }
     });

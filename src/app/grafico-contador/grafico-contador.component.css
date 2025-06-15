@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 .monitoring-card {
   max-width: 800px;
   margin: 40px auto;
@@ -7,6 +8,37 @@
   display: flex;
   flex-direction: column;
   gap: 20px;
+=======
+/* src/app/grafico-contador/grafico-contador.component.css */
+
+.card {
+  padding: 20px;
+  max-width: 900px;
+  margin: 0 auto;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  background-color: #fff;
+}
+
+h1 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-check-inline {
+  margin-right: 15px;
+}
+
+.grafico-container {
+  width: 100%;
+  max-width: 900px;
+  height: 450px;
+  margin: 0 auto 30px auto;
+>>>>>>> main
 }
 
 .card-title {

@@ -1,5 +1,10 @@
+// src/app/services/contador.service.ts
 import { Injectable } from '@angular/core';
+<<<<<<< HEAD
 import {HttpClient, HttpParams} from '@angular/common/http';
+=======
+import { HttpClient, HttpParams } from '@angular/common/http';
+>>>>>>> main
 import { Observable } from 'rxjs';
 import {environment} from '../../environments/environment';
 
@@ -29,6 +34,8 @@ export interface ConsumoMensal {
   consumo_kwh: number;
   total_pagar: number;
   tarifa_social: boolean;
+  estado_nome?: string;
+  bandeira_cor?: string;
 }
 
 interface ResultadoConsumoResponse {
@@ -88,32 +95,17 @@ export class ContadorService {
     return this.http.put(`${this.baseUrl}/consumo-mensal/${id}/`, payload);
   }
 
-  gerarDicaIA(mensagem: string): Observable<any> {
-    const url = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=AIzaSyClP7PDzQR6AYg1hH7RZoNiZ-reoiQrNrs';
-
-    const body = {
-      contents: [{
-        parts: [{
-          text: mensagem
-        }]
-      }],
-      generationConfig: {
-        temperature: 0.7,  // Mais criativo
-        candidateCount: 1,
-        maxOutputTokens: 2000,  // Resposta mais longa
-        topP: 0.9,
-        topK: 40
-      },
-      safetySettings: [
-        {
-          category: "HARM_CATEGORY_DANGEROUS_CONTENT",
-          threshold: "BLOCK_ONLY_HIGH"
-        }
-      ]
-    };
-
-    return this.http.post(url, body, {
-      headers: {'Content-Type': 'application/json'}
-    });
+  // Novo método para chamar o backend para gerar a dica de IA
+  gerarDicaIA(payload: {
+    registros: any[];
+    consumo_total: number;
+    custo_total: number;
+    media_consumo: number;
+    media_custo: number;
+    max_consumo: number;
+    min_consumo: number;
+  }): Observable<any> {
+    // Chama o endpoint do seu backend, que por sua vez se comunica com a API Gemini
+    return this.http.post(`${this.baseUrl}/gerar-dica-consumo-mensal/`, payload);
   }
 }
