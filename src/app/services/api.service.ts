@@ -7,6 +7,14 @@ import { Estado } from '../models/estado';
 import { Bandeira } from '../models/bandeira';
 import { Aparelho } from '../models/aparelho';
 
+// NOVA Interface para as dicas de Aparelhos
+export interface ApplianceAiTip {
+  id?: number;
+  text: string;
+  created_at?: string;
+}
+
+
 @Injectable({
   providedIn: 'root',
 })
@@ -96,5 +104,18 @@ export class ApiService {
       });
     }
     return this.http.get(`${this.baseUrl}/monitoramento/`, { params: httpParams });
+  }
+
+  // NOVOS MÉTODOS
+  saveApplianceAiTip(tip: { text: string }): Observable<ApplianceAiTip> {
+    return this.http.post<ApplianceAiTip>(`${this.baseUrl}/appliance-ai-tips/`, tip);
+  }
+
+  getApplianceAiTips(): Observable<ApplianceAiTip[]> {
+    return this.http.get<ApplianceAiTip[]>(`${this.baseUrl}/appliance-ai-tips/`);
+  }
+
+  deleteApplianceAiTip(id: number): Observable<any> {
+    return this.http.delete(`${this.baseUrl}/appliance-ai-tips/${id}/`);
   }
 }

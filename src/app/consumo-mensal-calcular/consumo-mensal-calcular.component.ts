@@ -65,6 +65,10 @@ export class ConsumoMensalCalcularComponent implements OnInit {
 
 
 
+  displayedColumns: string[] = [
+    'data', 'estado', 'bandeira', 'tarifa_social', 'leitura_inicial', 'leitura_final', 'acoes'
+  ];
+
   constructor(
     private fb: FormBuilder,
     private contadorService: ContadorService,
@@ -80,6 +84,11 @@ export class ConsumoMensalCalcularComponent implements OnInit {
       tarifa_social: [false],
       leitura_inicial: ['', [Validators.required, Validators.min(0)]],
       leitura_final: ['', [Validators.required, Validators.min(0)]],
+
+      // Filtros no mesmo FormGroup (somente os que ficaram)
+      filtroMesAno: [''],
+      filtroEstado: [null],
+      filtroBandeira: [null],
     });
 
     // Formulário de filtros

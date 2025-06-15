@@ -137,6 +137,17 @@ export class ResultadosComponent implements OnInit {
         this.loadingDica = false;
         const texto = res?.candidates?.[0]?.content?.parts?.[0]?.text || 'Nenhuma dica gerada.';
         this.dicaGerada = texto.split('\n').map((p: string) => `<p>${p}</p>`).join('');
+
+        // Salvar a dica gerada no backend (para dicas de aparelhos)
+        this.api.saveApplianceAiTip({ text: texto }).subscribe({
+          next: (savedTip) => {
+            console.log('Dica de aparelho salva com sucesso:', savedTip);
+          },
+          error: (saveErr) => {
+            console.error('Erro ao salvar dica de aparelho IA:', saveErr);
+          }
+        });
+
       },
       error: err => {
         this.loadingDica = false;

@@ -1,0 +1,54 @@
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background-color: white;
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  max-width: 80%;
+  width: 400px;
+  position: relative;
+}
+
+.modal-content h3 {
+  color: #28a745;
+  margin-bottom: 15px;
+}
+
+.modal-content p {
+  font-size: 1.1em;
+  line-height: 1.5;
+  margin-bottom: 25px;
+}
+
+.modal-content .btn {
+  padding: 10px 20px;
+  font-size: 1em;
+}
+
+/* Opcional: Estilo para um botão de fechar no canto superior direito */
+/* .modal-content .close-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  font-size: 1.5em;
+  cursor: pointer;
+  color: #aaa;
+}
+.modal-content .close-button:hover {
+  color: #333;
+} */

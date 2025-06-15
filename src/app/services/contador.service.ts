@@ -39,6 +39,13 @@ interface ResultadoConsumoResponse {
   custo_anual_estimado?: number;
 }
 
+// Nova interface para as dicas da IA
+export interface AiTip {
+  id?: number;
+  text: string;
+  created_at?: string;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -90,7 +97,6 @@ export class ContadorService {
 
   gerarDicaIA(mensagem: string): Observable<any> {
     const url = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=AIzaSyClP7PDzQR6AYg1hH7RZoNiZ-reoiQrNrs';
-
     const body = {
       contents: [{
         parts: [{
@@ -98,9 +104,9 @@ export class ContadorService {
         }]
       }],
       generationConfig: {
-        temperature: 0.7,  // Mais criativo
+        temperature: 0.7,
         candidateCount: 1,
-        maxOutputTokens: 2000,  // Resposta mais longa
+        maxOutputTokens: 2000,
         topP: 0.9,
         topK: 40
       },
@@ -111,9 +117,21 @@ export class ContadorService {
         }
       ]
     };
-
     return this.http.post(url, body, {
       headers: {'Content-Type': 'application/json'}
     });
+  }
+
+  // Novos métodos para gerenciar as dicas da IA no backend
+  saveAiTip(tip: { text: string }): Observable<AiTip> {
+    return this.http.post<AiTip>(`${this.baseUrl}/ai-tips/`, tip);
+  }
+
+  getAiTips(): Observable<AiTip[]> {
+    return this.http.get<AiTip[]>(`${this.baseUrl}/ai-tips/`);
+  }
+
+  deleteAiTip(id: number): Observable<any> {
+    return this.http.delete(`${this.baseUrl}/ai-tips/${id}/`);
   }
 }

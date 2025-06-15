@@ -160,3 +160,235 @@ h1, h2, h3, h4, h5, h6 {
     max-width: 200px;
   }
 }
+
+
+.card {
+  background-color: #f0f0f0;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.card h1 {
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.card p {
+  color: #666;
+  font-size: 1.1em;
+}
+
+.ai-tips-section {
+  margin-top: 30px;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.ai-tips-section h2 {
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.tip-cards-container {
+  display: flex; /* Para alinhar os cards lado a lado */
+  flex-wrap: wrap; /* Para quebrar a linha se não houver espaço */
+  gap: 20px; /* Espaço entre os cards */
+  justify-content: center; /* Centraliza os cards */
+  padding: 10px;
+}
+
+.tip-card {
+  background-color: #eaf7ed; /* Um verde claro */
+  border: 1px solid #d4edda;
+  border-radius: 8px;
+  padding: 15px;
+  width: 280px; /* Largura fixa para os cards */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  cursor: pointer;
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* Espaçamento para o botão de remover */
+  align-items: flex-start;
+  text-align: left;
+  position: relative; /* Para posicionar o botão de remover */
+}
+
+.tip-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.tip-card h3 {
+  color: #28a745; /* Verde mais escuro */
+  margin-top: 0;
+  margin-bottom: 10px;
+  font-size: 1.2em;
+}
+
+.tip-card p.tip-preview {
+  color: #555;
+  font-size: 0.9em;
+  line-height: 1.4;
+  flex-grow: 1; /* Faz o parágrafo ocupar o espaço restante */
+}
+
+.tip-card small {
+  color: #888;
+  font-size: 0.75em;
+  display: block; /* Para a data ficar em sua própria linha */
+  margin-top: 10px;
+}
+
+.delete-button-card {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  padding: 6px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 0.8em;
+  margin-top: 10px; /* Espaço acima do botão */
+  align-self: flex-end; /* Alinha o botão à direita dentro do card */
+  position: absolute; /* Para posicionar no canto superior direito */
+  top: 10px;
+  right: 10px;
+}
+
+.delete-button-card:hover {
+  background-color: #c82333;
+}
+
+
+/* Modal Styles */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  animation: fadeIn 0.3s ease-out; /* Animação para o overlay */
+}
+
+.modal-content {
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  width: 90%;
+  max-width: 600px;
+  max-height: 80vh; /* Limita a altura do modal */
+  display: flex;
+  flex-direction: column;
+  overflow: hidden; /* Garante que o conteúdo não vaze */
+
+  /* Animação para o modal deslizar da esquerda */
+  transform: translateX(-100%); /* Começa fora da tela à esquerda */
+  animation: slideInFromLeft 0.4s forwards ease-out;
+}
+
+.modal-header {
+  padding: 15px 20px;
+  border-bottom: 1px solid #eee;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #f8f8f8;
+}
+
+.modal-header h2 {
+  margin: 0;
+  color: #333;
+  font-size: 1.5em;
+}
+
+.close-button {
+  background: none;
+  border: none;
+  font-size: 2em;
+  cursor: pointer;
+  color: #aaa;
+  line-height: 1; /* Para alinhar melhor o 'x' */
+}
+
+.close-button:hover {
+  color: #666;
+}
+
+.modal-body {
+  padding: 20px;
+  overflow-y: auto; /* Adiciona scroll se o conteúdo for muito longo */
+  flex-grow: 1; /* Ocupa o máximo de espaço vertical */
+  text-align: left;
+}
+
+.modal-body p {
+  color: #444;
+  line-height: 1.6;
+  margin-bottom: 15px;
+}
+
+.modal-body small {
+  display: block;
+  color: #777;
+  font-size: 0.9em;
+}
+
+.modal-footer {
+  padding: 15px 20px;
+  border-top: 1px solid #eee;
+  display: flex;
+  justify-content: center; /* Centraliza os botões */
+  gap: 15px; /* Espaço entre os botões */
+  background-color: #f8f8f8;
+}
+
+.nav-button, .delete-button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1em;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.nav-button:hover, .delete-button:hover {
+  background-color: #0056b3;
+}
+
+.delete-button {
+  background-color: #dc3545; /* Vermelho para o botão de remover */
+}
+
+.delete-button:hover {
+  background-color: #c82333;
+}
+
+.nav-button:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
+
+/* Animações */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideInFromLeft {
+  from { transform: translateX(-100%); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+

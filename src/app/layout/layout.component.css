@@ -19,7 +19,7 @@ body {
 /* O SIDENAV (o painel lateral) */
 .custom-sidenav {
   width: 250px; /* Largura padrão quando aberto */
-  background-color: #fcc15d;
+  background-color: #61a6ab;
   box-shadow: 3px 0 10px rgba(0, 0, 0, 0.2);
   color: #9ff4e5;
   transition: width 0.3s ease; /* Adiciona transição para a largura */
@@ -42,9 +42,9 @@ body {
 
 /* BARRA SUPERIOR (NAVBAR) */
 .top-toolbar {
-  background-color: #ff7f50;
+  background-color: #61a6ab;
   color: #9ff4e5;
-  height: 80px;
+  height: 70px;
   display: flex;
   justify-content: flex-start;
   align-items: center;
@@ -57,41 +57,17 @@ body {
   font-family: 'Inter', 'Roboto', sans-serif;
 }
 
-
+/* Logo agora é clicável */
+.logo-container.logo-clickable {
+  cursor: pointer;
+  padding-right: 15px; /* Ajusta o padding para um melhor espaçamento após a logo */
+}
 .logo-container.logo-clickable:hover .logo-img {
   filter: brightness(1.5) drop-shadow(0 0 10px rgba(159, 244, 229, 0.5));
 }
 
-.logo-container.logo-clickable {
-  cursor: pointer;
-  position: relative; /* ESSENCIAL: Torna-se a referência para a imagem flutuante */
-
-  /* ESTE É O TAMANHO REAL DA SUA ÁREA CLICÁVEL: */
-  height: 60px;
-  width: 100px;
-
-  /* Apenas para garantir o alinhamento, caso precise no futuro */
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-/* 2. A IMAGEM: flutua sobre o container, com 130px de altura visual */
 .logo-img {
-  /* --- A MÁGICA COMEÇA AQUI --- */
-  position: absolute; /* Libera a imagem do layout da página */
-  pointer-events: none; /* Faz a imagem ser "atravessável" pelo clique do mouse */
-
-  /* --- O TAMANHO VISUAL QUE VOCÊ QUER --- */
-  height: 130px;
-  width: auto;   /* Mantém a proporção correta */
-
-  /* --- POSICIONAMENTO DA IMAGEM FLUTUANTE --- */
-  /* Ajuste estes valores para posicionar a logo exatamente onde você quer */
-  top: -35px;    /* Move a imagem para cima, para fora do container */
-  left: -30px;   /* Move a imagem para a esquerda */
-
-  /* --- SEUS ESTILOS VISUAIS --- */
+  height: 100px;
   filter: brightness(1.2) drop-shadow(0 0 8px rgba(159, 244, 229, 0.3));
 }
 

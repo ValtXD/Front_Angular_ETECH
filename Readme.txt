@@ -71,7 +71,7 @@ auth.guard
 auth.interceptor
 auth.service
 ----------------------------------------
-Relacionado ao QRCode e Celular (Em Manutenção)
+Relacionado ao QRCode e Celular (Funcionando -> Ao escolher arquivo somente)
 
 #-------------Frontend--------------# --> Unica que tem isso é o leitura-qr
 
@@ -87,10 +87,15 @@ encontre seu: Endereço IPv4. . . . . . . .  . . . . . . . : 000.000.0.0
 
 No seu componente Angular (leitura-qr.component.ts), ajuste a variável qrData para usar o IP da sua máquina, por exemplo:
 
-http://localhost:4200/leitura-qr --> qrData = 'http://192.168.0.4:4200/leitura-qr';
+http://localhost:4200/leitura-qr --> qrData = 'http://192.168.0.4:4200/leitura-qr'; (não em todos, mas os que pelo menos alterados)
 
 Quando você rodar o ng serve, use o comando para aceitar conexões externas:
 ng serve --host 0.0.0.0
 
 Normal: localhost (Celular não funciona, somente local)
 ng serve
+
+----------------------------------------
+QRcode:
+qrcode -> Casa (My Ipv4)
+qrcode2 -> Etech (Ipv4)

@@ -1,19 +1,19 @@
 import { Routes } from '@angular/router';
-
 import { LayoutComponent } from './layout/layout.component';
 import { HomeComponent } from './pages/home/home.component';
-
 import { CalcularComponent } from './calcular/calcular.component';
 import { ResultadosComponent } from './resultados/resultados.component';
 import { MonitoramentoComponent } from './monitoramento/monitoramento.component';
-import {ConsumoMensalListarComponent} from './consumo-mensal-listar/consumo-mensal-listar.component';
-import {GraficoContadorComponent} from './grafico-contador/grafico-contador.component';
-import {ConsumoMensalCalcularComponent} from './consumo-mensal-calcular/consumo-mensal-calcular.component';
-import {UploadImagemComponent} from './upload-imagem/upload-imagem.component';
-import {ListaLeiturasComponent} from './lista-leituras/lista-leituras.component';
-import {LeituraQrComponent} from './leitura-qr/leitura-qr.component';
-import {UploadDocumentoComponent} from './upload-documento/upload-documento.component';
-import {ResultadosDocumentoComponent} from './resultados-documento/resultados-documento.component';
+import { ConsumoMensalCalcularComponent } from './consumo-mensal-calcular/consumo-mensal-calcular.component';
+import { ConsumoMensalListarComponent } from './consumo-mensal-listar/consumo-mensal-listar.component';
+import { GraficoContadorComponent } from './grafico-contador/grafico-contador.component';
+import { UploadImagemComponent } from './upload-imagem/upload-imagem.component';
+import { ListaLeiturasComponent } from './lista-leituras/lista-leituras.component';
+import { LeituraQrComponent } from './leitura-qr/leitura-qr.component';
+import { UploadDocumentoComponent } from './upload-documento/upload-documento.component';
+import { ResultadosDocumentoComponent } from './resultados-documento/resultados-documento.component';
+import {HttpInterceptor} from '@angular/common/http';
+import { authGuard } from './services/auth.guard';
 
 export const routes: Routes = [
   {
