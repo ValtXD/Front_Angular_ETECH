@@ -4,7 +4,6 @@ import { interval, Subscription } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import {Router, RouterModule} from '@angular/router';
 import { FormsModule } from '@angular/forms';
-import { DatePipe, DecimalPipe } from '@angular/common';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
@@ -22,8 +21,6 @@ import { MatTableModule } from '@angular/material/table';
   standalone: true,
   imports: [
     FormsModule,
-    DecimalPipe,
-    DatePipe,
     CommonModule,
     RouterModule,
     MatCardModule,
@@ -36,6 +33,9 @@ import { MatTableModule } from '@angular/material/table';
   ]
 })
 export class ListaLeiturasComponent implements OnInit, OnDestroy {
+  toggleFilters() {
+      throw new Error('Method not implemented.');
+  }
   leituras: LeituraOCR[] = [];
   estados: { id: number; nome: string }[] = [];
   filtroMes: string = '';
@@ -69,7 +69,8 @@ export class ListaLeiturasComponent implements OnInit, OnDestroy {
   };
 
   private pollingSubscription?: Subscription;
-  baseUrl = 'http://localhost:8000'; // Ajuste esta URL se seu backend não estiver em localhost:8000
+  baseUrl = 'http://localhost:8000';
+  showFilters: boolean = true;
 
   constructor(
     private ocrContadorService: OcrContadorService,

@@ -1,16 +1,18 @@
+<mat-card class="ocr-list-card">
+  <div class="card-header-section">
+    <h1 class="ocr-list-title">Leituras do Contador</h1>
+    <p class="ocr-list-subtitle">Visualize e gerencie todas as leituras de contadores</p>
+  </div>
 
-  <mat-card class="ocr-list-card">
-    <div class="card-header-section">
-      <h1 class="ocr-list-title">Leituras do Contador</h1>
-      <p class="ocr-list-subtitle">Visualize e gerencie todas as leituras de contadores</p>
+  <mat-card class="lista-card filters-card">
+    <div class="filters-header">
+      <h3 class="mat-card-title-small">Filtros de Leituras</h3>
+      <button class="filter-toggle-button" (click)="toggleFilters()">
+        <mat-icon>{{ showFilters ? 'search_off' : 'search' }}</mat-icon>
+      </button>
     </div>
-
-    <mat-divider></mat-divider>
-    <div class="filters-section">
-      <h3 class="filters-title"><mat-icon>filter_list</mat-icon> Filtros</h3>
+    <mat-card-content [class.active]="showFilters" class="filters-content">
       <div class="filters-row">
-
-        <!-- CORREÇÃO: Adicionado (selectionChange)="aplicarFiltro()" -->
         <mat-form-field appearance="outline" class="filter-dropdown">
           <mat-label>Ano</mat-label>
           <mat-select [(ngModel)]="filtroAno" name="filtroAno" (selectionChange)="aplicarFiltro()">
@@ -19,7 +21,6 @@
           </mat-select>
         </mat-form-field>
 
-        <!-- CORREÇÃO: Adicionado (selectionChange)="aplicarFiltro()" -->
         <mat-form-field appearance="outline" class="filter-dropdown">
           <mat-label>Mês</mat-label>
           <mat-select [(ngModel)]="filtroMes" name="filtroMes" (selectionChange)="aplicarFiltro()">
@@ -27,70 +28,71 @@
           </mat-select>
         </mat-form-field>
       </div>
-    </div>
-    <mat-divider></mat-divider>
-
-    <div class="list-section">
-      <div class="list-header">
-        <h3 class="list-title"><mat-icon>list_alt</mat-icon> Lista de Leituras</h3>
-        <span class="found-readings-count" *ngIf="leituras.length > 0">{{ leituras.length }} leituras encontradas</span>
-      </div>
-
-      <div class="readings-table-container" *ngIf="leituras.length > 0">
-        <table mat-table [dataSource]="leituras" class="mat-elevation-z8 beautiful-table">
-
-          <ng-container matColumnDef="data">
-            <th mat-header-cell *matHeaderCellDef>DATA</th>
-            <td mat-cell *matCellDef="let leitura">{{ leitura.data_registro | date:'dd/MM/yyyy HH:mm' }}</td>
-          </ng-container>
-
-          <ng-container matColumnDef="estado">
-            <th mat-header-cell *matHeaderCellDef>ESTADO</th>
-            <td mat-cell *matCellDef="let leitura">{{ leitura.estado?.nome }}</td>
-          </ng-container>
-
-          <ng-container matColumnDef="valorExtraido">
-            <th mat-header-cell *matHeaderCellDef>VALOR EXTRAÍDO</th>
-            <td mat-cell *matCellDef="let leitura" class="value-extraido">R$ {{ leitura.valor_extraido | number:'1.2-2' }}</td>
-          </ng-container>
-
-          <ng-container matColumnDef="valorCorrigido">
-            <th mat-header-cell *matHeaderCellDef>VALOR CORRIGIDO</th>
-            <td mat-cell *matCellDef="let leitura" class="value-corrigido">R$ {{ leitura.valor_corrigido | number:'1.2-2' }}</td>
-          </ng-container>
-
-          <ng-container matColumnDef="custoEstimado">
-            <th mat-header-cell *matHeaderCellDef>CUSTO ESTIMADO</th>
-            <td mat-cell *matCellDef="let leitura">R$ {{ leitura.custo_total | number:'1.2-2' }}</td>
-          </ng-container>
-
-          <ng-container matColumnDef="imagem">
-            <th mat-header-cell *matHeaderCellDef>IMAGEM</th>
-            <td mat-cell *matCellDef="let leitura">
-              <img *ngIf="leitura.imagem_url" [src]="getImagemUrl(leitura.imagem_url)" alt="Imagem da Leitura" class="reading-thumbnail">
-              <span *ngIf="!leitura.imagem_url">Sem Imagem</span>
-            </td>
-          </ng-container>
-
-          <ng-container matColumnDef="acoes">
-            <th mat-header-cell *matHeaderCellDef>AÇÕES</th>
-            <td mat-cell *matCellDef="let leitura">
-              <button mat-icon-button color="warn" (click)="confirmarRemocao(leitura.id)">
-                <mat-icon>delete</mat-icon>
-              </button>
-            </td>
-          </ng-container>
-
-          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-        </table>
-      </div>
-
-      <div *ngIf="leituras.length === 0" class="no-data-full-message">
-        <mat-icon class="no-data-icon">info</mat-icon>
-        <p>Nenhuma leitura encontrada</p>
-        <p class="no-data-subtext">Aplique filtros diferentes ou faça upload de novas leituras</p>
-      </div>
-    </div>
+    </mat-card-content>
   </mat-card>
 
+  <mat-divider></mat-divider>
+
+  <div class="list-section">
+    <div class="list-header">
+      <h3 class="list-title"><mat-icon>list_alt</mat-icon> Lista de Leituras</h3>
+      <span class="found-readings-count" *ngIf="leituras.length > 0">{{ leituras.length }} leituras encontradas</span>
+    </div>
+
+    <div class="readings-table-container" *ngIf="leituras.length > 0">
+      <table mat-table [dataSource]="leituras" class="mat-elevation-z8 beautiful-table">
+
+        <ng-container matColumnDef="data">
+          <th mat-header-cell *matHeaderCellDef>DATA</th>
+          <td mat-cell *matCellDef="let leitura">{{ leitura.data_registro | date:'dd/MM/yyyy HH:mm' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="estado">
+          <th mat-header-cell *matHeaderCellDef>ESTADO</th>
+          <td mat-cell *matCellDef="let leitura">{{ leitura.estado?.nome }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="valorExtraido">
+          <th mat-header-cell *matHeaderCellDef>VALOR EXTRAÍDO</th>
+          <td mat-cell *matCellDef="let leitura" class="value-extraido">R$ {{ leitura.valor_extraido | number:'1.2-2' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="valorCorrigido">
+          <th mat-header-cell *matHeaderCellDef>VALOR CORRIGIDO</th>
+          <td mat-cell *matCellDef="let leitura" class="value-corrigido">R$ {{ leitura.valor_corrigido | number:'1.2-2' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="custoEstimado">
+          <th mat-header-cell *matHeaderCellDef>CUSTO ESTIMADO</th>
+          <td mat-cell *matCellDef="let leitura">R$ {{ leitura.custo_total | number:'1.2-2' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="imagem">
+          <th mat-header-cell *matHeaderCellDef>IMAGEM</th>
+          <td mat-cell *matCellDef="let leitura">
+            <img *ngIf="leitura.imagem_url" [src]="getImagemUrl(leitura.imagem_url)" alt="Imagem da Leitura" class="reading-thumbnail">
+            <span *ngIf="!leitura.imagem_url">Sem Imagem</span>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="acoes">
+          <th mat-header-cell *matHeaderCellDef>AÇÕES</th>
+          <td mat-cell *matCellDef="let leitura">
+            <button mat-icon-button color="warn" (click)="confirmarRemocao(leitura.id)">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+    </div>
+
+    <div *ngIf="leituras.length === 0" class="no-data-full-message">
+      <mat-icon class="no-data-icon">info</mat-icon>
+      <p>Nenhuma leitura encontrada</p>
+      <p class="no-data-subtext">Aplique filtros diferentes ou faça upload de novas leituras</p>
+    </div>
+  </div>
+</mat-card>
