@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import {Component, OnInit, OnDestroy, ViewEncapsulation} from '@angular/core';
 import { OcrContadorService, LeituraOCR } from '../services/ocr-contador.service';
 import { interval, Subscription } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
@@ -17,7 +17,8 @@ import { MatTableModule } from '@angular/material/table';
 @Component({
   selector: 'app-lista-leituras',
   templateUrl: './lista-leituras.component.html',
-  styleUrls: ['./lista-leituras.components.scss'],
+  styleUrls: ['./lista-leituras.component.scss'],
+  encapsulation: ViewEncapsulation.None,
   standalone: true,
   imports: [
     FormsModule,
