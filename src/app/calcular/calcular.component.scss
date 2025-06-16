@@ -173,12 +173,6 @@ button[mat-stroked-button]:hover {
   border: 1px solid transparent
 }
 
-.bandeira-vermelha {
-  background-color: #ffebeb;
-  color: #d32f2f;
-  border-color: #d32f2f
-}
-
 .bandeira-amarela {
   background-color: #fff9e6;
   color: #fbc02d;
@@ -189,6 +183,17 @@ button[mat-stroked-button]:hover {
   background-color: #e8f5e9;
   color: #388e3c;
   border-color: #388e3c
+}
+.bandeira-vermelha1 {
+  background-color: #ffebeb;
+  color: #fa3d3d !important;
+  border-color: #da3434;
+}
+
+.bandeira-vermelha2 {
+  background-color: #ffebeb;
+  color: #8e1818 !important;
+  border-color: #771111;
 }
 
 .aparelho-card mat-card-actions {

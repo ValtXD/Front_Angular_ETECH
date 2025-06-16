@@ -49,6 +49,7 @@
 
       <mat-divider></mat-divider>
 
+
       <div class="card-section">
         <h3 class="section-title">Otimização Inteligente</h3>
         <div class="actions-container">
@@ -64,7 +65,7 @@
   <div *ngIf="modalAberto" class="modal-overlay">
     <div class="modal-dialog">
       <h3 class="modal-title">Dica de Economia de Energia</h3>
-      <pre class="modal-content">{{ dicaIA }}</pre>
+      <div class="modal-content" [innerHTML]="dicaIA"></div>
       <div class="modal-actions">
         <button mat-raised-button color="primary" (click)="fecharModal()">Fechar</button>
       </div>

@@ -1,16 +1,18 @@
 import {Component, EventEmitter, OnInit, Output} from '@angular/core';
-import { ContadorService, AiTip } from '../services/contador.service'; // Importe AiTip também
+import { ContadorService, AiTip } from '../services/contador.service';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import {MatFormField} from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTableModule } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
 import {MatIcon} from '@angular/material/icon';
-import {MatCard, MatCardContent, MatCardTitle} from '@angular/material/card';
+import {MatCard, MatCardActions, MatCardContent, MatCardTitle} from '@angular/material/card';
 import {MatDivider} from '@angular/material/divider';
+import {marked} from 'marked';
+import {MatProgressSpinner} from '@angular/material/progress-spinner';
+
 
 export interface ResultadosEvent {
   consumo: number;
@@ -26,7 +28,7 @@ export interface ResultadosEvent {
     MatFormFieldModule,
     MatSelectModule,
     MatTableModule,
-    MatButtonModule, MatIcon, MatCard, MatCardTitle, MatCardContent, MatDivider,],
+    MatButtonModule, MatIcon, MatCard, MatCardTitle, MatCardContent, MatDivider],
   styleUrls: ['./consumo-mensal-listar.component.scss']
 })
 export class ConsumoMensalListarComponent implements OnInit {
@@ -39,14 +41,15 @@ export class ConsumoMensalListarComponent implements OnInit {
   consumoAnualTotal = 0;
   custoAnualTotal = 0;
   anosDisponiveis: number[] = [];
-  mesesDisponiveis = Array.from({ length: 12 }, (_, i) => i + 1);
+  mesesDisponiveis = Array.from({length: 12}, (_, i) => i + 1);
   anoSelecionado: number | null = null;
   mesSelecionado: number | null = null;
   dicaIA: string = '';
   carregandoDica = false;
   modalAberto = false;
 
-  constructor(private contadorService: ContadorService, private router: Router) {}
+  constructor(private contadorService: ContadorService, private router: Router) {
+  }
 
   ngOnInit() {
     this.carregarAnos();
@@ -75,7 +78,7 @@ export class ConsumoMensalListarComponent implements OnInit {
       this.custoAnualTotal = this.registros.reduce((acc, r) => acc + ((r.total_pagar ?? 0) * 12), 0);
 
       // 3. NO FINAL, AVISE O PAI COM OS RESULTADOS
-      this.resultadosProntos.emit({ consumo: this.consumoTotal, custo: this.custoTotal });
+      this.resultadosProntos.emit({consumo: this.consumoTotal, custo: this.custoTotal});
     });
   }
 
@@ -119,10 +122,13 @@ export class ConsumoMensalListarComponent implements OnInit {
     const mediaCusto = custos.reduce((a, b) => a + b, 0) / custos.length;
     const maxConsumo = Math.max(...consumos);
     const minConsumo = Math.min(...consumos);
-    const mensagem = `
-Analise estes dados de consumo de energia elétrica e forneça recomendações detalhadas para economizar energia:
 
-DADOS:
+    const mensagemParaIA = `
+INFORMAÇÕES PARA ANÁLISE DE CONSUMO DE ENERGIA ELÉTRICA
+
+Por favor, analise os dados a seguir e forneça recomendações detalhadas para economizar energia.
+
+##DADOS:
 - Período analisado: ${this.registros.length} meses
 - Consumo médio mensal: ${mediaConsumo.toFixed(2)} kWh
 - Custo médio mensal: R$ ${mediaCusto.toFixed(2)}
@@ -134,33 +140,45 @@ ${this.registros.map(r =>
       `- ${r.mes}/${r.ano}: ${r.consumo_kwh} kWh (R$ ${r.total_pagar}) ${r.bandeira_cor ? '| Bandeira: ' + r.bandeira_cor : ''}`
     ).join('\n')}
 
-REQUISITOS PARA ANÁLISE:
-1. Identifique padrões de consumo ao longo dos meses
-2. Analise o impacto das bandeiras tarifárias nos custos
-3. Compare meses de maior e menor consumo
-4. Sugira medidas específicas para reduzir o consumo nos
-meses mais críticos
-5. Calcule estimativas de economia potencial
-6. Recomende hábitos para economia de energia
-7. Inclua dicas sobre horários de consumo
+---
 
-Formate a resposta em tópicos claros com pelo menos 5 recomendações específicas.`;
+## REQUISITOS PARA A ANÁLISE E RECOMENDAÇÕES:
+1.  **Identificar padrões:** Analise o consumo ao longo dos meses para encontrar tendências ou picos.
+2.  **Impacto das bandeiras:** Avalie como as bandeiras tarifárias afetaram os custos totais.
+3.  **Comparação:** Compare os meses de maior e menor consumo para entender as diferenças.
+4.  **Medidas para meses críticos:** Sugira ações específicas para reduzir o consumo nos períodos de maior gasto.
+5.  **Estimativa de economia:** Calcule o potencial de economia com as medidas propostas.
+6.  **Hábitos de economia:** Recomende hábitos gerais para reduzir o uso de energia.
+7.  **Horários de consumo:** Inclua dicas sobre os melhores horários para usar energia, se aplicável.
+
+## FORMATO DA RESPOSTA DESEJADO:
+A resposta deve ser clara, organizada em tópicos e conter pelo menos 5 recomendações específicas.
+`;
 
     this.carregandoDica = true;
-    this.contadorService.gerarDicaIA(mensagem).subscribe({
-      next: (res) => {
+    this.contadorService.gerarDicaIA(mensagemParaIA).subscribe({
+      next: async (res) => { // Make the 'next' callback async
         this.carregandoDica = false;
         if (res.candidates && res.candidates.length > 0) {
-          this.dicaIA = res.candidates[0].content.parts[0].text;
-          // Salvar a dica gerada no backend
-          this.contadorService.saveAiTip({ text: this.dicaIA }).subscribe({
+          const dicaBrutaIA = res.candidates[0].content.parts[0].text;
+
+          // AWAIT the result of marked.parse() as it might return a Promise
+          try {
+            this.dicaIA = await marked.parse(dicaBrutaIA);
+          } catch (parseError) {
+            console.error('Erro ao parsear Markdown com marked.js:', parseError);
+            this.dicaIA = 'Erro ao formatar a dica. Detalhes no console.';
+            // Fallback to raw text if parsing fails
+            // this.dicaIA = dicaBrutaIA;
+          }
+
+          // Salvar a dica gerada no backend (salve a versão bruta ou a HTML, dependendo da sua necessidade)
+          this.contadorService.saveAiTip({text: dicaBrutaIA}).subscribe({
             next: (savedTip) => {
               console.log('Dica salva com sucesso:', savedTip);
-              // Poderia adicionar alguma lógica para avisar o usuário que a dica foi salva
             },
             error: (saveErr) => {
               console.error('Erro ao salvar dica IA:', saveErr);
-              // Lógica para lidar com erro ao salvar a dica
             }
           });
         } else {

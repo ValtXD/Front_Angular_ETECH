@@ -13,6 +13,7 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatIconModule} from '@angular/material/icon';
 import {MatTableModule} from '@angular/material/table';
 import {MatProgressSpinner} from '@angular/material/progress-spinner';
+import { marked } from 'marked';
 
 
 @Component({
@@ -100,10 +101,10 @@ export class ResultadosComponent implements OnInit {
   }
 
   gerarDica() {
-    this.modalAberto = true;
-    this.loadingDica = true;
-    this.dicaGerada = '';
-    const dadosParaIA = this.aparelhosDia.map(ap => ({
+      this.modalAberto = true;
+      this.loadingDica = true;
+      this.dicaGerada = '';
+      const dadosParaIA = this.aparelhosDia.map(ap => ({
       nome: ap.nome,
       ambiente: ap.ambiente?.nome,
       estado: ap.estado?.nome,
@@ -111,32 +112,43 @@ export class ResultadosComponent implements OnInit {
       consumo_diario_kwh: ap.consumo_diario_kwh,
       custo_diario: ap.custo_diario
     }));
+
+    // USANDO O NOVO PROMPT MELHORADO
     const mensagem = `
-  Aqui estão os dados de consumo energético atuais para análise:
+# CONTEXTO DE CONSUMO ENERGÉTICO
+# Estes são os dados de uma residência para sua análise.
 
-  Aparelhos cadastrados:
-  ${JSON.stringify(dadosParaIA, null, 2)}
+# DADOS DOS APARELHOS
+${JSON.stringify(dadosParaIA, null, 2)}
 
-  TOTAL consumo diário: ${this.consumoTotalDia.toFixed(2)} kWh
-  TOTAL custo normal diário: R$ ${this.custoTotalNormal.toFixed(2)}
+# TOTAIS
+- Consumo diário TOTAL: ${this.consumoTotalDia.toFixed(2)} kWh
+- Custo diário TOTAL: R$ ${this.custoTotalNormal.toFixed(2)}
 
-  Gere de 3 a 5 DICAS de economia de energia, considerando:
-  - Quais aparelhos mais consomem
-  - Sugestões de substituição por modelos mais eficientes ou econômicos
-  - Tecnologias inteligentes que ajudam na economia (como timers, sensores, etc.)
-  - Alertas sobre bandeiras tarifárias
-  - Dicas práticas para reduzir o custo e consumo
+---
 
-  Escreva de forma clara e objetiva, em português, para usuários comuns.
-  `;
+# SUA TAREFA
+Com base no contexto fornecido, gere de 3 a 5 dicas práticas de economia de energia.
 
-    this.api.gerarDicaIA(mensagem).subscribe({ // Usa ApiService para gerar a dica
+# REGRAS DE FORMATAÇÃO E ESTILO (Siga estritamente)
+1.  **Título:** Comece com um título principal chamativo em negrito. Ex: "**💡 Suas Dicas Personalizadas de Economia!**"
+2.  **Introdução:** Escreva uma introdução curta (1 a 2 frases) explicando o objetivo das dicas.
+3.  **Corpo das Dicas:** Apresente cada dica como um item de uma lista não ordenada (usando um asterisco '*' no início de cada dica).
+4.  **Destaque:** Em cada dica, use negrito (**palavra**) para destacar o aparelho ou a ação principal.
+5.  **Linguagem:** Use português do Brasil, de forma clara, objetiva e encorajadora, como se estivesse falando com um usuário comum.
+6.  **Análise:** Baseie as dicas nos aparelhos que mais consomem e na bandeira tarifária, se for relevante.
+`;
+
+    this.api.gerarDicaIA(mensagem).subscribe({
       next: res => {
         this.loadingDica = false;
-        const texto = res?.candidates?.[0]?.content?.parts?.[0]?.text || 'Nenhuma dica gerada.';
-        this.dicaGerada = texto.split('\n').map((p: string) => `<p>${p}</p>`).join('');
+        const texto = res?.candidates?.[0]?.content?.parts?.[0]?.text || '<p>Nenhuma dica gerada.</p>';
 
-        // Salvar a dica gerada no backend (para dicas de aparelhos)
+        // A MÁGICA ACONTECE AQUI!
+        // Converte a resposta em Markdown para HTML seguro.
+        this.dicaGerada = marked(texto) as string;
+
+        // Salvar a dica CRUA (Markdown) no backend é uma boa prática
         this.api.saveApplianceAiTip({ text: texto }).subscribe({
           next: (savedTip) => {
             console.log('Dica de aparelho salva com sucesso:', savedTip);

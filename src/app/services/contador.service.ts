@@ -95,7 +95,7 @@ export class ContadorService {
     return this.http.put(`${this.baseUrl}/consumo-mensal/${id}/`, payload);
   }
 
-  gerarDicaIA(mensagem: string): Observable<any> {
+  gerarDicaIA(mensagem: string | Promise<string>): Observable<any> {
     const url = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=AIzaSyClP7PDzQR6AYg1hH7RZoNiZ-reoiQrNrs';
     const body = {
       contents: [{

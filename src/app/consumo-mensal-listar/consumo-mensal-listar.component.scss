@@ -94,22 +94,22 @@
   color: #212121;
   margin: 0;
   padding-bottom: 16px;
-  border-bottom: 1px solid #eeeeee;
+  border-bottom: 1px solid #000000 !important;
 }
 
-/* Área de conteúdo do modal */
-.modal-content {
+
+.modal-content{
+  background-color: var(--background-card);
   margin-top: 20px;
-  font-family: 'Courier New', Courier, monospace; /* Ideal para a tag <pre> */
   font-size: 0.9rem;
-  color: #333;
-  background-color: #f5f5f5;
   padding: 16px;
   border-radius: 8px;
   max-height: 60vh; /* Altura máxima, para o conteúdo não ficar muito longo */
   overflow-y: auto; /* Adiciona uma barra de scroll se o conteúdo for maior */
   white-space: pre-wrap; /* Garante a quebra de linha no texto da IA */
+
 }
+
 
 /* Container para os botões de ação */
 .modal-actions {
