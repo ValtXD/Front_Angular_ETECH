@@ -7,7 +7,7 @@ $text-medium: #555;
 $text-light: #999;
 $primary-blue: #678760;
 $primary-blue-hover: #678760;
-$border-light: #e0e0e0;
+$border-light: #343535;
 $input-bg-light:  #d3d4d5;
 $input-border-default: $border-light;
 $input-border-focused: $primary-blue;
@@ -67,10 +67,10 @@ $hover-row-bg: #d3d4d5;
     color: $text-medium;
   }
 }
-
 mat-divider {
-  margin: 25px 0;
-  border-color: $border-light;
+  margin-top: 25px !important;         // aumenta o espaço acima
+  margin-bottom: 25px !important;      // aumenta o espaço abaixo
+  border-top: 1px solid lighten($border-light, 10%) !important;
 }
 
 .filters-section {
@@ -81,7 +81,7 @@ mat-divider {
     font-size: 1.1em;
     font-weight: 800;
     color: $text-dark;
-    margin-bottom: 15px;
+    margin-bottom: 30px;
     display: flex;
     align-items: center;
     gap: 8px;
