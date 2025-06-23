@@ -9,7 +9,7 @@ import { Router } from '@angular/router';
   standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './leitura-qr.component.html',
-  styleUrls: ['./leitura-qr.component.css'],
+  styleUrls: ['./leitura-qr.component.scss'],
 })
 export class LeituraQrComponent implements OnInit {
   @ViewChild('cameraInput') cameraInput!: ElementRef<HTMLInputElement>;

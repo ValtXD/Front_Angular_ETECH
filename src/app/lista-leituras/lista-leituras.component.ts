@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { OcrContadorService, LeituraOCR } from '../services/ocr-contador.service';
 import { interval, Subscription } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
-import {Router, RouterModule} from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { DatePipe, DecimalPipe } from '@angular/common';
 import { CommonModule } from '@angular/common';
@@ -56,19 +56,15 @@ export class ListaLeiturasComponent implements OnInit, OnDestroy {
     { value: '11', label: 'Novembro' },
     { value: '12', label: 'Dezembro' },
   ];
-
-  // Colunas a serem exibidas na tabela Angular Material
   displayedColumns: string[] = ['data', 'estado', 'valorExtraido', 'valorCorrigido', 'custoEstimado', 'imagem', 'acoes'];
-
   medias = {
     valorExtraidoMedia: 0,
     valorCorrigidoMedia: 0,
     diferencaValorCorrigidoMedia: null as number | null,
     diferencaCustoEstimadoMedia: null as number | null,
   };
-
   private pollingSubscription?: Subscription;
-  baseUrl = 'http://localhost:8000'; // Ajuste esta URL se seu backend não estiver em localhost:8000
+  baseUrl = 'http://localhost:8000';
 
   constructor(
     private ocrContadorService: OcrContadorService,
@@ -80,10 +76,8 @@ export class ListaLeiturasComponent implements OnInit, OnDestroy {
     for (let i = anoAtual; i >= anoAtual - 5; i--) {
       this.anos.push(i.toString());
     }
-
     this.carregarLeituras();
     this.carregarEstados();
-
     this.pollingSubscription = interval(5000)
       .pipe(switchMap(() => this.ocrContadorService.listarLeituras(this.filtroMes, this.filtroAno, this.filtroEstadoId)))
       .subscribe(data => {
@@ -123,11 +117,9 @@ export class ListaLeiturasComponent implements OnInit, OnDestroy {
       };
       return;
     }
-
     const leiturasEstado = this.leituras
       .filter(l => l.estado?.id === this.filtroEstadoId)
       .sort((a, b) => new Date(a.data_registro).getTime() - new Date(b.data_registro).getTime());
-
     if (leiturasEstado.length === 0) {
       this.medias = {
         valorExtraidoMedia: 0,
@@ -137,19 +129,15 @@ export class ListaLeiturasComponent implements OnInit, OnDestroy {
       };
       return;
     }
-
     const valorExtraidoTotal = leiturasEstado.reduce((acc, cur) => acc + cur.valor_extraido, 0);
     const valorCorrigidoTotal = leiturasEstado.reduce((acc, cur) => acc + cur.valor_corrigido, 0);
     const custoEstimadoTotal = leiturasEstado.reduce((acc, cur) => acc + (cur.custo_total || 0), 0);
-
     const valorExtraidoMedia = valorExtraidoTotal / leiturasEstado.length;
     const valorCorrigidoMedia = valorCorrigidoTotal / leiturasEstado.length;
-
     const primeiraLeitura = leiturasEstado[0];
     const ultimaLeitura = leiturasEstado[leiturasEstado.length - 1];
     const diferencaValorCorrigidoMedia = ultimaLeitura.valor_corrigido - primeiraLeitura.valor_corrigido;
     const diferencaCustoEstimadoMedia = (ultimaLeitura.custo_total || 0) - (primeiraLeitura.custo_total || 0);
-
     this.medias = {
       valorExtraidoMedia,
       valorCorrigidoMedia,
@@ -165,7 +153,6 @@ export class ListaLeiturasComponent implements OnInit, OnDestroy {
     }
     return `${this.baseUrl}${imagemUrl}`;
   }
-
 
   voltarParaUpload(): void {
     this.router.navigate(['/upload']);

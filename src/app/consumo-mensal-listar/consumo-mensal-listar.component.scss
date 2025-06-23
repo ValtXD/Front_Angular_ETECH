@@ -85,6 +85,7 @@
   display: flex;
   flex-direction: column;
   animation: fadeIn 0.3s ease-in-out; /* Animação de surgimento suave */
+  margin-top: 5rem;
 }
 
 /* Título do modal */
@@ -95,20 +96,18 @@
   margin: 0;
   padding-bottom: 16px;
   border-bottom: 1px solid #000000 !important;
+
 }
 
 
 .modal-content{
   background-color: var(--background-card);
-  margin-top: 20px;
   font-size: 0.9rem;
   padding: 16px;
   border-radius: 8px;
   max-height: 60vh; /* Altura máxima, para o conteúdo não ficar muito longo */
   overflow-y: auto; /* Adiciona uma barra de scroll se o conteúdo for maior */
-  white-space: pre-wrap; /* Garante a quebra de linha no texto da IA */
-
-}
+  white-space: pre-wrap; /* Garante a quebra de linha no texto da IA */}
 
 
 /* Container para os botões de ação */
@@ -116,7 +115,6 @@
   display: flex;
   justify-content: flex-end; /* Alinha o botão à direita */
   margin-top: 24px;
-  padding-top: 16px;
   border-top: 1px solid #eeeeee;
 }
 

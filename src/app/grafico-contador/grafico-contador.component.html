@@ -2,14 +2,14 @@
   <mat-card-title class="card-title">Monitoramento de Consumo/Contador</mat-card-title>
   <mat-card-content>
     <div class="mode-selection">
-      <!-- mat-radio-group para agrupar os botões de rádio do Material -->
+
       <mat-radio-group [(ngModel)]="modo" (change)="onModoChange($event)" color="primary">
         <span>Gráfico de consumo mensal</span>
       </mat-radio-group>
     </div>
 
     <div class="graph-container">
-      <!-- O canvas do gráfico permanece o mesmo, usando a ID e a referência local para o TS -->
+
       <canvas id="graficoConsumo" #graficoConsumo></canvas>
     </div>
   </mat-card-content>

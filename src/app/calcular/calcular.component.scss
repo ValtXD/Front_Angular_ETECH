@@ -368,11 +368,13 @@ button[mat-raised-button]:hover {
   max-width: 800px;
   transform: translateY(-20px);
   transition: transform .3s ease;
-  overflow: hidden
+  overflow: hidden;
+  margin-top: 16px;
 }
 
 .modal-overlay.active .modal-content {
   transform: translateY(0)
+
 }
 
 .modal-header {

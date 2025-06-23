@@ -2,10 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { ContadorService } from '../services/contador.service';
 import { Chart, registerables, TooltipItem } from 'chart.js';
 import { Router } from '@angular/router';
-import {MatCard, MatCardActions, MatCardContent, MatCardTitle} from '@angular/material/card';
-import {MatRadioButton, MatRadioChange, MatRadioGroup} from '@angular/material/radio';
-import {FormsModule} from '@angular/forms';
-import {MatButton} from '@angular/material/button';
+import { MatCard, MatCardActions, MatCardContent, MatCardTitle } from '@angular/material/card';
+import { MatRadioButton, MatRadioChange, MatRadioGroup } from '@angular/material/radio';
+import { FormsModule } from '@angular/forms';
+import { MatButton } from '@angular/material/button';
 
 Chart.register(...registerables);
 
@@ -37,18 +37,14 @@ export class GraficoContadorComponent implements OnInit {
       this.chart.destroy();
     }
 
-    // Sempre usar dados mensais, mas processar diferentemente para os modos
     this.contadorService.obterDadosGrafico().subscribe(data => {
       if (this.modo === 'mensal') {
-        // Dados normais mensais
         this.criarGrafico(data.labels, data.consumos, data.custos);
       } else {
-        // Modo anual: projetar os dados mensais para o próximo ano
         const labelsAnual = data.labels.map(label => {
-          // label no formato MM/YYYY
           const [mesStr, anoStr] = label.split('/');
-          const anoNum = Number(anoStr) + 1; // ano + 1
-          return `${mesStr}/${anoNum}`; // exemplo: "01/2026"
+          const anoNum = Number(anoStr) + 1;
+          return `${mesStr}/${anoNum}`;
         });
 
         const consumosAnual = data.consumos.map(c => c * 12);

@@ -95,15 +95,15 @@
   margin-top: 20px;
 }
 
-/* --- ESTILO DOS BOTÕES VERDES --- */
+
 .ocr-action-button {
-  background-color: #678760 !important; /* Verde principal */
-  color: #ffffff !important; /* Letra branca */
+  background-color: #678760 !important;
+  color: #ffffff !important;
   width: 100%;
   padding: 12px 0;
   font-size: 1em;
 }
 
 .ocr-action-button:hover:not(:disabled) {
-  background-color: #5a7554 !important; /* Tom mais escuro no hover */
+  background-color: #5a7554 !important;
 }

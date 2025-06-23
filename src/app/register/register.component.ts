@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
-import { AuthCacheService } from '../services/auth-cache.service'; // Ajuste o caminho
+import { AuthCacheService } from '../services/auth-cache.service';
 
 @Component({
   standalone: true,
@@ -20,7 +20,6 @@ export class RegisterComponent {
   email: string = '';
   message: string = '';
 
-  // Expressão regular para domínios conhecidos em minúsculas
   private emailRegex = /^[a-zA-Z0-9._%+-]+@(gmail\.com|yahoo\.com|outlook\.com|hotmail\.com|icloud\.com|protonmail\.com|zoho\.com|aol\.com|mail\.com|gmx\.com|web\.de|t-online\.de|libero\.it|terra\.com\.br|uol\.com\.br|bol\.com\.br|ig\.com\.br|r7\.com|zipmail\.com\.br)$/;
 
   constructor(private authCacheService: AuthCacheService, private router: Router) {}
@@ -36,7 +35,6 @@ export class RegisterComponent {
       return;
     }
 
-    // --- NOVA LÓGICA DE TRATAMENTO DO RETORNO DO SERVIÇO ---
     const registrationResult = this.authCacheService.register(this.username, this.email);
 
     if (registrationResult === 'success') {
@@ -47,8 +45,7 @@ export class RegisterComponent {
     } else if (registrationResult === 'email_taken') {
       this.message = 'E-mail já está em uso. Por favor, insira outro e-mail.';
     } else {
-      this.message = 'Erro ao cadastrar. Tente novamente.'; // Para outros casos de erro, como falha de armazenamento
+      this.message = 'Erro ao cadastrar. Tente novamente.';
     }
-    // --- FIM DA NOVA LÓGICA ---
   }
 }

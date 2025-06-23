@@ -65,7 +65,7 @@
         <mat-spinner diameter="40"></mat-spinner>
         <p>Gerando dica com IA...</p>
       </div>
-      <div *ngIf="!loadingDica" [innerHTML]="dicaGerada"></div>
+      <div class="dica-container" [innerHTML]="dicaGerada"></div>
     </mat-card-content>
     <mat-card-actions align="end">
       <button class="btn btn-sm btn-secondary" (click)="fecharModal()">Fechar</button>

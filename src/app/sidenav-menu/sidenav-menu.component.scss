@@ -9,13 +9,11 @@
   letter-spacing: 0.08em;
 }
 
-/* Divisores */
 mat-divider {
   border-top-color: rgba(0, 0, 0, 0.08) !important;
   margin: 10px 0;
 }
 
-/* Container principal do item - DEVE SER TRANSPARENTE */
 mat-list-item {
   display: flex;
   justify-content: center;
@@ -25,11 +23,10 @@ mat-list-item {
   margin: 4px 0;
   padding: 0 10px;
   box-sizing: border-box;
-  background: transparent !important; /* <<< ESSENCIAL: Garante que não haja fundo duplo */
+  background: transparent !important;
   border-radius: 0;
 }
 
-/* A "Pílula" interna (a div.menu-item-pill) */
 .menu-item-pill {
   display: flex;
   align-items: center;
@@ -40,9 +37,6 @@ mat-list-item {
   border-radius: 50px;
   transition: background-color 0.2s ease-in-out;
 }
-
-
-
 
 .menu-item-pill .mat-icon {
   margin-right: 16px;
@@ -59,7 +53,6 @@ mat-list-item {
   white-space: nowrap;
 }
 
-/* Realça o texto/ícone quando a pílula está ativa */
 .active-list-item .menu-item-pill .mat-icon,
 .active-list-item .menu-item-pill span,
 mat-list-item:hover .menu-item-pill .mat-icon,
@@ -67,3 +60,11 @@ mat-list-item:hover .menu-item-pill span {
   color: #000000 !important;
   font-weight: 700;
 }
+
+
+
+
+
+
+
+

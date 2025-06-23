@@ -11,9 +11,9 @@
   gap: 24px;
   max-width: 1200px;
   margin: 0 auto;
+  background-color: #f4f7f6 !important;
 }
 
-/* Estilo padrão para todos os mat-card */
 mat-card {
   border-radius: 12px !important;
   border: 1px solid #e0e0e0;
@@ -30,68 +30,33 @@ mat-card-title {
   color: #000000;
 }
 
-
-/* ====================================================== */
-/* ESTILO PARA O CARD DE FILTRO - ATENÇÃO À ESTRUTURA HTML
-/* ====================================================== */
-
-/*
-  PARA ESTE LAYOUT FUNCIONAR, a sua estrutura HTML dentro do
-  componente DEVE ser semelhante a esta, com o seletor e o
-  botão DENTRO de <mat-card-content>:
-
-  <mat-card class="filter-card">
-    <mat-card-header>
-      <mat-card-title>Resultados</mat-card-title>
-    </mat-card-header>
-    <mat-card-content>  <-- ESTE É O CONTAINER FLEX
-      <mat-form-field>
-         ... seletor de data ...
-      </mat-form-field>
-      <button mat-flat-button>
-         Gerar Dica
-      </button>
-    </mat-card-content>
-  </mat-card>
-*/
-
 .filter-card {
   background-color: #ffffff;
 }
 
-/*
-  PONTO CRÍTICO DA CORREÇÃO:
-  Transformamos o <mat-card-content> num container flex.
-  Isto força os seus filhos (o seletor e o botão) a ficarem lado a lado.
-*/
 .filter-card mat-card-content {
-  display: flex;                  /* Essencial para o layout em linha */
-  flex-wrap: wrap;                /* Permite que quebre a linha em ecrãs pequenos */
-  justify-content: space-between; /* Coloca espaço máximo entre os itens */
-  align-items: center;            /* **ALTERADO** Alinha os itens verticalmente ao centro */
-  gap: 16px;                      /* Espaço entre os itens */
-  padding: 16px 24px !important;  /* Espaçamento interno */
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 24px !important;
 }
 
-/* Garante que o campo do formulário se comporte bem dentro do flex */
 .filter-card mat-card-content mat-form-field {
-  flex-grow: 1;      /* Permite que o campo cresça para ocupar espaço */
-  max-width: 300px;  /* Mas limita a sua largura máxima */
+  flex-grow: 1;
+  max-width: 300px;
 }
 
-
-/* ====================================================== */
-/* LAYOUT DA GRADE DE RESULTADOS
-/* ====================================================== */
 .results-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); /* Cards responsivos */
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
   gap: 24px;
 }
 
-/* Estilo para o card de cada APARELHO */
 .result-card {
   padding: 16px;
+  background: #FFFFFF;
 }
 
 .result-card mat-card-content p {
@@ -106,15 +71,11 @@ mat-card-title {
   font-size: 0.95em;
 }
 
-
-/* ====================================================== */
-/* ESTILO PARA O CARD DE TOTAL
-/* ====================================================== */
 .total-card {
   padding: 32px;
   background: linear-gradient(135deg, #678760, #3f5a37);
   color: white;
-  grid-column: 1 / -1; /* Ocupa a largura toda da grade */
+  grid-column: 1 / -1;
 }
 
 .total-card mat-card-title {
@@ -148,9 +109,6 @@ mat-card-title {
   color: #ffffff;
 }
 
-/* ====================================================== */
-/* ESTILO PARA OS BOTÕES NO RODAPÉ
-/* ====================================================== */
 .footer-actions {
   display: flex;
   justify-content: flex-end;
@@ -162,7 +120,7 @@ mat-card-title {
 
 .footer-actions button .mat-icon {
   margin-right: 8px;
-  color: inherit; /* Ícone herda a cor do botão */
+  color: inherit;
 }
 
 .footer-actions .btn-novo-registro,
@@ -181,19 +139,12 @@ mat-card-title {
   color: #FFFFFF !important;
 }
 
-/*
-  PONTO CRÍTICO DA CORREÇÃO:
-  Alterado o background-color de volta para a cor verde.
-*/
 .footer-actions button,
-.filter-card button{ /* Adicionada regra para o botão de dica */
-  background-color: #678760; /* Fundo verde */
+.filter-card button {
+  background-color: #678760;
   color: #ffffff;
 }
 
-/* ====================================================== */
-/* ESTILOS ESSENCIAIS PARA O MODAL DE DICA
-/* ====================================================== */
 .modal-fundo {
   position: fixed;
   top: 0;

@@ -10,7 +10,7 @@
       </mat-card-header>
       <mat-card-content>
         <p class="tip-preview">
-          {{ (tip.text.length > 100 ? tip.text.substring(0, 100) + '...' : tip.text) }}
+          {{ createPreview(tip.text) }}
         </p>
         <small>Gerado em: {{ tip.created_at | date:'short' }}</small>
       </mat-card-content>
@@ -35,7 +35,7 @@
       </mat-card-header>
       <mat-card-content>
         <p class="tip-preview">
-          {{ (tip.text.length > 100 ? tip.text.substring(0, 100) + '...' : tip.text) }}
+          {{ createPreview(tip.text) }}
         </p>
         <small>Gerado em: {{ tip.created_at | date:'short' }}</small>
       </mat-card-content>
@@ -48,7 +48,6 @@
   </div>
 </div>
 
-<!-- MODAL CONTADOR -->
 <div class="modal-overlay" *ngIf="isContadorModalOpen" (click)="closeContadorModal()">
   <div class="modal-content" (click)="$event.stopPropagation()">
     <div class="modal-header">
@@ -58,24 +57,23 @@
       </button>
     </div>
     <div class="modal-body" *ngIf="currentContadorTip">
-      <p [innerHTML]="currentContadorTip.text"></p>
+      <div class="modal-text-content" [innerHTML]="formatText(currentContadorTip.text)"></div>
       <small *ngIf="currentContadorTip.created_at">Gerado em: {{ currentContadorTip.created_at | date:'medium' }}</small>
     </div>
     <div class="modal-footer">
-      <button mat-raised-button color="primary" (click)="previousContadorTip()" [disabled]="selectedContadorTipIndex === 0">
+      <button mat-raised-button class="btn btn-primary" (click)="previousContadorTip()" [disabled]="selectedContadorTipIndex === 0">
         Anterior
       </button>
-      <button mat-raised-button color="primary" (click)="nextContadorTip()" [disabled]="selectedContadorTipIndex === contadorAiTips.length - 1">
+      <button mat-raised-button class="btn btn-primary" (click)="nextContadorTip()" [disabled]="selectedContadorTipIndex === contadorAiTips.length - 1">
         Próxima
       </button>
-      <button mat-raised-button color="warn" (click)="deleteContadorTip(currentContadorTip?.id)">
+      <button mat-raised-button class="btn btn-danger" (click)="deleteContadorTip(currentContadorTip?.id)">
         Remover Dica
       </button>
     </div>
   </div>
 </div>
 
-<!-- MODAL APPLIANCE -->
 <div class="modal-overlay" *ngIf="isApplianceModalOpen" (click)="closeApplianceModal()">
   <div class="modal-content" (click)="$event.stopPropagation()">
     <div class="modal-header">
@@ -85,17 +83,17 @@
       </button>
     </div>
     <div class="modal-body" *ngIf="currentApplianceTip">
-      <p [innerHTML]="currentApplianceTip.text"></p>
+      <div class="modal-text-content" [innerHTML]="formatText(currentApplianceTip.text)"></div>
       <small *ngIf="currentApplianceTip.created_at">Gerado em: {{ currentApplianceTip.created_at | date:'medium' }}</small>
     </div>
     <div class="modal-footer">
-      <button mat-raised-button (click)="previousApplianceTip()" [disabled]="selectedApplianceTipIndex === 0">
+      <button mat-raised-button class="btn btn-primary" (click)="previousApplianceTip()" [disabled]="selectedApplianceTipIndex === 0">
         Anterior
       </button>
-      <button mat-raised-button (click)="nextApplianceTip()" [disabled]="selectedApplianceTipIndex === applianceAiTips.length - 1">
+      <button mat-raised-button class="btn btn-primary" (click)="nextApplianceTip()" [disabled]="selectedApplianceTipIndex === applianceAiTips.length - 1">
         Próxima
       </button>
-      <button mat-raised-button (click)="deleteApplianceTip(currentApplianceTip?.id)">
+      <button mat-raised-button class="btn btn-danger" (click)="deleteApplianceTip(currentApplianceTip?.id)">
         Remover Dica
       </button>
     </div>

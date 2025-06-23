@@ -39,7 +39,7 @@ interface ResultadoConsumoResponse {
   custo_anual_estimado?: number;
 }
 
-// Nova interface para as dicas da IA
+
 export interface AiTip {
   id?: number;
   text: string;
@@ -122,7 +122,7 @@ export class ContadorService {
     });
   }
 
-  // Novos métodos para gerenciar as dicas da IA no backend
+
   saveAiTip(tip: { text: string }): Observable<AiTip> {
     return this.http.post<AiTip>(`${this.baseUrl}/ai-tips/`, tip);
   }

@@ -5,16 +5,15 @@
 .ai-tips-section h2 {
   font-weight: 600;
   margin-bottom: 16px;
-  color: #000000; /* cor primária material */
+  color: #000000;
 }
 
 .empty-message {
   font-style: italic;
-  color: #777;
+  color: #777777;
   padding: 8px;
 }
 
-/* ===== CARDS ===== */
 .tip-cards-container {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -25,7 +24,7 @@
   cursor: pointer;
   padding: 16px;
   border-radius: 12px;
-  background: #fafafa;
+  background: #fafafa !important;
   box-shadow: 0 4px 12px rgba(0,0,0,0.08);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
@@ -53,46 +52,31 @@
   margin-top: 8px;
 }
 
-.delete-button-card {
-  margin-top: 8px;
-  background: #e57373;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  padding: 4px 8px;
-  font-size: 12px;
-  cursor: pointer;
-  transition: background 0.2s ease;
-}
-
-.delete-button-card:hover {
-  background: #d32f2f;
-}
-
-/* ===== MODAL (AJUSTADO PARA SCROLL) ===== */
 .modal-overlay {
   position: fixed;
   inset: 0;
   background: rgba(0, 0, 0, 0.7);
   display: flex;
-  align-items: flex-start; /* Alinha o modal no topo */
-  justify-content: center;  /* Mantém a centralização horizontal */
-  padding-top: 10vh;      /* Adiciona um espaço de 10% da altura da tela no topo */
-  overflow-y: auto;       /* Garante que, se o modal for maior que a tela, a página possa rolar */
+  align-items: flex-start;
+  justify-content: center;
+  padding-top: 10vh;
+  overflow-y: auto;
   z-index: 1000;
 }
 
 .modal-content {
   background: #fff;
   border-radius: 12px;
-  max-width: 600px; /* Largura máxima do modal */
+  max-width: 600px;
   width: 90%;
-  max-height: 80vh; /* Altura máxima (80% da altura da tela) */
+  max-height: 80vh;
   box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
   animation: fadeInModal 0.3s ease-out;
-  display: flex; /* Habilita flexbox */
-  flex-direction: column; /* Organiza os itens filhos em coluna */
-  overflow: hidden; /* Garante que os cantos arredondados sejam respeitados */
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  margin-top: 16px;
+  margin-left: 100px;
 }
 
 @keyframes fadeInModal {
@@ -112,7 +96,8 @@
   align-items: center;
   border-bottom: 1px solid #e0e0e0;
   padding: 16px 24px;
-  flex-shrink: 0; /* Impede que o cabeçalho encolha */
+  flex-shrink: 0;
+  background: #fb9b27;
 }
 
 .modal-header h2 {
@@ -140,53 +125,74 @@
   color: #444;
   line-height: 1.6;
   padding: 16px 24px;
-  overflow-y: auto; /* ★ A MÁGICA ACONTECE AQUI: Adiciona scroll vertical apenas no corpo do modal */
-  flex-grow: 1; /* Permite que o corpo ocupe o espaço disponível */
+  overflow-y: auto;
+  flex-grow: 1;
 }
 
 .modal-body p {
+  color: black;
   margin: 0 0 12px 0;
+}
+
+.modal-footer .btn-primary {
+  background-color: #6B8E5E;
+  color: white;
+  border-radius: 25px;
+  padding: 10px 20px;
+  border: none;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.modal-footer .btn-primary:hover {
+  background-color: #5A774D;
+}
+
+.modal-footer .btn-primary:first-of-type {
+  background-color: white;
+  color: #6B8E5E;
+  border: 1px solid #6B8E5E;
+  border-radius: 25px;
+  padding: 10px 20px;
+  box-shadow: none;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.modal-footer .btn-primary:first-of-type:hover {
+  background-color: #F0F0F0;
+  color: #5A774D;
+}
+
+.modal-footer .btn-danger {
+  background-color: #dc3545;
+  color: white;
+  border-radius: 25px;
+  padding: 10px 20px;
+  border: none;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.modal-footer .btn-danger:hover {
+  background-color: #c82333;
 }
 
 .modal-footer {
   display: flex;
   justify-content: flex-end;
-  gap: 8px;
-  padding: 16px 24px;
-  border-top: 1px solid #e0e0e0;
-  flex-wrap: wrap;
-  flex-shrink: 0; /* Impede que o rodapé encolha */
+  gap: 15px;
+  padding: 20px;
 }
 
-.nav-button, .delete-button {
-  background-color: rgb(103, 135, 96) !important;
-  color: #fff;
-  border: none;
-  padding: 8px 16px;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 14px;
-  transition: background 0.2s ease;
-}
-
-.nav-button:hover {
-  background-color: rgba(103, 135, 96, 0.56) !important;
-}
-
-.delete-button {
-  background: #e57373;
-}
-
-.delete-button:hover {
-  background: #d32f2f;
-}
-
-.nav-button:disabled {
-  background: #bbb;
-  cursor: not-allowed;
-}
-
-/* ===== RESPONSIVO ===== */
 @media (max-width: 480px) {
   .modal-content {
     width: 95%;

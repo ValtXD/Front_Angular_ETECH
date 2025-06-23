@@ -1,57 +1,63 @@
-
 import { Component, OnInit } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
-import { ContadorService, AiTip } from '../../services/contador.service'; // Para dicas de contador
+import { ContadorService, AiTip } from '../../services/contador.service';
 import { ApiService, ApplianceAiTip } from '../../services/api.service';
-import {MatButton, MatIconButton} from '@angular/material/button';
-import {MatIcon} from '@angular/material/icon';
-import {MatCard, MatCardActions, MatCardContent, MatCardHeader, MatCardTitle} from '@angular/material/card'; // Para dicas de aparelhos
+import { MatButton, MatIconButton } from '@angular/material/button';
+import { MatIcon } from '@angular/material/icon';
+import { MatCard, MatCardActions, MatCardContent, MatCardHeader, MatCardTitle } from '@angular/material/card';
+import { marked } from 'marked';
 
 @Component({
   standalone: true,
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
-  imports: [CommonModule, DatePipe, MatButton, MatIcon, MatIcon, MatCardActions, MatIconButton, MatCardContent, MatCardTitle, MatCardHeader, MatCard]
+  imports: [
+    CommonModule,
+    DatePipe,
+    MatButton,
+    MatIconButton,
+    MatIcon,
+    MatCard,
+    MatCardActions,
+    MatCardContent,
+    MatCardHeader,
+    MatCardTitle
+  ]
 })
 export class HomeComponent implements OnInit {
-  // Dicas do Contador (EXISTENTES)
   contadorAiTips: AiTip[] = [];
   isContadorModalOpen: boolean = false;
   currentContadorTip: AiTip | null = null;
   selectedContadorTipIndex: number | null = null;
 
-  // Dicas de Aparelhos (NOVAS)
   applianceAiTips: ApplianceAiTip[] = [];
   isApplianceModalOpen: boolean = false;
   currentApplianceTip: ApplianceAiTip | null = null;
   selectedApplianceTipIndex: number | null = null;
 
   constructor(
-    private contadorService: ContadorService, // Para dicas do contador
-    private apiService: ApiService // Para dicas de aparelhos
-  ) {}
+    private contadorService: ContadorService,
+    private apiService: ApiService
+  ) {
+    marked.setOptions({
+      breaks: true,
+    });
+  }
 
   ngOnInit() {
     this.loadContadorAiTips();
-    this.loadApplianceAiTips(); // Carrega as novas dicas de aparelhos
+    this.loadApplianceAiTips();
   }
 
-  // --- Lógica para Dicas do Contador ---
   loadContadorAiTips() {
     this.contadorService.getAiTips().subscribe({
       next: (tips) => {
-        this.contadorAiTips = tips.sort((a, b) => {
-          if (a.created_at && b.created_at) {
-            return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
-          }
-          return 0;
-        });
-        console.log('Dicas de Contador carregadas:', this.contadorAiTips);
+        this.contadorAiTips = tips.sort((a, b) =>
+          new Date(b.created_at ?? 0).getTime() - new Date(a.created_at ?? 0).getTime()
+        );
       },
-      error: (err) => {
-        console.error('Erro ao carregar dicas de Contador da IA:', err);
-      }
+      error: (err) => console.error('Erro ao carregar dicas de Contador da IA:', err)
     });
   }
 
@@ -63,8 +69,6 @@ export class HomeComponent implements OnInit {
 
   closeContadorModal() {
     this.isContadorModalOpen = false;
-    this.currentContadorTip = null;
-    this.selectedContadorTipIndex = null;
   }
 
   nextContadorTip() {
@@ -82,39 +86,26 @@ export class HomeComponent implements OnInit {
   }
 
   deleteContadorTip(id: number | undefined) {
-    if (id === undefined) {
-      console.error('ID da dica do contador é indefinido, não é possível deletar.');
-      return;
-    }
+    if (id === undefined) return;
     if (confirm('Tem certeza que deseja remover esta dica do contador?')) {
       this.contadorService.deleteAiTip(id).subscribe({
         next: () => {
-          console.log('Dica do contador removida com sucesso!');
           this.closeContadorModal();
           this.loadContadorAiTips();
         },
-        error: (err) => {
-          console.error('Erro ao remover dica do contador:', err);
-        }
+        error: (err) => console.error('Erro ao remover dica do contador:', err)
       });
     }
   }
 
-  // --- Lógica para Dicas de Aparelhos (NOVAS) ---
   loadApplianceAiTips() {
     this.apiService.getApplianceAiTips().subscribe({
       next: (tips) => {
-        this.applianceAiTips = tips.sort((a, b) => {
-          if (a.created_at && b.created_at) {
-            return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
-          }
-          return 0;
-        });
-        console.log('Dicas de Aparelhos carregadas:', this.applianceAiTips);
+        this.applianceAiTips = tips.sort((a, b) =>
+          new Date(b.created_at ?? 0).getTime() - new Date(a.created_at ?? 0).getTime()
+        );
       },
-      error: (err) => {
-        console.error('Erro ao carregar dicas de Aparelhos da IA:', err);
-      }
+      error: (err) => console.error('Erro ao carregar dicas de Aparelhos da IA:', err)
     });
   }
 
@@ -126,8 +117,6 @@ export class HomeComponent implements OnInit {
 
   closeApplianceModal() {
     this.isApplianceModalOpen = false;
-    this.currentApplianceTip = null;
-    this.selectedApplianceTipIndex = null;
   }
 
   nextApplianceTip() {
@@ -145,21 +134,39 @@ export class HomeComponent implements OnInit {
   }
 
   deleteApplianceTip(id: number | undefined) {
-    if (id === undefined) {
-      console.error('ID da dica de aparelho é indefinido, não é possível deletar.');
-      return;
-    }
+    if (id === undefined) return;
     if (confirm('Tem certeza que deseja remover esta dica de aparelho?')) {
       this.apiService.deleteApplianceAiTip(id).subscribe({
         next: () => {
-          console.log('Dica de aparelho removida com sucesso!');
           this.closeApplianceModal();
           this.loadApplianceAiTips();
         },
-        error: (err) => {
-          console.error('Erro ao remover dica de aparelho:', err);
-        }
+        error: (err) => console.error('Erro ao remover dica de aparelho:', err)
       });
     }
+  }
+
+  formatText(text: string | undefined): string {
+    if (!text) {
+      return '';
+    }
+    return marked.parse(text) as string;
+  }
+
+  createPreview(text: string | undefined): string {
+    if (!text) {
+      return '';
+    }
+
+    const html = marked.parse(text) as string;
+
+    const div = document.createElement('div');
+    div.innerHTML = html;
+    const plainText = div.textContent || div.innerText || '';
+
+    if (plainText.length > 100) {
+      return plainText.substring(0, 100) + '...';
+    }
+    return plainText;
   }
 }

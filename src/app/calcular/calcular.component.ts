@@ -6,15 +6,15 @@ import { Estado } from '../models/estado';
 import { Bandeira } from '../models/bandeira';
 import { Aparelho } from '../models/aparelho';
 import { CommonModule } from '@angular/common';
-import {HttpClientModule, HttpParams} from '@angular/common/http';
+import { HttpClientModule, HttpParams } from '@angular/common/http';
 import { Router } from '@angular/router';
-import {MatCard, MatCardContent, MatCardModule, MatCardTitle} from '@angular/material/card';
-import {MatFormField, MatInput, MatInputModule, MatLabel} from '@angular/material/input';
-import {MatFormFieldModule} from '@angular/material/form-field';
-import {MatSelectModule} from '@angular/material/select';
-import {MatButtonModule} from '@angular/material/button';
-import {MatIconModule} from '@angular/material/icon';
-import {MatTableModule} from '@angular/material/table';
+import { MatCardModule } from '@angular/material/card';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatTableModule } from '@angular/material/table';
 
 @Component({
   standalone: true,
@@ -26,9 +26,6 @@ import {MatTableModule} from '@angular/material/table';
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
-    CommonModule,
-    FormsModule,
-    ReactiveFormsModule,
     MatCardModule,
     MatFormFieldModule,
     MatInputModule,
@@ -36,7 +33,6 @@ import {MatTableModule} from '@angular/material/table';
     MatButtonModule,
     MatIconModule,
     MatTableModule,
-
   ]
 })
 export class CalcularComponent implements OnInit {
@@ -54,8 +50,6 @@ export class CalcularComponent implements OnInit {
   };
 
   dataHoje: string = new Date().toISOString().slice(0, 10);
-
-
 
   isModalOpen: boolean = false;
   showFilters: boolean = false;
@@ -116,19 +110,13 @@ export class CalcularComponent implements OnInit {
     return this.aparelhos;
   }
 
-  /**
-   * Abre o modal de edição e busca os dados completos do aparelho pelo ID.
-   * @param aparelho O objeto aparelho com o ID para edição.
-   */
   openModalForEdit(aparelho: Aparelho): void {
     if (aparelho.id !== undefined && aparelho.id !== null) {
       this.editandoId = aparelho.id;
-      this.isModalOpen = true; // Abre o modal imediatamente
+      this.isModalOpen = true;
 
-      // Faz a requisição para buscar os detalhes completos do aparelho pelo ID
       this.api.getAparelhoById(aparelho.id).subscribe({
         next: (aparelhoCompleto: Aparelho) => {
-          // Preenche o formulário com os dados completos da API
           this.aparelhoForm.patchValue({
             data_cadastro: aparelhoCompleto.data_cadastro,
             ambiente: aparelhoCompleto.ambiente?.id,
@@ -150,34 +138,22 @@ export class CalcularComponent implements OnInit {
     }
   }
 
-  /**
-   * Abre o modal para um novo cadastro.
-   */
   openModalForNew(): void {
     this.editandoId = null;
     this.resetForm();
     this.isModalOpen = true;
   }
 
-  /**
-   * Fecha o modal e reseta o formulário.
-   */
   closeModal(): void {
     this.isModalOpen = false;
     this.resetForm();
     this.editandoId = null;
   }
 
-  /**
-   * Alterna a visibilidade dos campos de filtro.
-   */
   toggleFilters(): void {
     this.showFilters = !this.showFilters;
   }
 
-  /**
-   * Limpa os filtros e recarrega todos os aparelhos.
-   */
   clearFilters(): void {
     this.filtros = {
       nome: '',
@@ -187,18 +163,12 @@ export class CalcularComponent implements OnInit {
     this.aplicarFiltrosBackend();
   }
 
-  /**
-   * Remove um aparelho.
-   * @param id O ID do aparelho a ser removido.
-   */
   remover(id: number | undefined): void {
     if (id === undefined) {
       console.error('ID do aparelho é indefinido para remoção.');
       return;
     }
 
-    // Em um app real, use um modal de confirmação customizado aqui (ex: MatDialog)
-    console.log('Solicitação de remoção para o ID:', id);
     if (confirm('Tem certeza que deseja remover este aparelho? (Em um app real, use um modal customizado)')) {
       this.api.removerAparelho(id).subscribe({
         next: () => {
@@ -210,9 +180,6 @@ export class CalcularComponent implements OnInit {
     }
   }
 
-  /**
-   * Envia o formulário para criar ou atualizar um aparelho.
-   */
   onSubmit(): void {
     if (this.aparelhoForm.invalid) {
       this.aparelhoForm.markAllAsTouched();
@@ -253,9 +220,6 @@ export class CalcularComponent implements OnInit {
     }
   }
 
-  /**
-   * Reseta o formulário para os valores padrão.
-   */
   resetForm(): void {
     this.aparelhoForm.reset({ quantidade: 1, data_cadastro: this.dataHoje });
     Object.keys(this.aparelhoForm.controls).forEach(key => {
@@ -263,9 +227,6 @@ export class CalcularComponent implements OnInit {
     });
   }
 
-  /**
-   * Navega para a página de resultados com a data selecionada.
-   */
   irParaResultados(): void {
     const dataSelecionada = this.aparelhoForm.get('data_cadastro')?.value;
     this.router.navigate(['/resultados'], { queryParams: { data: dataSelecionada } });

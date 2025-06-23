@@ -41,9 +41,8 @@ export interface OcrResponse {
   providedIn: 'root',
 })
 export class OcrContadorQrService {
-  // Backend Django rodando na rede local no IP informado, porta 8000, rota /api
   private baseUrl = 'http://10.31.2.225:8000/api';
-  private ocrGeminiUrl = 'http://10.31.2.225:8000/ocr-gemini/'; // MANTENHA ASSIM OU PARA ONDE ESTÁ APONTANDO SUA API
+  private ocrGeminiUrl = 'http://10.31.2.225:8000/ocr-gemini/';
 
   constructor(private http: HttpClient) {}
 
@@ -55,7 +54,6 @@ export class OcrContadorQrService {
     return this.http.get<Bandeira[]>(`${this.baseUrl}/bandeiras/`);
   }
 
-  //Enviar para o backend Django
   enviarImagemOCR(imagem: File): Observable<OcrResponse> {
     const formData = new FormData();
     formData.append('imagem', imagem);
@@ -91,3 +89,12 @@ export class OcrContadorQrService {
     return this.http.delete(`${this.baseUrl}/leituras-ocr/${id}/`);
   }
 }
+
+
+
+
+
+
+
+
+

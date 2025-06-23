@@ -1,34 +1,30 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../services/api.service';
 import { CommonModule } from '@angular/common';
-import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { Router } from '@angular/router';
-import {MatDivider} from '@angular/material/divider';
-import { MatCardModule} from '@angular/material/card';
-import { MatInputModule} from '@angular/material/input';
-import { MatSelectModule} from '@angular/material/select';
-import {MatFormFieldModule} from '@angular/material/form-field';
-import {MatButtonModule} from '@angular/material/button';
-import {MatIconModule} from '@angular/material/icon';
-import {MatTableModule} from '@angular/material/table';
-import {MatProgressSpinner} from '@angular/material/progress-spinner';
+import { MatDivider } from '@angular/material/divider';
+import { MatCardModule } from '@angular/material/card';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatTableModule } from '@angular/material/table';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { marked } from 'marked';
-
 
 @Component({
   standalone: true,
   selector: 'app-resultados',
   templateUrl: './resultados.component.html',
-  styleUrls: ['./resultados.component.css'],
+  styleUrls: ['./resultados.component.scss'],
   imports: [
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
-    CommonModule,
-    FormsModule,
-    ReactiveFormsModule,
     MatCardModule,
     MatFormFieldModule,
     MatInputModule,
@@ -48,7 +44,6 @@ export class ResultadosComponent implements OnInit {
   custoTotalNormal = 0;
   custoTotalSocial = 0;
 
-  // Adicionais para modal da IA
   modalAberto = false;
   loadingDica = false;
   dicaGerada = '';
@@ -62,8 +57,6 @@ export class ResultadosComponent implements OnInit {
   carregarResultados(data?: string) {
     this.api.getResultados(data).subscribe({
       next: (res: any) => {
-        console.log('Dados recebidos da API:', res);
-
         this.datasDisponiveis = res.datas_disponiveis || [];
         this.dataSelecionada = res.data_selecionada || (this.datasDisponiveis.length > 0 ? this.datasDisponiveis[0] : '');
         this.aparelhosDia = res.aparelhos || [];
@@ -72,7 +65,6 @@ export class ResultadosComponent implements OnInit {
         this.custoTotalSocial = res.custo_total_social || 0;
       },
       error: (err) => {
-        console.error('Erro ao carregar resultados:', err);
         this.aparelhosDia = [];
         this.consumoTotalDia = 0;
         this.custoTotalNormal = 0;
@@ -101,10 +93,10 @@ export class ResultadosComponent implements OnInit {
   }
 
   gerarDica() {
-      this.modalAberto = true;
-      this.loadingDica = true;
-      this.dicaGerada = '';
-      const dadosParaIA = this.aparelhosDia.map(ap => ({
+    this.modalAberto = true;
+    this.loadingDica = true;
+    this.dicaGerada = '';
+    const dadosParaIA = this.aparelhosDia.map(ap => ({
       nome: ap.nome,
       ambiente: ap.ambiente?.nome,
       estado: ap.estado?.nome,
@@ -113,7 +105,6 @@ export class ResultadosComponent implements OnInit {
       custo_diario: ap.custo_diario
     }));
 
-    // USANDO O NOVO PROMPT MELHORADO
     const mensagem = `
 # CONTEXTO DE CONSUMO ENERGÉTICO
 # Estes são os dados de uma residência para sua análise.
@@ -131,12 +122,11 @@ ${JSON.stringify(dadosParaIA, null, 2)}
 Com base no contexto fornecido, gere de 3 a 5 dicas práticas de economia de energia.
 
 # REGRAS DE FORMATAÇÃO E ESTILO (Siga estritamente)
-1.  **Título:** Comece com um título principal chamativo em negrito. Ex: "**💡 Suas Dicas Personalizadas de Economia!**"
-2.  **Introdução:** Escreva uma introdução curta (1 a 2 frases) explicando o objetivo das dicas.
-3.  **Corpo das Dicas:** Apresente cada dica como um item de uma lista não ordenada (usando um asterisco '*' no início de cada dica).
-4.  **Destaque:** Em cada dica, use negrito (**palavra**) para destacar o aparelho ou a ação principal.
-5.  **Linguagem:** Use português do Brasil, de forma clara, objetiva e encorajadora, como se estivesse falando com um usuário comum.
-6.  **Análise:** Baseie as dicas nos aparelhos que mais consomem e na bandeira tarifária, se for relevante.
+1.  **Introdução:** Escreva uma introdução curta (1 a 2 frases) explicando o objetivo das dicas.
+2.  **Corpo das Dicas:** Apresente cada dica como um item de uma lista não ordenada (usando um asterisco '*' no início de cada dica).
+3.  **Destaque:** Em cada dica, use negrito (**palavra**) para destacar o aparelho ou a ação principal.
+4.  **Linguagem:** Use português do Brasil, de forma clara, objetiva e encorajadora, como se estivesse falando com um usuário comum.
+5.  **Análise:** Baseie as dicas nos aparelhos que mais consomem e na bandeira tarifária, se for relevante.
 `;
 
     this.api.gerarDicaIA(mensagem).subscribe({
@@ -144,11 +134,8 @@ Com base no contexto fornecido, gere de 3 a 5 dicas práticas de economia de ene
         this.loadingDica = false;
         const texto = res?.candidates?.[0]?.content?.parts?.[0]?.text || '<p>Nenhuma dica gerada.</p>';
 
-        // A MÁGICA ACONTECE AQUI!
-        // Converte a resposta em Markdown para HTML seguro.
         this.dicaGerada = marked(texto) as string;
 
-        // Salvar a dica CRUA (Markdown) no backend é uma boa prática
         this.api.saveApplianceAiTip({ text: texto }).subscribe({
           next: (savedTip) => {
             console.log('Dica de aparelho salva com sucesso:', savedTip);
